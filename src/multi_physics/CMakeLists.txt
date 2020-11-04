@@ -1,13 +1,19 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_EXTENSIONS OFF)
+project(
+  PXRMP
+  DESCRIPTION
+    "A header only c++ library (part of the PICSAR library) providing QED modules for Particle-In-Cell codes."
+  HOMEPAGE_URL "https://github.com/ECP-WarpX/picsar"
+  LANGUAGES CXX)
 
-#Setup CMake to run tests
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  set(IS_TOPLEVEL TRUE)
+else()
+  set(IS_TOPLEVEL FALSE)
+endif()
+
 enable_testing()
-
-project (qed)
 
 add_subdirectory(QED)
 
-add_definitions(-DBOOST_TEST_DYN_LINK)
-add_subdirectory(QED_tests)
