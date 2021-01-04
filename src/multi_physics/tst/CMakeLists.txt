@@ -1,0 +1,36 @@
+cmake_minimum_required (VERSION 3.5)
+
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+project (tst)
+
+set(
+    CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_BINARY_DIR}/bin
+    )
+
+include_directories(../QED)
+
+add_executable(tst tst.cpp)
+
+#Compile with openMP support
+option(WITH_OPENMP "If supported, build with OpenMP support" OFF)
+if(WITH_OPENMP)
+    find_package(OpenMP)
+    if(OpenMP_CXX_FOUND)
+        target_link_libraries(tst PUBLIC OpenMP::OpenMP_CXX)
+    endif()
+endif()
+#_______________________________________
+
+#Optimize build for machine architecture 
+option(OPTIMIZE_FOR_NATIVE "If supported, build with -march=native" OFF)
+if(OPTIMIZE_FOR_NATIVE)
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_NATIVE)
+    if(COMPILER_SUPPORTS_NATIVE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    endif()
+endif()
+#_______________________________________
+
