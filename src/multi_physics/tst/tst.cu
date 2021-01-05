@@ -425,25 +425,25 @@ void do_pair_prod_test(
         if(!is_ok) continue;
 
         auto res_mom_ele = pxr_m::vec3<RealType>{
-            ele_data[i].px,
-            ele_data[i].py,
-            ele_data[i].pz};
+            static_cast<RealType>(ele_data[i].px),
+            static_cast<RealType>(ele_data[i].py),
+            static_cast<RealType>(ele_data[i].pz)};
         auto res_mom_pos = pxr_m::vec3<RealType>{
-            pos_data[i].px,
-            pos_data[i].py,
-            pos_data[i].pz};
+            static_cast<RealType>(pos_data[i].px),
+            static_cast<RealType>(pos_data[i].py),
+            static_cast<RealType>(pos_data[i].pz)};
         auto original_data = part_transform<double, RealType>(t_data[i]);
         part<RealType> exp_ele_data;
         part<RealType> exp_pos_data;
         cpu_check_pair_gen_kernel(original_data, rand_nums[i], exp_ele_data, exp_pos_data, cpu_table);
         auto exp_mom_ele = pxr_m::vec3<RealType>{
-            exp_ele_data.px,
-            exp_ele_data.py,
-            exp_ele_data.pz};
+            static_cast<RealType>(exp_ele_data.px),
+            static_cast<RealType>(exp_ele_data.py),
+            static_cast<RealType>(exp_ele_data.pz)};
         auto exp_mom_pos = pxr_m::vec3<RealType>{
-            exp_pos_data.px,
-            exp_pos_data.py,
-            exp_pos_data.pz};
+            static_cast<RealType>(exp_pos_data.px),
+            static_cast<RealType>(exp_pos_data.py),
+            static_cast<RealType>(exp_pos_data.pz)};
 
         using namespace pxr_m;
 
