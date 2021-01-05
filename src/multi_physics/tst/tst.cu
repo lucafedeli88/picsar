@@ -365,10 +365,10 @@ void do_dndt_test(
     cudaFree(d_data);
 }
 
-template <typename RealType, typename TableViewType>
+template <typename RealType, typename TableViewType, typename CPUTableViewType>
 void do_pair_prod_test(
     TableViewType table,
-    const std::vector<part<double>>& t_data, double dt, TableViewType cpu_table)
+    const std::vector<part<double>>& t_data, double dt, CPUTableViewType cpu_table)
 {
     auto data = std::vector<part<RealType>>(t_data.size());
     std::transform(t_data.begin(), t_data.end(), data.begin(),
@@ -551,7 +551,7 @@ auto generate_alt_pair_table(RealType chi_min, RealType chi_max, int chi_size, i
 	auto table = pxr_bw::alt_pair_prod_lookup_table<
         RealType, VectorType>{bw_params};
 
-    table.template generate<px_bw::generation_policy::force_internal_double>>();
+    table.template generate<pxr_bw::generation_policy::force_internal_double>();
 
     return table;
 }
@@ -596,8 +596,16 @@ void do_test(const std::vector<part<double>>& data)
 
     std::cout << "Performing tests...\n"; std::cout.flush();
     do_dndt_test<RealType,typeof(dndt_table.get_view())>(dndt_table.get_view(), data, dt_test, dndt_table_cpu.get_view());
-    do_pair_prod_test<RealType,typeof(pair_table.get_view())>(pair_table.get_view(), data, dt_test, pair_table_cpu.get_view());    
-    do_pair_prod_test<RealType,typeof(alt_pair_table.get_view())>(alt_pair_table.get_view(), data, dt_test, pair_table_cpu.get_view());
+    do_pair_prod_test<
+        RealType,
+        typeof(pair_table.get_view()),
+        typeof(pair_table_cpu.get_view())>(
+            pair_table.get_view(), data, dt_test, pair_table_cpu.get_view());    
+    do_pair_prod_test<
+        RealType,
+        typeof(alt_pair_table.get_view()),
+        typeof(pair_table_cpu.get_view())>(
+            alt_pair_table.get_view(), data, dt_test, pair_table_cpu.get_view());
     std::cout << "done!\n"; std::cout.flush();
 }
 
