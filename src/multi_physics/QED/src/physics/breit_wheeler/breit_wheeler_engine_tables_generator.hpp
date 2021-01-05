@@ -257,6 +257,11 @@ namespace breit_wheeler{
             (Policy == generation_policy::force_internal_double) &&
             !std::is_same<RealType,double>();
 
+        if(std::is_same<RealType,float>() && !use_internal_double){
+            std::cout << "Warning: generation of this table should use " <<
+            "internal calculations in double precision! " << std::endl;
+        }
+
         auto t_start =  std::chrono::system_clock::now();
 
         const int chi_size = m_params.chi_phot_how_many;
@@ -294,7 +299,7 @@ namespace breit_wheeler{
                     val = math::find_root([=](RealType frac){
                             return compute_cumulative_prob(
                                 chi_phot, std::vector<RealType>{frac})[0] - prob;
-                        }, math::half<double>, true);
+                        }, math::half<RealType>, true);
                 }
 
                 if(val.first){
@@ -308,7 +313,6 @@ namespace breit_wheeler{
                     #pragma omp critical
                     {
                         count++;
-                        std::cout << count << std::endl;
                         utils::draw_progress(count, chi_size*frac_size, "BW alt pair prod", 1);
                     }
                 }

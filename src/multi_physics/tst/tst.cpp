@@ -128,7 +128,7 @@ void generate_breit_wheeler_alt_pair_prod_table(
 
 int main(int argc, char** argv)
 {
-    std::cout << "** Double precision table ** \n" << std::endl;
+   std::cout << "** Double precision table ** \n" << std::endl;
     generate_breit_wheeler_alt_pair_prod_table<double>(
         px_bw::default_pair_prod_lookup_table_params<double>,
         "bw_alt_pairprod_d");
@@ -141,11 +141,11 @@ int main(int argc, char** argv)
         "bw_alt_pairprod_fd");
     std::cout << "____________________________ \n" << std::endl;
 
-    std::cout << "** Single precision tables ** \n" << std::endl;
+    /*std::cout << "** Single precision tables ** \n" << std::endl;
     generate_breit_wheeler_alt_pair_prod_table<float>(
         px_bw::default_pair_prod_lookup_table_params<float>,
         "bw_alt_pairprod_f");
-     std::cout << "____________________________ \n" << std::endl;
+     std::cout << "____________________________ \n" << std::endl;*/
 
     return 0;
 }

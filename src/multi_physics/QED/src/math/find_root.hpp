@@ -48,6 +48,8 @@ namespace math{
                 func, guess, factor, is_rising, tol, it);
 
         return std::make_pair(it < max_it, (r.second + r.first)*half<RealType>);
+
+        //return std::make_pair(it < max_it, (r.second + r.first)*half<RealType>);
     }
 }
 }
