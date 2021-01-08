@@ -38,12 +38,12 @@ const double Bs = pxr::schwinger_field<>/pxr::light_speed<>;
 //__________________________________________________
 
 //Parameters of the test case
-const int test_size = 100'000'000;
+const int test_size = 1'000'000; // 10^8
 const double dt_test = 1e-18;
 const double table_chi_min = 0.01;
 const double table_chi_max = 1000.0;
-const int table_chi_size = 256;
-const int table_frac_size = 256;
+const int table_chi_size = 128; //256
+const int table_frac_size = 128; //256
 const double max_normalized_field = 0.02;
 const double max_normalized_momentum = 1000.0;
 const int random_seed = 22051988;
