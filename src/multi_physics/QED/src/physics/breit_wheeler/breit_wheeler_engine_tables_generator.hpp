@@ -321,7 +321,7 @@ namespace breit_wheeler{
                 }
 
             }
-                const auto val_index = (i+1)*frac_size;
+                const auto val_index = (i+1)*frac_size - 1;
                 all_vals[val_index] = math::half<RealType>;
 
                 if(show_progress){

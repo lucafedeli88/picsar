@@ -120,7 +120,7 @@ void generate_breit_wheeler_alt_pair_prod_table(
     of.close();
 
 
-    write_csv_2d_table(table, bw_params.chi_phot_min*0.1f, bw_params.chi_phot_max*10.f,
+    write_csv_2d_table(table, bw_params.chi_phot_min*0.5f, bw_params.chi_phot_max*2.f,
         RealType(0.0), RealType(1.0)-std::numeric_limits<RealType>::epsilon(), bw_params.chi_phot_how_many*3,
         bw_params.frac_how_many*3, true, false, file_name + ".csv");
 
@@ -128,20 +128,23 @@ void generate_breit_wheeler_alt_pair_prod_table(
 
 int main(int argc, char** argv)
 {
+   auto params = px_bw::default_pair_prod_lookup_table_params<double>;
+   params.chi_phot_how_many = 13;
+   params.frac_how_many = 15;
    std::cout << "** Double precision table ** \n" << std::endl;
     generate_breit_wheeler_alt_pair_prod_table<double>(
-        px_bw::default_pair_prod_lookup_table_params<double>,
+        params,
         "bw_alt_pairprod_d");
     std::cout << "____________________________ \n" << std::endl;
 
-    std::cout << "** Single precision tables calculated in double precision ** \n" << std::endl;
+    /*std::cout << "** Single precision tables calculated in double precision ** \n" << std::endl;
     generate_breit_wheeler_alt_pair_prod_table<float,
         px_bw::generation_policy::force_internal_double>(
         px_bw::default_pair_prod_lookup_table_params<float>,
         "bw_alt_pairprod_fd");
     std::cout << "____________________________ \n" << std::endl;
 
-    /*std::cout << "** Single precision tables ** \n" << std::endl;
+    std::cout << "** Single precision tables ** \n" << std::endl;
     generate_breit_wheeler_alt_pair_prod_table<float>(
         px_bw::default_pair_prod_lookup_table_params<float>,
         "bw_alt_pairprod_f");
