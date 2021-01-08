@@ -276,12 +276,13 @@ namespace breit_wheeler{
 
         #pragma omp parallel for schedule(dynamic, 1)
         for (int i = 0; i < chi_size; ++i){
+            auto previous = math::zero<RealType>;
             for (int j = 0; j < frac_size-1; ++j){
-                const auto chi_phot = all_coords[i*frac_size][0];
-
                 const auto val_index = i*frac_size+j;
+                const auto chi_phot = all_coords[val_index][0];
+                auto prob = all_coords[val_index][1];
 
-                const auto prob = all_coords[val_index][1];
+                if (j == 0) prob = all_coords[val_index+1][1]/static_cast<RealType>(10.0);
 
                 std::pair<bool, RealType> val = std::make_pair(false, math::zero<RealType>);
 
@@ -290,7 +291,7 @@ namespace breit_wheeler{
                         math::find_root([=](double frac){
                             return compute_cumulative_prob(
                                 static_cast<double>(chi_phot),
-                                std::vector<double>{frac})[0]
+                                std::vector<double>{frac*chi_phot})[0]
                                 - static_cast<double>(prob);
                         },  math::half<double>, true);
                     val = std::make_pair(t_val.first,
@@ -298,16 +299,18 @@ namespace breit_wheeler{
                 } else {
                     val = math::find_root([=](RealType frac){
                             return compute_cumulative_prob(
-                                chi_phot, std::vector<RealType>{frac})[0] - prob;
+                                chi_phot, std::vector<RealType>{frac*chi_phot})[0] - prob;
                         }, math::half<RealType>, true);
                 }
 
-                if(val.first){
-                    all_vals[val_index] = val.second;
-                }
-                else{
-                    throw std::runtime_error("Error: root not found!");
-                }
+                if(!val.first) throw std::runtime_error("Error: root not found!");
+
+                if(val.second < previous) val.second = previous;
+
+                if(val.second > math::half<RealType>) val.second = math::half<RealType>;
+
+                all_vals[val_index] = val.second;
+                previous = val.second;
 
                 if(show_progress){
                     #pragma omp critical

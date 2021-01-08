@@ -35,6 +35,7 @@
 #include <cmath>
 #include <limits>
 #include <stdexcept>
+#include <iostream>
 
 namespace picsar{
 namespace multi_physics{
