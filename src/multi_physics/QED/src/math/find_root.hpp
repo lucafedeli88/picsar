@@ -36,7 +36,7 @@ namespace math{
     std::pair<bool, RealType>
     find_root(const Functor& func, RealType guess, bool is_rising,
         const RealType factor = static_cast<RealType>(2),
-        const unsigned int max_it = 30, const unsigned int digit_loss = 3)
+        const unsigned int max_it = 40, const unsigned int digit_loss = 3)
     {
         boost::uintmax_t it = max_it;
         const auto get_digits = static_cast<unsigned int>(

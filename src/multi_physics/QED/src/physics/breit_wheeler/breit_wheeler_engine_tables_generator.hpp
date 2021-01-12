@@ -271,7 +271,6 @@ namespace breit_wheeler{
         auto all_vals = std::vector<RealType>(all_coords.size());
 
         int count = 0;
-
         utils::draw_progress(count, chi_size*frac_size, "BW alt pair prod", 1);
 
         #pragma omp parallel for schedule(dynamic, 1)

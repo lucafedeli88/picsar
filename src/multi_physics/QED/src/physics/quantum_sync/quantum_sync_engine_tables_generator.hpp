@@ -22,6 +22,8 @@
 #include "../../math/cmath_overloads.hpp"
 //Uses progress bar
 #include "../../utils/progress_bar.hpp"
+//Uses find_root
+#include "../../math/find_root.hpp"
 
 #include <omp.h>
 #include <vector>
@@ -223,6 +225,117 @@ namespace quantum_sync{
         if(show_progress){
             utils::draw_progress(
                 count, chi_size, "QS photon emission", 1, true);
+
+            std::cout << " Done in " <<
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    t_end - t_start).count()/1000.0 << " seconds. \n" << std::endl;
+        }
+
+        m_init_flag = true;
+    }
+    //__________________________________________________________________________
+
+    //________________ Alternative photon emission table _______________________
+    /**
+    * Generates the alternative lookup table (not usable on GPUs).
+    *
+    * @tparam RealType the floating point type to be used
+    * @tparam VectorType the vector type to be used (relevant for the class of which is a method is member)
+    * @tparam Policy if set to generation_policy::force_internal_double it forces internal calculations in double precision
+    *
+    * @param[in] show_progress if true it shows a nice progress bar
+    */
+    template<typename RealType, typename VectorType>
+    template<generation_policy Policy>
+    void alt_photon_emission_lookup_table<RealType, VectorType>::generate(
+        const bool show_progress)
+    {
+        constexpr bool use_internal_double =
+            (Policy == generation_policy::force_internal_double) &&
+            !std::is_same<RealType,double>();
+
+        if(std::is_same<RealType,float>() && !use_internal_double){
+            std::cout << "Warning: generation of this table should use " <<
+            "internal calculations in double precision! " << std::endl;
+        }
+
+        auto t_start =  std::chrono::system_clock::now();
+
+        const int chi_size = m_params.chi_part_how_many;
+        const int prob_size = m_params.prob_how_many;
+
+        const auto all_coords = get_all_coordinates();
+        auto all_vals = std::vector<RealType>(all_coords.size());
+
+        int count = 0;
+        utils::draw_progress(count, chi_size*prob_size, "QS photon emission", 1);
+
+        #pragma omp parallel for schedule(dynamic, 1)
+        for (int i = 0; i < chi_size; ++i){
+            auto previous = math::zero<RealType>;
+            for (int j = 0; j < prob_size; ++j){
+                const auto val_index = i*prob_size+j;
+                const auto chi_part = all_coords[val_index][0];
+                const double prob = math::one<double> - all_coords[val_index][1];
+
+                std::pair<bool, RealType> val =
+                    std::make_pair(false, math::zero<RealType>);
+
+                PXRMP_INTERNAL_CONSTEXPR_IF (use_internal_double){
+                    const auto t_val =
+                        math::find_root([=](double frac){
+                            return compute_cumulative_prob(
+                                static_cast<double>(chi_part),
+                                std::vector<double>{frac*chi_part})[0]
+                                - static_cast<double>(prob);
+                        },  math::half<double>, true);
+                    val = std::make_pair(t_val.first,
+                        static_cast<RealType>(t_val.second));
+                } else {
+                    val = math::find_root([=](RealType frac){
+                        std::cout << "chi: " << chi_part << "  tgt prob:" <<
+                        prob << "  frac:" << frac << "  prob:"<< compute_cumulative_prob(
+                            chi_part, std::vector<RealType>{frac*chi_part})[0]
+                        <<  std::endl;
+                            return compute_cumulative_prob(
+                                chi_part, std::vector<RealType>{frac*chi_part})[0] - prob;
+                        }, math::half<RealType>, true);
+                }
+
+                std::cout << "chi: " << chi_part << "  frac:" << val.second <<
+                "   prob: " << prob << std::endl;
+
+                if(!val.first) throw std::runtime_error("Error: root not found!");
+
+                if(val.second < previous) val.second = previous;
+
+                if(val.second > math::one<RealType>) val.second = math::one<RealType>;
+
+                all_vals[val_index] = val.second;
+                previous = val.second;
+
+                if(show_progress){
+                    #pragma omp critical
+                    {
+                        count++;
+                        utils::draw_progress(count, chi_size*prob_size, "QS alt photon emission", 1);
+                    }
+                }
+
+            }
+
+        }
+
+        for (auto& val : all_vals){
+            if(std::isnan(val))
+                throw std::runtime_error("Error: nan detected in generated table!");
+        }
+
+        set_all_vals(all_vals);
+        auto t_end =  std::chrono::system_clock::now();
+        if(show_progress){
+            utils::draw_progress(
+                count, chi_size*prob_size, "QS alt photon emission", 1, true);
 
             std::cout << " Done in " <<
                 std::chrono::duration_cast<std::chrono::milliseconds>(

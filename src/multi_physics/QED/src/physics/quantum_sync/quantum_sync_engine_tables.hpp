@@ -52,6 +52,13 @@ namespace quantum_sync{
     template <typename T>
     constexpr T default_frac_min = static_cast<T>(1e-12); /* Default value of the minimum chi_photon fraction */
 
+    //parameters for the alternative table
+    template <typename T>
+    constexpr T default_prob_min = static_cast<T>(1.0e-8); /* Default value of the minimum probability*/
+    template <typename T>
+    constexpr T default_prob_max = static_cast<T>(0.97); /* Default value of the maximum probability*/
+    const int default_prob_how_many = 256; /* Default number of grid points for probability */
+
     //__________________________________________________________________________
 
     //________________ dN/dt table _____________________________________________
@@ -779,6 +786,371 @@ namespace quantum_sync{
         };
 
         //______________________________________________________________________
+
+        //________________ Alternative photon emission table ___________________
+
+        /**
+        * This structure holds the parameters to generate an alternative photon
+        * emission lookup table. The lookup table stores the
+        * values of a cumulative probability distribution (see validation script)
+        *
+        * @tparam RealType the floating point type to be used
+        */
+        template<typename RealType>
+        struct alt_photon_emission_lookup_table_params{
+            RealType chi_part_min = static_cast<RealType>(0.0); /*Minimum particle chi parameter*/
+            RealType chi_part_max = static_cast<RealType>(0.0); /*Maximum particle chi parameter*/
+            RealType prob_min = static_cast<RealType>(0.0); /*Minimum chi photon probability to be stored*/
+            RealType prob_max = static_cast<RealType>(0.0); /*Minimum chi photon probability to be stored*/
+            int chi_part_how_many = 0; /* Number of grid points for particle chi */
+            int prob_how_many = 0; /* Number of grid points for photon probability */
+
+            /**
+            * Operator==
+            *
+            * @param[in] rhs a structure of the same type
+            * @return true if rhs is equal to *this. false otherwise
+            */
+            bool operator== (
+                const alt_photon_emission_lookup_table_params<RealType> &rhs) const
+            {
+                return (chi_part_min == rhs.chi_part_min) &&
+                    (chi_part_max == rhs.chi_part_max) &&
+                    (prob_min == rhs.prob_min) &&
+                    (prob_min == rhs.prob_max) &&
+                    (chi_part_how_many == rhs.chi_part_how_many) &&
+                    (prob_how_many == rhs.prob_how_many);
+            }
+        };
+
+        /**
+        * The default alt_photon_emission_lookup_table_params
+        *
+        * @tparam RealType the floating point type to be used
+        */
+        template<typename RealType>
+        constexpr auto default_alt_photon_emission_lookup_table_params =
+            alt_photon_emission_lookup_table_params<RealType>{default_chi_part_min<RealType>,
+                                               default_chi_part_max<RealType>,
+                                               default_prob_min<RealType>,
+                                               default_prob_max<RealType>,
+                                               default_chi_part_how_many,
+                                               default_prob_how_many};
+
+        /**
+        * This class provides the alternative lookup table for photon emission
+        * storing the values of a cumulative probability distribution
+        * (see validation script) and providing methods to perform interpolations.
+        * It also provides methods for serialization (export to byte array,
+        * import from byte array) and to generate "table views" based on
+        * non-owning pointers (this is crucial in order to use the table
+        * in GPU kernels, as explained below).
+        *
+        * Defining frac as chi_photon/chi_particle, internally this table stores
+        * log(frac(log(chi_particle),  log(P)))
+        *
+        * @tparam RealType the floating point type to be used
+        * @tparam VectorType the vector type to be used internally (e.g. std::vector)
+        */
+        template<typename RealType, typename VectorType>
+        class alt_photon_emission_lookup_table
+        {
+
+            public:
+
+                /**
+                * A view_type is essentially an alt_photon_emission_lookup_table which
+                * uses non-owning, constant, pointers to hold the data.
+                * The use of views is crucial for GPUs. As demonstrated
+                * in test_gpu/test_quantum_sync.cu, it is possible to:
+                * - define a thin wrapper around a thrust::device_vector
+                * - use this wrapper as a template parameter for a photon_emission_lookup_table
+                * - initialize the lookup table on the CPU
+                * - generate a view
+                * - pass by copy this view to a GPU kernel (see get_view() method)
+                *
+                * @tparam RealType the floating point type to be used
+                */
+                typedef alt_photon_emission_lookup_table<
+                    RealType, containers::picsar_span<const RealType>> view_type;
+
+                /**
+                * Empty constructor
+                */
+                constexpr
+                alt_photon_emission_lookup_table(){}
+
+                /**
+                * Constructor (not designed for GPU usage)
+                * After construction the table is uninitialized. The user has to generate
+                * the cumulative probability distribution before being able to use the table.
+                *
+                * @param params table parameters
+                */
+                alt_photon_emission_lookup_table(
+                    alt_photon_emission_lookup_table_params<RealType> params):
+                    m_params{params},
+                    m_table{containers::equispaced_2d_table<RealType, VectorType>{
+                        math::m_log(params.chi_part_min),
+                        math::m_log(params.chi_part_max),
+                        math::m_log(params.prob_min),
+                        math::m_log(params.prob_max),
+                        params.chi_part_how_many, params.prob_how_many,
+                        VectorType(params.chi_part_how_many * params.prob_how_many)}}
+                    {}
+
+                /**
+                * Constructor (not designed for GPU usage)
+                * This constructor allows the user to initialize the table with
+                * a vector of values.
+                *
+                * @param params table parameters
+                */
+                alt_photon_emission_lookup_table(
+                    alt_photon_emission_lookup_table_params<RealType> params,
+                    VectorType vals):
+                    m_params{params},
+                    m_table{containers::equispaced_2d_table<RealType, VectorType>{
+                        math::m_log(params.chi_part_min),
+                        math::m_log(params.chi_part_max),
+                        math::m_log(params.prob_max),
+                        math::m_log(params.prob_max),
+                        params.chi_part_how_many, params.prob_how_many,
+                        vals}}
+                {
+                    m_init_flag = true;
+                }
+
+                /*
+                * Generates the content of the lookup table (not usable on GPUs).
+                * This function is implemented elsewhere
+                * (in breit_wheeler_engine_tables_generator.hpp)
+                * since it requires a recent version of the Boost library.
+                *
+                * @tparam Policy the generation policy (can force calculations in double precision)
+                *
+                * @param[in] show_progress if true a progress bar is shown
+                */
+                template <generation_policy Policy = generation_policy::regular>
+                void generate(bool show_progress = true);
+
+                /*
+                * Initializes the lookup table from a byte array.
+                * This method is not usable on GPUs.
+                *
+                * @param[in] raw_data the byte array
+                */
+                alt_photon_emission_lookup_table(const std::vector<char>& raw_data)
+                {
+                    using namespace utils;
+
+                    constexpr size_t min_size =
+                        sizeof(char)+//single or double precision
+                        sizeof(m_params);
+
+                    if (raw_data.size() < min_size)
+                        throw std::runtime_error("Binary data is too small \
+                        to be a Quantum Synchrotron emisson lookup-table.");
+
+                    auto it_raw_data = raw_data.begin();
+
+                    if (serialization::get_out<char>(it_raw_data) !=
+                        static_cast<char>(sizeof(RealType))){
+                        throw std::runtime_error("Mismatch between RealType \
+                        used to write and to read the Quantum Synchrotron lookup-table");
+                    }
+
+                    m_params = serialization::get_out<
+                        alt_photon_emission_lookup_table_params<RealType>>(it_raw_data);
+                    m_table = containers::equispaced_2d_table<
+                        RealType, VectorType>{std::vector<char>(it_raw_data,
+                        raw_data.end())};
+
+                    m_init_flag = true;
+                }
+
+                /**
+                * Operator==
+                *
+                * @param[in] rhs a structure of the same type
+                *
+                * @return true if rhs is equal to *this. false otherwise
+                */
+                PXRMP_INTERNAL_GPU_DECORATOR PXRMP_INTERNAL_FORCE_INLINE_DECORATOR
+                bool operator== (
+                    const alt_photon_emission_lookup_table<
+                        RealType, VectorType> &rhs) const
+                {
+                    return
+                        (m_params == rhs.m_params) &&
+                        (m_init_flag == rhs.m_init_flag) &&
+                        (m_table == rhs.m_table);
+                }
+
+                /*
+                * Returns a table view for the current table
+                * (i.e. a table built using non-owning picsar_span
+                * vectors). A view_type is very lightweight and can
+                * be passed by copy to functions and GPU kernels.
+                * Indeed it contains non-owning pointers to the data
+                * held by the original table.
+                * The method is not designed to be run on GPUs.
+                *
+                * @return a table view
+                */
+                view_type get_view() const
+                {
+                    if(!m_init_flag)
+                        throw std::runtime_error("Can't generate a view of an \
+                        uninitialized table");
+                    const auto span = containers::picsar_span<const RealType>{
+                        static_cast<size_t>(m_params.chi_part_how_many *
+                            m_params.frac_how_many),
+                            m_table.get_values_reference().data()};
+
+                    return view_type{m_params, span};
+                }
+
+                /*
+                * Uses the lookup table to extract the chi value of
+                * the generated photon from a cumulative probability
+                * distribution, given the chi parameter of the particle and a
+                * random number uniformly distributed in [0,1). If chi_part is out
+                * of table either the minimum or the maximum value is used.
+                * The method uses the lookup table to calculate:
+                * frac(chi_part, unf_zero_one_minus_epsi)
+                * where frac is the ratio between chi_photon and chi_particle.
+                * If unf_zero_one_minus_epsi is out of table, 0 is returned (i.e. a photon with
+                * very low energy is emitted, so it can be disregarded)
+                * The method also checks if chi_phot is out of table
+                * and stores the result in a bool variable.
+                *
+                * @param[in] chi_phot to be used for interpolation
+                * @param[in] unf_zero_one_minus_epsi a uniformly distributed random number in [0,1)
+                * @param[out] is_out set to true if chi_part is out of table
+                *
+                * @return chi of one of the generated particles
+                */
+                PXRMP_INTERNAL_GPU_DECORATOR
+                PXRMP_INTERNAL_FORCE_INLINE_DECORATOR
+                RealType interp(
+                    const RealType chi_part,
+                    const RealType unf_zero_one_minus_epsi,
+                    bool* const is_out = nullptr) const noexcept
+                {
+                    using namespace math;
+
+                    auto e_chi_part = chi_part;
+                    if(chi_part<m_params.chi_part_min){
+                        e_chi_part = m_params.chi_part_min;
+                        if (is_out != nullptr) *is_out = true;
+                    }
+                    else if (chi_part > m_params.chi_part_max){
+                        e_chi_part = m_params.chi_part_max;
+                        if (is_out != nullptr) *is_out = true;
+                    }
+
+                    const auto log_e_chi_part = m_log(e_chi_part);
+
+                    const auto prob =
+                        (unf_zero_one_minus_epsi < m_params.prob_min)?
+                        m_params.prob_min : unf_zero_one_minus_epsi;
+
+                    const auto log_prob = m_log(prob);
+
+                    const auto log_frac =
+                        m_table.interp(log_e_chi_part, log_prob);
+
+                    return  m_exp(log_frac)*chi_part;
+                }
+
+                /**
+                * Exports all the coordinates (chi_particle, prob)
+                * of the table to a std::vector
+                * of 2-elements arrays (not usable on GPUs).
+                *
+                * @return a vector containing all the table coordinates
+                */
+                std::vector<std::array<RealType,2>> get_all_coordinates() const noexcept
+                {
+                    auto all_coords = m_table.get_all_coordinates();
+                    std::transform(all_coords.begin(),all_coords.end(),all_coords.begin(),
+                        [](std::array<RealType,2> a){return
+                            std::array<RealType,2>{
+                                math::m_exp(a[0]),
+                                math::one<RealType>-math::m_exp(a[1]) };});
+                    return all_coords;
+                }
+
+                /**
+                * Imports table values from an std::vector. Values
+                * should correspond to coordinates exported with
+                * get_all_coordinates(). Not usable on GPU.
+                *
+                * @param[in] a std::vector containing table values
+                *
+                * @return false if the value vector has the wrong length. True otherwise.
+                */
+                bool set_all_vals(const std::vector<RealType>& vals)
+                {
+                    if(static_cast<int>(vals.size()) == m_table.get_how_many_x()*
+                        m_table.get_how_many_y()){
+                        for(int i = 0; i < static_cast<int>(vals.size()); ++i){
+                            auto val = math::m_log(vals[i]);
+                            if(std::isinf(val))
+                                val = std::numeric_limits<RealType>::lowest();
+                            m_table.set_val(i, val);
+                        }
+                        m_init_flag = true;
+                        return true;
+                    }
+                    return false;
+                }
+
+                /*
+                * Checks if the table has been initialized.
+                *
+                * @return true if the table has been initialized, false otherwise
+                */
+                PXRMP_INTERNAL_GPU_DECORATOR
+                PXRMP_INTERNAL_FORCE_INLINE_DECORATOR
+                bool is_init()
+                {
+                    return m_init_flag;
+                }
+
+                /*
+                * Converts the table to a byte vector
+                *
+                * @return a byte vector
+                */
+                std::vector<char> serialize() const
+                {
+                    using namespace utils;
+
+                    if(!m_init_flag)
+                        throw std::runtime_error("Cannot serialize an unitialized table");
+
+                    std::vector<char> res;
+
+                    serialization::put_in(static_cast<char>(sizeof(RealType)), res);
+                    serialization::put_in(m_params, res);
+
+                    auto tdata = m_table.serialize();
+                    res.insert(res.end(), tdata.begin(), tdata.end());
+
+                    return res;
+                }
+
+            protected:
+                alt_photon_emission_lookup_table_params<RealType> m_params; /* Table parameters*/
+                bool m_init_flag = false; /* Initialization flag*/
+                containers::equispaced_2d_table<
+                    RealType, VectorType> m_table; /* Table data*/
+
+            };
+
+            //______________________________________________________________________
 
 }
 }
