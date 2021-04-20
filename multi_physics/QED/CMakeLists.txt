@@ -22,7 +22,7 @@ option(PXRMP_QED_TEST             "Build PICSAR QED tests " ${IS_TOPLEVEL})
 option(PXRMP_QED_TOOLS            "Build PICSAR QED tools " ${IS_TOPLEVEL})
 option(PXRMP_BOOST_TEST_DYN_LINK  "Link against the Boost Unit Test Framework shared library" ON)
 option(PXRMP_DPCPP_FIX            "Use cl::sycl::floor cl::sycl::floorf on device" OFF)
-
+option(PXRMP_AMREX_EXAMPLE        "Compile example using AMReX framework" ${IS_TOPLEVEL})
 
 ########
 # Library include directory
@@ -82,4 +82,15 @@ if(PXRMP_QED_TOOLS)
          message( FATAL_ERROR "Tools require to enable table generation!" )
     endif()
     add_subdirectory(QED_table_generator)
-endif()
+  endif()
+
+
+########
+# Setup CMake to build AMReX tests
+########
+if(PXRMP_AMREX_EXAMPLE)
+    if(NOT PXRMP_QED_TABLEGEN)
+         message( FATAL_ERROR "AMReX example require to enable table generation!" )
+    endif()
+    add_subdirectory(amrex_example)
+  endif()
