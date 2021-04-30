@@ -142,7 +142,7 @@ void evolve_opt(const int N,
    const Real*__restrict__ bz,
    Real*__restrict__ opt,
    const Real dt,
-   const TableType& ref_table)
+   const TableType ref_table)
 {
     int i = blockIdx.x*blockDim.x + threadIdx.x;
 
@@ -207,7 +207,7 @@ void pair_gen(const int N,
    const Real*__restrict__ by,
    const Real*__restrict__ bz,
    const Real*__restrict__ rand,
-   const TableType& ref_table,
+   const TableType ref_table,
    Real*__restrict__ mom_ele,
    Real*__restrict__ mom_pos)
 {
@@ -257,7 +257,7 @@ template <typename Real, typename TableType>
 std::pair<bool, double>
 generate_pairs(
     ParticleData<Real>& pdata,
-    const TableType& ref_table,
+    const TableType ref_table,
     curandGenerator_t& gen)
 {
     const auto N = pdata.num_particles;
