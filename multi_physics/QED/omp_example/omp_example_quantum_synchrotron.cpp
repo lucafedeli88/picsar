@@ -78,19 +78,6 @@ auto generate_photon_emission_table(
     return table;
 }
 
-template <typename Real>
-__global__
-void fill_opt(int N, Real* opt_data, Real* unf_zero_one)
-{
-    int i = blockIdx.x*blockDim.x + threadIdx.x;
-
-	if (i < N){
-        opt_data[i] = pxr_qs::get_optical_depth<Real>(
-            Real(1.0)-unf_zero_one[i]);
-    }
-}
-
-
 /**
 * Tests the initialization of the optical depth
 *
@@ -106,65 +93,22 @@ fill_opt_test(
     ParticleData<Real>& pdata,
     RandGenPool& gen_pool)
 {
+
     const auto N = pdata.num_particles;
-    Real* rand;
-    std::vector<Real> t_opt(N);
 
-    cudaMalloc(&rand,N*sizeof(Real));
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    auto start = std::chrono::high_resolution_clock::now();
 
-    cudaEventRecord(start);
-    w_curandGenerateUniform(gen, rand, N);
-    fill_opt<<< (N+255)/256, 256 >>>(N, pdata.m_fields.opt, rand);
-    cudaEventRecord(stop);
-
-    cudaMemcpy(t_opt.data(), pdata.m_fields.opt, N*sizeof(Real), cudaMemcpyDeviceToHost);
-
-    cudaEventSynchronize(stop);
-
-    float time = 0.0;
-    cudaEventElapsedTime(&time, start, stop);
-
-    cudaFree(rand);
-
-    return std::make_pair(check(t_opt, true, false), time);
-}
-
-template <typename Real, typename TableType>
-__global__
-void evolve_opt(const int N,
-   const Real*__restrict__ mom,
-   const Real*__restrict__ ex,
-   const Real*__restrict__ ey,
-   const Real*__restrict__ ez,
-   const Real*__restrict__ bx,
-   const Real*__restrict__ by,
-   const Real*__restrict__ bz,
-   Real*__restrict__ opt,
-   const Real dt,
-   const TableType ref_table)
-{
-    int i = blockIdx.x*blockDim.x + threadIdx.x;
-
-	if (i < N){
-        const auto& px = mom[ParticleData<Real>::idx(i,0)];
-        const auto& py = mom[ParticleData<Real>::idx(i,1)];
-        const auto& pz = mom[ParticleData<Real>::idx(i,2)];
-
-        const auto ppx = px/mec<Real>;
-	    const auto ppy = py/mec<Real>;
-	    const auto ppz = pz/mec<Real>;
-        const auto ee =
-            pxr::compute_gamma_ele_pos<Real>(px, py, pz)*mec2<Real>;
-
-        const auto chi =
-            pxr::chi_ele_pos<Real, pxr::unit_system::SI>(
-                px, py ,pz, ex[i], ey[i], ez[i], bx[i], by[i], bz[i]);
-        pxr_qs::evolve_optical_depth<Real, TableType>(
-                ee, chi, dt, opt[i], ref_table);
+    #pragma omp parallel for
+    for (int i = 0; i < N; ++i){
+        auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
+        const int tid = omp_get_thread_num();
+        auto& gen = gen_pool[tid];
+        pdata.m_fields.opt[i] = pxr_qs::get_optical_depth<Real>(unf(gen));
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end-start;
+    return std::make_pair(check(pdata.m_fields.opt, true, false), elapsed.count()*1000.0);
 }
 
 template <typename Real, typename TableType>
@@ -175,140 +119,93 @@ evolve_optical_depth(
     Real dt)
 {
     const auto N = pdata.num_particles;
-    std::vector<Real> t_opt(N);
 
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    auto start = std::chrono::high_resolution_clock::now();
 
-    cudaEventRecord(start);
-    evolve_opt<<< (N+255)/256, 256 >>>(
-        N,
-        pdata.m_momentum,
-        pdata.m_fields.Ex, pdata.m_fields.Ey, pdata.m_fields.Ez,
-        pdata.m_fields.Bx, pdata.m_fields.By, pdata.m_fields.Bz,
-        pdata.m_fields.opt, dt, ref_table);
-    cudaEventRecord(stop);
+    #pragma omp parallel for
+    for (int i = 0; i < N; ++i){
 
-    cudaMemcpy(t_opt.data(), pdata.m_fields.opt, N*sizeof(Real), cudaMemcpyDeviceToHost);
-
-    cudaEventSynchronize(stop);
-    float time = 0.0;
-    cudaEventElapsedTime(&time, start, stop);
-
-    return std::make_pair(check(t_opt, true, false), time);
-}
-
-template <typename Real, typename TableType>
-__global__
-void phot_gen(const int N,
-   Real*__restrict__ mom,
-   const Real*__restrict__ ex,
-   const Real*__restrict__ ey,
-   const Real*__restrict__ ez,
-   const Real*__restrict__ bx,
-   const Real*__restrict__ by,
-   const Real*__restrict__ bz,
-   const Real*__restrict__ rand,
-   const TableType ref_table,
-   Real*__restrict__ mom_phot)
-{
-    int i = blockIdx.x*blockDim.x + threadIdx.x;
-
-	if (i < N){
-        const auto& px = mom[ParticleData<Real>::idx(i,0)];
-        const auto& py = mom[ParticleData<Real>::idx(i,1)];
-        const auto& pz = mom[ParticleData<Real>::idx(i,2)];
-
-        const auto unf_zero_one = Real(1.0)-rand[i];
+        const auto& px = pdata.m_momentum[i][0];
+        const auto& py = pdata.m_momentum[i][1];
+        const auto& pz = pdata.m_momentum[i][2];
 
         const auto chi = pxr::chi_ele_pos<Real, pxr::unit_system::SI>(
-            px, py, pz, ex[i], ey[i], ez[i], bx[i], by[i], bz[i]);
+            px, py, pz,
+            pdata.m_fields.Ex[i],
+            pdata.m_fields.Ey[i],
+            pdata.m_fields.Ez[i],
+            pdata.m_fields.Bx[i],
+            pdata.m_fields.By[i],
+            pdata.m_fields.Bz[i]);
 
-        auto pp = pxr_m::vec3<Real>{px, py, pz};
+        const auto ppx = px/mec<Real>;
+	    const auto ppy = py/mec<Real>;
+	    const auto ppz = pz/mec<Real>;
+        const auto ee =
+            pxr::compute_gamma_ele_pos<Real>(px, py, pz)*mec2<Real>;
 
-        auto e_phot = pxr_m::vec3<Real>{0,0,0};
-
-        pxr_qs::generate_photon_update_momentum<Real, TableType, pxr::unit_system::SI>(
-            chi, pp,
-            unf_zero_one,
-            ref_table,
-            e_phot);
-
-        mom_phot[ParticleData<Real>::idx(i,0)] = e_phot[0];
-        mom_phot[ParticleData<Real>::idx(i,1)] = e_phot[1];
-        mom_phot[ParticleData<Real>::idx(i,2)] = e_phot[2];
-
-        mom[ParticleData<Real>::idx(i,0)] = pp[0];
-        mom[ParticleData<Real>::idx(i,1)] = pp[1];
-        mom[ParticleData<Real>::idx(i,2)] = pp[2];
+        pxr_qs::evolve_optical_depth<Real, TableType>(
+                ee, chi, dt, pdata.m_fields.opt[i], ref_table);
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end-start;
+
+    return std::make_pair(check(pdata.m_fields.opt, true, false), elapsed.count()*1000.0);
 }
 
-/**
-* Tests
-*
-* @tparam Real the floating point type to be used
-* @tparam TableType the lookup table type
-* @param[in,out] pdata the particle data
-* @param[in] ref_table the pair production lookup table
-* @param[in,out] gen a random pool
-* @return a bool success flag and the elapsed time in ms, packed in a pair
-*/
-template <typename Real, typename TableType>
+template <typename Real, typename TableType, typename RandGenPool>
 std::pair<bool, double>
 generate_photons(
     ParticleData<Real>& pdata,
     const TableType ref_table,
-    curandGenerator_t& gen)
+    RandGenPool& gen_pool)
 {
     const auto N = pdata.num_particles;
-    std::vector<Real> t_phot_mom(
-        ParticleData<Real>::num_components*N);
-    std::vector<Real> t_part_mom(
-        ParticleData<Real>::num_components*N);
+    std::vector<vec3<Real>> momentum_phot(N);
 
-    Real *rand, *phot_momentum, *part_momentum;
-    cudaMalloc(&rand,N*sizeof(Real));
-    cudaMalloc(&phot_momentum,
-        N*ParticleData<Real>::num_components*sizeof(Real));
-    cudaMalloc(&part_momentum,
-            N*ParticleData<Real>::num_components*sizeof(Real));
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    auto start = std::chrono::high_resolution_clock::now();
 
-    cudaEventRecord(start);
-    w_curandGenerateUniform(gen, rand, N);
-    phot_gen<<< (N+255)/256, 256 >>>(
-        N,
-        pdata.m_momentum,
-        pdata.m_fields.Ex, pdata.m_fields.Ey, pdata.m_fields.Ez,
-        pdata.m_fields.Bx, pdata.m_fields.By, pdata.m_fields.Bz,
-        rand, ref_table, phot_momentum);
-    cudaEventRecord(stop);
+    #pragma omp parallel for
+    for (int i = 0; i < N; ++i){
+        auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
+        const int tid = omp_get_thread_num();
+        auto& gen = gen_pool[tid];
 
-    cudaMemcpy(t_phot_mom.data(), phot_momentum,
-        N*ParticleData<Real>::num_components*sizeof(Real), cudaMemcpyDeviceToHost);
+        const auto& px = pdata.m_momentum[i][0];
+        const auto& py = pdata.m_momentum[i][1];
+        const auto& pz = pdata.m_momentum[i][2];
 
-    cudaMemcpy(t_part_mom.data(), pdata.m_momentum,
-        N*ParticleData<Real>::num_components*sizeof(Real), cudaMemcpyDeviceToHost);
+        const auto chi = pxr::chi_ele_pos<Real, pxr::unit_system::SI>(
+            px, py, pz,
+            pdata.m_fields.Ex[i],
+            pdata.m_fields.Ey[i],
+            pdata.m_fields.Ez[i],
+            pdata.m_fields.Bx[i],
+            pdata.m_fields.By[i],
+            pdata.m_fields.Bz[i]);
 
+        auto pp = pxr_m::vec3<Real>{px, py, pz};
 
-    cudaEventSynchronize(stop);
+        auto phot_mom = pxr_m::vec3<Real>{0,0,0};
 
-    float time = 0.0;
-    cudaEventElapsedTime(&time, start, stop);
+        pxr_qs::generate_photon_update_momentum<Real, TableType, pxr::unit_system::SI>(
+            chi, pp,
+            unf(gen),
+            ref_table,
+            phot_mom);
 
-    cudaFree(rand);
-    cudaFree(phot_momentum);
-    cudaFree(part_momentum);
+        std::copy(phot_mom.begin(), phot_mom.end(), pdata.m_momentum[i].begin());
+        std::copy(pp.begin(), pp.end(), pdata.m_momentum[i].begin());
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end-start;
 
     return std::make_pair(
-        check(t_phot_mom, true, true) && check(t_part_mom, true, true),
-        time);
+        check3(momentum_phot, true, true) && check3(pdata.m_momentum, true, true),
+        elapsed.count()*1000.0);
 }
-
 
 /**
 * Performs tests with a given precision
@@ -316,21 +213,21 @@ generate_photons(
 * @tparam Real the floating point type to be used
 * @param[in,out] rand_pool a random pool
 */
-template <typename Real>
-void do_test(curandGenerator_t& rand_pool)
+template <typename Real, typename RandGenPool>
+void do_test(RandGenPool& gen_pool)
 {
     auto particle_data = create_particles<Real>(
         how_many_particles,
-        P_min, P_max, E_min, E_max, B_min, B_max, rand_pool);
+        P_min, P_max, E_min, E_max, B_min, B_max, gen_pool);
 
     const auto dndt_table =
-        generate_dndt_table<Real, ThrustDeviceWrapper<Real>>(
+        generate_dndt_table<Real, std::vector<Real>>(
             table_chi_min,
             table_chi_max,
             table_chi_size);
 
     const auto phot_em_table =
-    generate_photon_emission_table<Real,ThrustDeviceWrapper<Real>>(
+    generate_photon_emission_table<Real, std::vector<Real>>(
             table_chi_min,
             table_chi_max,
             table_frac_min,
@@ -342,7 +239,7 @@ void do_test(curandGenerator_t& rand_pool)
 
     bool fill_opt_success = false; double fill_opt_time = 0.0;
     std::tie(fill_opt_success, fill_opt_time) =
-        fill_opt_test<Real>(particle_data, rand_pool);
+        fill_opt_test<Real>(particle_data, gen_pool);
     std::cout << ( fill_opt_success? "[ OK ]":"[ FAIL ]" )
         << "  Fill Optical Depth : " << fill_opt_time << " ms" << std::endl;
 
@@ -356,28 +253,24 @@ void do_test(curandGenerator_t& rand_pool)
     bool phot_em_success = false; double phot_em_time = 0.0;
     std::tie(phot_em_success, phot_em_time) =
         generate_photons<Real>(
-            particle_data, phot_em_table_view, rand_pool);
+            particle_data, phot_em_table_view, gen_pool);
     std::cout << ( phot_em_success? "[ OK ]":"[ FAIL ]" )
         << "  Photon Emission : " << phot_em_time << " ms" << std::endl;
-
-    free_particles(particle_data);
 }
 
 int main(int argc, char** argv)
 {
 
-    std::cout << "*** CUDA example: begin ***" << std::endl;
+    std::cout << "*** OMP example: begin ***" << std::endl;
 
-    curandGenerator_t gen;
-    curandCreateGenerator(&gen, CURAND_RNG_PSEUDO_DEFAULT);
-    curandSetPseudoRandomGeneratorSeed(gen, random_seed);
+    auto gen_pool = get_gen_pool(random_seed);
 
     std::cout << "   --- Double precision test ---" << std::endl;
-    do_test<double>(gen);
+    do_test<double>(gen_pool);
     std::cout << "   --- END ---" << std::endl;
 
     std::cout << "   --- Single precision test ---" << std::endl;
-    do_test<float>(gen);
+    do_test<float>(gen_pool);
     std::cout << "   --- END ---" << std::endl;
 
     std::cout << "___ END ___" << std::endl;
