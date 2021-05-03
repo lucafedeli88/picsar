@@ -7,8 +7,8 @@
 #include <omp.h>
 //__________________________________________________
 
-//No need to set GPU macros
-//#define PXRMP_WITH_GPU
+//------------------------
+#define PXRMP_HAS_OPENMP
 //__________________________________________________
 
 //Include PICSAR QED
@@ -26,6 +26,7 @@
 #include <string>
 #include <random>
 #include <cstdlib>
+#include <chrono>
 
 //Some namespace aliases
 namespace pxr =  picsar::multi_physics::phys;
@@ -91,7 +92,7 @@ std::string get_type_name()
 *
 */
 template <typename Real, typename RandGenPool>
-void init_vec3_with_random_content(
+std::vector<vec3<Real>> init_vec3_with_random_content(
     const Real min_val, const Real max_val,
     const int N,
     RandGenPool& gen_pool)
@@ -121,19 +122,18 @@ void init_vec3_with_random_content(
 *
 */
 template <typename Real, typename RandGenPool>
-void init_vec3_with_random_content(
+std::vector<Real> init_vec_with_random_content(
     const Real min_val, const Real max_val,
     const int N,
     RandGenPool& gen_pool)
 {
     auto vec = std::vector<Real>(N);
-    auto unf = std::uniform_real_distribution<Real>{min_val, max_val};
-
     const auto len = static_cast<int>(vec.size());
 
     #pragma omp parallel for
     for(int i = 0; i < len; ++i){
-        int tid = omp_get_thread_num();
+        auto unf = std::uniform_real_distribution<Real>{min_val, max_val};
+        const int tid = omp_get_thread_num();
         auto& gen = gen_pool[tid];
         vec[i] = unf(gen);
     }
@@ -199,27 +199,26 @@ bool check(const std::vector<Real>& field,
             if(!flag)
                 continue;
             if( std::isnan(field[i])){
-                #pragma omp atomic
                 flag = false;
             }
         }
     }
     else if(!check_nan && check_inf){
+        #pragma omp parallel for shared(flag)
         for(int i = 0; i < N; ++i){
             if(!flag)
                 continue;
             if( std::isinf(field[i])){
-                #pragma omp atomic
                 flag = false;
             }
         }
     }
     else if(check_nan && check_inf){
+        #pragma omp parallel for shared(flag)
         for(int i = 0; i < N; ++i){
             if(!flag)
                 continue;
             if( std::isinf(field[i]) || std::isnan(field[i])){
-                #pragma omp atomic
                 flag = false;
             }
         }
@@ -249,7 +248,6 @@ bool check3(const std::vector<vec3<Real>>& field,
                 std::isnan(field[i][1]) ||
                 std::isnan(field[i][2]);
             if(cond){
-                #pragma omp atomic
                 flag = false;
             }
         }
@@ -264,7 +262,6 @@ bool check3(const std::vector<vec3<Real>>& field,
                 std::isinf(field[i][1]) ||
                 std::isinf(field[i][2]);
             if(cond){
-                #pragma omp atomic
                 flag = false;
             }
         }
@@ -279,13 +276,28 @@ bool check3(const std::vector<vec3<Real>>& field,
                 std::isinf(field[i][1]) || std::isnan(field[i][1]) ||
                 std::isinf(field[i][2]) || std::isnan(field[i][2]);
             if(cond){
-                #pragma omp atomic
                 flag = false;
             }
         }
     }
 
     return flag;
+}
+
+
+std::vector<std::mt19937> get_gen_pool(const unsigned int seed)
+{
+    const auto max_num_threads = omp_get_max_threads();
+    auto rand_pool = std::vector<std::mt19937>(max_num_threads);
+
+    auto aux_gen = std::ranlux48{seed};
+
+    std::generate(
+        rand_pool.begin(), rand_pool.end(),
+        [&](){
+        return std::mt19937{aux_gen()};});
+
+    return rand_pool;
 }
 
 #endif //__OMP_EXAMPLE_COMMONS__
