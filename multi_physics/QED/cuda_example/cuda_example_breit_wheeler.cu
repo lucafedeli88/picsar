@@ -286,9 +286,9 @@ generate_pairs(
         rand, ref_table, ele_momentum, pos_momentum);
     cudaEventRecord(stop);
 
-    cudaMemcpy(t_ele_mom.data(), pdata.m_momentum,
+    cudaMemcpy(t_ele_mom.data(), ele_momentum,
         N*ParticleData<Real>::num_components*sizeof(Real), cudaMemcpyDeviceToHost);
-    cudaMemcpy(t_pos_mom.data(), pdata.m_momentum,
+    cudaMemcpy(t_pos_mom.data(), pos_momentum,
         N*ParticleData<Real>::num_components*sizeof(Real), cudaMemcpyDeviceToHost);
 
     cudaEventSynchronize(stop);
