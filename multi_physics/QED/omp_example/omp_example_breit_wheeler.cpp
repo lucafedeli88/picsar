@@ -96,6 +96,11 @@ fill_opt_test(
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    #if defined(__clang__)
+        #pragma clang loop vectorize(enable)
+    #elif defined(__GNUC__)
+        #pragma GCC ivdep
+    #endif
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
@@ -120,6 +125,11 @@ evolve_optical_depth(
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    #if defined(__clang__)
+        #pragma clang loop vectorize(enable)
+    #elif defined(__GNUC__)
+        #pragma GCC ivdep
+    #endif
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
 
@@ -178,6 +188,11 @@ generate_pairs(
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    #if defined(__clang__)
+        #pragma clang loop vectorize(enable)
+    #elif defined(__GNUC__)
+        #pragma GCC ivdep
+    #endif
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
@@ -234,6 +249,11 @@ void correct_low_momenta(ParticleData<Real>& pdata)
 
     auto& mom = pdata.m_momentum;
 
+    #if defined(__clang__)
+        #pragma clang loop vectorize(enable)
+    #elif defined(__GNUC__)
+        #pragma GCC ivdep
+    #endif
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
 
