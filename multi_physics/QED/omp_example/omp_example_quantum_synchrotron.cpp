@@ -98,11 +98,7 @@ fill_opt_test(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #if defined(__clang__)
-        #pragma clang loop vectorize(enable)
-    #elif defined(__GNUC__)
-        #pragma GCC ivdep
-    #endif
+    #pragma ivdep
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
@@ -127,11 +123,7 @@ evolve_optical_depth(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #if defined(__clang__)
-        #pragma clang loop vectorize(enable)
-    #elif defined(__GNUC__)
-        #pragma GCC ivdep
-    #endif
+    #pragma ivdep
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
 
@@ -176,11 +168,7 @@ generate_photons(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #if defined(__clang__)
-        #pragma clang loop vectorize(enable)
-    #elif defined(__GNUC__)
-        #pragma GCC ivdep
-    #endif
+    #pragma ivdep
     #pragma omp parallel for
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
