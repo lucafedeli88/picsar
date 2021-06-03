@@ -102,7 +102,7 @@ std::vector<vec3<Real>> init_vec3_with_random_content(
 
     const auto len = static_cast<int>(vec.size());
 
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for(int i = 0; i < len; ++i){
         int tid = omp_get_thread_num();
         auto& gen = gen_pool[tid];
@@ -130,7 +130,7 @@ std::vector<Real> init_vec_with_random_content(
     auto vec = std::vector<Real>(N);
     const auto len = static_cast<int>(vec.size());
 
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for(int i = 0; i < len; ++i){
         auto unf = std::uniform_real_distribution<Real>{min_val, max_val};
         const int tid = omp_get_thread_num();
@@ -194,31 +194,25 @@ bool check(const std::vector<Real>& field,
     const int N = field.size();
 
     if(check_nan && !check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
-            if( std::isnan(field[i])){
+            if(std::isnan(field[i])){
                 flag = false;
             }
         }
     }
     else if(!check_nan && check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
-            if( std::isinf(field[i])){
+            if(std::isinf(field[i])){
                 flag = false;
             }
         }
     }
     else if(check_nan && check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
-            if( std::isinf(field[i]) || std::isnan(field[i])){
+            if(std::isinf(field[i]) || std::isnan(field[i]) ){
                 flag = false;
             }
         }
@@ -239,10 +233,8 @@ bool check3(const std::vector<vec3<Real>>& field,
     const int N = field.size();
 
     if(check_nan && !check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
             const bool cond =
                 std::isnan(field[i][0]) ||
                 std::isnan(field[i][1]) ||
@@ -253,10 +245,8 @@ bool check3(const std::vector<vec3<Real>>& field,
         }
     }
     else if(!check_nan && check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
             const bool cond =
                 std::isinf(field[i][0]) ||
                 std::isinf(field[i][1]) ||
@@ -267,10 +257,8 @@ bool check3(const std::vector<vec3<Real>>& field,
         }
     }
     else if(check_nan && check_inf){
-        #pragma omp parallel for shared(flag)
+        #pragma omp parallel for simd
         for(int i = 0; i < N; ++i){
-            if(!flag)
-                continue;
             const bool cond =
                 std::isinf(field[i][0]) || std::isnan(field[i][0]) ||
                 std::isinf(field[i][1]) || std::isnan(field[i][1]) ||

@@ -96,8 +96,7 @@ fill_opt_test(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #pragma ivdep
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
         const int tid = omp_get_thread_num();
@@ -121,8 +120,7 @@ evolve_optical_depth(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #pragma ivdep
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for (int i = 0; i < N; ++i){
 
         const auto& px = pdata.m_momentum[i][0];
@@ -180,8 +178,7 @@ generate_pairs(
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    #pragma ivdep
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for (int i = 0; i < N; ++i){
         auto unf = std::uniform_real_distribution<Real>{Real(0.0), Real(1.0)};
         const int tid = omp_get_thread_num();
@@ -237,8 +234,7 @@ void correct_low_momenta(ParticleData<Real>& pdata)
 
     auto& mom = pdata.m_momentum;
 
-    #pragma ivdep
-    #pragma omp parallel for
+    #pragma omp parallel for simd
     for (int i = 0; i < N; ++i){
 
         auto& px = mom[i][0];
