@@ -59,11 +59,11 @@ xgenerate_photon_emission_table(
 * @param[in] frac_size the size of the lookup table along the frac axis
 * @return the lookup table
 */
-template <typename Real, typename Vector>
+template <typename Real>
 auto generate_photon_emission_table(
     Real chi_min, Real chi_max, Real frac_min, int chi_size, int frac_size)
 {
-    xgenerate_photon_emission_table(
+    return xgenerate_photon_emission_table(
         chi_min,
         chi_max,
         frac_min,

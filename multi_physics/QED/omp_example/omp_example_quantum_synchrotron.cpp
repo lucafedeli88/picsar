@@ -1,6 +1,6 @@
 #include "omp_example_commons.hpp"
 
-#include "omp_example_breit_wheeler_tablegen.h"
+#include "omp_example_quantum_synchrotron_tablegen.h"
 
 #include <cstdio>
 
@@ -22,63 +22,6 @@ const double B_max = E_max/pxr::light_speed<>;
 const double P_min = -100*mec<>;
 const double P_max = 100*mec<>;
 //__________________________________________________
-
-/**
-* Generates the dN/dt lookup table
-*
-* @tparam Real the floating point type to be used
-* @tparam Vector the vector type to be used
-* @param[in] chi_min the minimum chi parameter
-* @param[in] chi_max the maximum chi parameter
-* @param[in] chi_size the size of the lookup table along the chi axis
-* @return the lookup table
-*/
-template <typename Real, typename Vector>
-auto generate_dndt_table(Real chi_min, Real chi_max, int chi_size)
-{
-    std::cout << "Preparing dndt table [" << get_type_name<Real>()
-        << ", " << chi_size <<"]...\n";
-    std::cout.flush();
-
-    pxr_qs::dndt_lookup_table_params<Real> qs_params{chi_min, chi_max, chi_size};
-
-	auto table = pxr_qs::dndt_lookup_table<
-        Real, Vector>{qs_params};
-
-    table.generate();
-
-    return table;
-}
-
-/**
-* Generates the photon emission lookup table
-*
-* @tparam Real the floating point type to be used
-* @tparam Vector the vector type to be used
-* @param[in] chi_min the minimum chi parameter
-* @param[in] chi_max the maximum chi parameter
-* @param[in] chi_size the size of the lookup table along the chi axis
-* @param[in] frac_size the size of the lookup table along the frac axis
-* @return the lookup table
-*/
-template <typename Real, typename Vector>
-auto generate_photon_emission_table(
-    Real chi_min, Real chi_max, Real frac_min, int chi_size, int frac_size)
-{
-    std::cout << "Preparing photon emission table [" << get_type_name<Real>()
-        << ", " << chi_size << " x " << frac_size <<"]...\n";
-    std::cout.flush();
-
-    pxr_qs::photon_emission_lookup_table_params<Real> qs_params{
-        chi_min, chi_max, frac_min, chi_size, frac_size};
-
-	auto table = pxr_qs::photon_emission_lookup_table<
-        Real, Vector>{qs_params};
-
-    table.template generate();
-
-    return table;
-}
 
 /**
 * Tests the initialization of the optical depth
@@ -223,13 +166,13 @@ void do_test(RandGenPool& gen_pool)
         P_min, P_max, E_min, E_max, B_min, B_max, gen_pool);
 
     const auto dndt_table =
-        generate_dndt_table<Real, std::vector<Real>>(
+        generate_dndt_table<Real>(
             table_chi_min,
             table_chi_max,
             table_chi_size);
 
     const auto phot_em_table =
-    generate_photon_emission_table<Real, std::vector<Real>>(
+    generate_photon_emission_table<Real>(
             table_chi_min,
             table_chi_max,
             table_frac_min,
