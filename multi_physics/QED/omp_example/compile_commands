@@ -1,0 +1,19 @@
+g++ -c omp_example_commons.cpp -O3 -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ -c omp_example_breit_wheeler_tablegen.cpp -O3 -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ -c omp_example_breit_wheeler.cpp -O3 -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ omp_example_breit_wheeler.o omp_example_breit_wheeler_tablegen.o omp_example_commons.o -I ../include/ -fopenmp -o bw_omp
+
+
+
+
+g++ -c omp_example_commons.cpp -O3 -ffast-math -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ -c omp_example_quantum_synchrotron_tablegen.cpp -O3 -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ -c omp_example_quantum_synchrotron.cpp -O3 -ffast-math -fopenmp -I ../include/ -march=native -mtune=native
+
+g++ omp_example_quantum_synchrotron.o omp_example_quantum_synchrotron_tablegen.o omp_example_commons.o -I ../include/ -fopenmp -o qs_omp_fm
+

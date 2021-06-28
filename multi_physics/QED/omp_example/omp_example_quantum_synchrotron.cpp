@@ -1,5 +1,7 @@
 #include "omp_example_commons.hpp"
 
+#include "omp_example_breit_wheeler_tablegen.h"
+
 #include <cstdio>
 
 // QUANTUM SYNCHROTRON EMISSION
