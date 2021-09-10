@@ -140,7 +140,7 @@ generate_photons(
             ref_table,
             phot_mom);
 
-        std::copy(phot_mom.begin(), phot_mom.end(), pdata.m_momentum[i].begin());
+        std::copy(phot_mom.begin(), phot_mom.end(), momentum_phot[i].begin());
         std::copy(pp.begin(), pp.end(), pdata.m_momentum[i].begin());
     }
 
