@@ -180,7 +180,7 @@ def preparse_subroutine_interfaces(listlines_sub):
                 if (listlines_sub[itag].find("implicit none")>=0):
                     subtag.append(listlines_sub[itag])
             # Creates interface block
-            interf_name=str(time.clock()).replace(".","")
+            interf_name=str(time.process_time()).replace(".","")
             listlines_interfaces.append("!----------------------------------\n")
             listlines_interfaces.append("!This is an interface module block \n")
             listlines_interfaces.append("!----------------------------------\n")
@@ -316,7 +316,7 @@ def sanity_check_2(listline):
         if (isinmodule[i] and (not isintype[i])):
             # Find module in which
             moduleline=listline[indmod[i]]
-            modulename="unused"+str(time.clock()).replace(".","")
+            modulename="unused"+str(time.process_time()).replace(".","")
             # Insert use module modulename at the beginning of the containing module
             listline_new.insert(listline_new.index(moduleline)+1,"use "+modulename)
             # Create a new module containing array of derived type
@@ -1156,7 +1156,7 @@ def create_listfiles(folder):
     return listfiles
 
 listfiles_miniapp = create_listfiles('.')
-print listfiles_miniapp
+print (listfiles_miniapp)
 
 new_listfile = []
 for files in listfiles:
@@ -1164,7 +1164,7 @@ for files in listfiles:
        new_listfile.append(files)
 
 listfiles = new_listfile
-print listfiles
+print (listfiles)
 
 # Pre-parse all application files in two .F90 files
 # appname_subroutines.F90 and appnam_modules.F90

@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 """
 This file configures the installation of PICSAR in Python mode.
 
@@ -34,7 +34,6 @@ parser.add_argument( '--fftw_dir', default="/usr/local",
     help='fftw base directory path)')
 parser.add_argument( '--p3dfft_dir', default="nop3dfft",
     help='p3dfft base directory path)')
-
 
 
 is_fftw_enabled  = False
@@ -99,7 +98,7 @@ else:
         libs = ''
     else:
         # Find the library path, using regular expressions
-        libdir_list = re.findall('\s-L(\S+)', info)
+        libdir_list = re.findall('\s-L(\S+)', info.decode('UTF-8'))
         if libdir_list == []:
             print('** Failed to detect MPI library location on your system.')
             parsed_mpi = False
@@ -107,7 +106,7 @@ else:
             print('MPI library: %s' %(', '.join(libdir_list)) )
 
         # Find the proper flags, using regular expressions
-        flag_list = re.findall('\s-l(\S+)', info)
+        flag_list = re.findall('\s-l(\S+)', info.decode('UTF-8'))
         if flag_list == []:
             print('** Failed to detect MPI flags on your system.')
             parsed_mpi = False
