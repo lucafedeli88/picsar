@@ -7,7 +7,7 @@
 #include <cmath>
 
 #ifdef PXRMP_DPCPP_FIX
-    #include <CL/sycl.hpp>
+    #include <sycl/sycl.hpp>
 #endif
 
 namespace picsar{
@@ -205,7 +205,7 @@ namespace math{
     float m_floor(const float x) noexcept
     {
 #ifdef PXRMP_DPCPP_FIX
-        return cl::sycl::floorf(x);
+        return sycl::floorf(x);
 #else
         return floorf(x);
 #endif
@@ -331,7 +331,7 @@ namespace math{
     RealType m_floor(const RealType x) noexcept
     {
 #ifdef PXRMP_DPCPP_FIX
-        return cl::sycl::floor(x);
+        return sycl::floor(x);
 #else
         return std::floor(x);
 #endif
