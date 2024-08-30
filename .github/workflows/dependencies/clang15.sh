@@ -25,3 +25,6 @@ sudo apt-get install -y \
     libboost-test-dev \
     libomp-15-dev     \
     python3-dev
+
+python3 -m pip install -U pip
+python3 -m pip install "pybind11[global]"
