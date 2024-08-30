@@ -57,4 +57,4 @@ CheckOptions:
   value:        "true"
 
 
-HeaderFilterRegex: 'Source[a-z_A-Z0-9\/]+\.hp?p?$'
+HeaderFilterRegex: 'multi_physics[a-z_A-Z0-9\/]+\.hp?p?$'
