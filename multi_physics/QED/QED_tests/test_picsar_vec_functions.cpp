@@ -62,7 +62,7 @@ void test_norm()
     const auto c0 = static_cast<RealType>(1.0);
     const auto c1 = static_cast<RealType>(2.0);
     const auto c2 = static_cast<RealType>(3.0);
-    const auto expected = static_cast<RealType>(sqrt(c0*c0 + c1*c1 + c2*c2));
+    const auto expected = static_cast<RealType>(std::sqrt(c0*c0 + c1*c1 + c2*c2));
 
     const auto vec = vec3<RealType>{c0, c1, c2};
 
