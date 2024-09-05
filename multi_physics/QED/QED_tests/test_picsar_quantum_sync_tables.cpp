@@ -235,10 +235,12 @@ void check_photon_emission_table()
              expected_1*exp(log_frac_min +jj*(0.0-log_frac_min)/(how_many_frac-1)));
 
          BOOST_CHECK_SMALL((res_1-expected_1)/expected_1, tolerance<RealType>());
-         if(expected_2 != static_cast<RealType>(0.0))
+         if(expected_2 != static_cast<RealType>(0.0)){
             BOOST_CHECK_SMALL((res_2-expected_2)/expected_2, tolerance<RealType>());
-        else
+         }
+        else {
             BOOST_CHECK_SMALL((res_2-expected_2), tolerance<RealType>());
+        }
      }
 
     auto vals = VectorType(coords.size());
@@ -364,10 +366,12 @@ void check_tailopt_photon_emission_table()
         auto expected_2 = std::exp(tailopt_functor(jj))*expected_1;
 
         BOOST_CHECK_SMALL((res_1-expected_1)/expected_1, tolerance<RealType>());
-        if(expected_2 != static_cast<RealType>(0.0))
+        if(expected_2 != static_cast<RealType>(0.0)){
             BOOST_CHECK_SMALL((res_2-expected_2)/expected_2, tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL((res_2-expected_2), tolerance<RealType>());
+        }
     }
 
     auto vals = VectorType(coords.size());

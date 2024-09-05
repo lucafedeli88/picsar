@@ -224,10 +224,12 @@ namespace breit_wheeler{
         if (den <= zero<RealType>){
             std::transform(chis.begin(), chis.end(),
             res.begin(), [=](auto chi_part){
-                if(chi_part < half<RealType>*chi_photon - std::numeric_limits<RealType>::epsilon())
+                if(chi_part < half<RealType>*chi_photon - std::numeric_limits<RealType>::epsilon()) {
                     return zero<RealType>;
-                if(chi_part > half<RealType>*chi_photon + std::numeric_limits<RealType>::epsilon())
+                }
+                if(chi_part > half<RealType>*chi_photon + std::numeric_limits<RealType>::epsilon()) {
                     return one<RealType>;
+                }
                 return half<RealType>;
             });
             return res;
@@ -237,7 +239,7 @@ namespace breit_wheeler{
             res.begin(), [=](auto chi_part){
                 const auto val =
                     compute_cumulative_prob_numerator(chi_photon, chi_part)/den;
-                if(val <= one<RealType>) return val;
+                if(val <= one<RealType>) { return val; }
                 return one<RealType>;});
         return res;
     }
@@ -259,8 +261,9 @@ namespace breit_wheeler{
     inline VectorType compute_cumulative_prob_opt(
         const RealType chi_photon, const VectorType& chis)
     {
-        if(!std::is_sorted(chis.begin(), chis.end()))
+        if(!std::is_sorted(chis.begin(), chis.end())) {
             throw std::runtime_error("Chi vector is not sorted!");
+        }
 
         using namespace math;
         const auto den = compute_T_function(chi_photon);
@@ -275,10 +278,12 @@ namespace breit_wheeler{
         if (den <= zero<RealType>){
             std::transform(chis.begin(), chis.end(),
             res.begin(), [=](auto chi_part){
-                if(chi_part < half<RealType>*chi_photon - std::numeric_limits<RealType>::epsilon())
+                if(chi_part < half<RealType>*chi_photon - std::numeric_limits<RealType>::epsilon()) {
                     return zero<RealType>;
-                if(chi_part > half<RealType>*chi_photon + std::numeric_limits<RealType>::epsilon())
+                }
+                if(chi_part > half<RealType>*chi_photon + std::numeric_limits<RealType>::epsilon()) {
                     return one<RealType>;
+                }
                 return half<RealType>;
             });
             return res;
@@ -295,7 +300,7 @@ namespace breit_wheeler{
             c = (t - sum) - y;
             sum = t;
             res[i] = sum;
-            if(res[i] > one<RealType>) res[i] = one<RealType>;
+            if(res[i] > one<RealType>) { res[i] = one<RealType>; }
             old_chi = chis[i];
         }
 

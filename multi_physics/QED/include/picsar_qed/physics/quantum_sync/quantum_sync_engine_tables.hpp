@@ -1115,11 +1115,13 @@ namespace quantum_sync{
                             log_e_chi_part, i));
                         });
 
-                if(upper_frac_index == 0)
+                if(upper_frac_index == 0){
                     return zero<RealType>;
+                }
 
-                if(upper_frac_index ==  m_params.frac_how_many)
+                if(upper_frac_index ==  m_params.frac_how_many){
                     return chi_part;
+                }
 
                 const auto lower_frac_index = upper_frac_index-1;
 
@@ -1176,10 +1178,12 @@ namespace quantum_sync{
                     std::begin(vals), std::end(vals), std::back_inserter(logvals),
                     [](auto vv){
                         const auto lvv = math::m_log(vv);
-                        if(std::isinf(lvv))
+                        if(std::isinf(lvv)){
                             return  std::numeric_limits<RealType>::lowest();
-                        else
+                        }
+                        else{
                             return lvv;
+                        }
                     });
                 m_table.set_all_vals(logvals);
                 m_init_flag = true;

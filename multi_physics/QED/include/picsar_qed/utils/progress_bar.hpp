@@ -29,22 +29,23 @@ namespace utils{
         bool last=false,
         std::ostream& out = std::cout)
         {
-            if (i % up_freq != 0 && i != how_many)
-            return;
+            if (i % up_freq != 0 && i != how_many){
+                return;
+            }
 
             const auto bar_length = 50;
             const auto progress = (i*1.0/how_many);
             const auto pos = static_cast<int>(bar_length*progress);
             out << " [";
             for (int j = 0; j < bar_length; ++j) {
-                if (j < pos) out << "=";
-                else if (j == pos) out << ">";
-                else out << " ";
+                if (j < pos) { out << "="; }
+                else if (j == pos) { out << ">"; }
+                else { out << " "; }
             }
             out << "] " << std::to_string(static_cast<int>(progress * 100.0))
             << "%  " << text ;
-            if(last) out <<"\n";
-            else out <<"\r";
+            if(last) { out <<"\n"; }
+            else { out <<"\r"; }
             out.flush();
         }
 

@@ -77,8 +77,9 @@ namespace quantum_sync{
             [=](RealType s){
                 using namespace math;
                 using namespace std;
-                if( y ==  zero<RealType>)
+                if( y ==  zero<RealType>){
                     return numeric_limits<RealType>::infinity();
+                }
                 const auto s2 = s*s;
                 const auto s4 = s2*s2;
                 const auto cc = (one<RealType> +
@@ -87,8 +88,9 @@ namespace quantum_sync{
                 const auto f1 = static_cast<RealType>(9.0) +
                     static_cast<RealType>(36.0) * s2 +
                     static_cast<RealType>(16.0) * s4;
-                if(isinf(f1) || isinf(cc))
+                if(isinf(f1) || isinf(cc)){
                     return zero<RealType>;
+                }
                 return f1*m_exp(-y*cc)/cc/three<RealType>;},
             zero<RealType>)/m_sqrt(three<RealType>);
     }
@@ -111,11 +113,13 @@ namespace quantum_sync{
     {
         using namespace math;
         using namespace std;
-        if( csi >= one<RealType> || chi_part == zero<RealType> )
+        if( csi >= one<RealType> || chi_part == zero<RealType> ){
             return zero<RealType>;
+        }
 
-        if (csi == zero<RealType>)
+        if (csi == zero<RealType>){
             return numeric_limits<RealType>::infinity();
+        }
 
         const auto yy = compute_y(chi_part, csi);
         const RealType coeff = m_sqrt(three<>)/(two<>*pi<>);
@@ -123,8 +127,9 @@ namespace quantum_sync{
 
         const auto second_part = (csi*csi/(one<RealType>-csi))*
             k_v(two_thirds<RealType>,yy);
-        if(isinf(second_part))
+        if(isinf(second_part)){
             return zero<RealType>;
+        }
 
         return coeff*csi*(inner + second_part);
     }
@@ -174,11 +179,11 @@ namespace quantum_sync{
         if(chi_particle  <= math::zero<RealType>) { return math::zero<RealType>; }
         if(chi_photon_end <= math::zero<RealType>) { return math::zero<RealType>; }
 
-        if(chi_photon_end > chi_particle) chi_photon_end = chi_particle;
+        if(chi_photon_end > chi_particle) { chi_photon_end = chi_particle; }
         if(chi_photon_start >= chi_photon_end) { return zero<RealType>; }
 
         auto frac_end = chi_photon_end/chi_particle;
-        if(frac_end > math::one<RealType>) frac_end =  math::one<RealType>;
+        if(frac_end > math::one<RealType>) { frac_end =  math::one<RealType>; }
         auto frac_start = chi_photon_start/chi_particle;
 
         //The default quadrature method is very fast but in some rare cases
@@ -295,7 +300,7 @@ namespace quantum_sync{
             c = (t - sum) - y;
             sum = t;
             res[i] = sum;
-            if(res[i] > one<RealType>) res[i] = one<RealType>;
+            if(res[i] > one<RealType>) { res[i] = one<RealType>; }
             old_chi = chi_photons[i];
         }
 
