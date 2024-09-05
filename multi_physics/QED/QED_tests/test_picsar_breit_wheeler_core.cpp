@@ -30,19 +30,23 @@ using namespace picsar::multi_physics::math;
 template <typename T>
 T constexpr tolerance()
 {
-    if(std::is_same<T,float>::value)
+    if(std::is_same<T,float>::value){
         return float_tolerance;
-    else
+    }
+    else{
         return double_tolerance;
+    }
 }
 
 template <typename T>
 T constexpr small()
 {
-    if(std::is_same<T,float>::value)
+    if(std::is_same<T,float>::value){
         return float_small;
-    else
+    }
+    else{
         return double_small;
+    }
 }
 
 template<typename RealType>

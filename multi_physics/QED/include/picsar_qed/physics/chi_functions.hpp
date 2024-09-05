@@ -55,8 +55,9 @@ namespace phys{
             compute_gamma_photon<RealType, unit_system::heaviside_lorentz>(p);
 
         const auto norm_p = norm(p);
-        if(norm_p == zero<RealType>)
+        if(norm_p == zero<RealType>){
             return zero<RealType>;
+        }
 
         const auto p_unit = p / norm_p;
         const auto em_eperp = em_e - dot(p_unit,em_e)*p_unit;
@@ -136,8 +137,9 @@ namespace phys{
             unit_system::heaviside_lorentz, RealType>::fact(reference_quantity);
 
         const auto norm_p = norm(p);
-        if(norm_p == zero<RealType>)
+        if(norm_p == zero<RealType>){
             return zero<RealType>;
+        }
 
         const auto p_unit = p / norm_p;
 

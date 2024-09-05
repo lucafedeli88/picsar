@@ -40,8 +40,9 @@ namespace phys{
             unit_system::heaviside_lorentz, RealType>::fact(reference_quantity);
 
         const auto norm_p = norm(p);
-        if(norm_p == zero<RealType>)
+        if(norm_p == zero<RealType>){
             return zero<RealType>;
+        }
 
         const auto gamma_phot = norm_p/
             heaviside_lorentz_electron_rest_energy<RealType>;

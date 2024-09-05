@@ -336,12 +336,12 @@ namespace breit_wheeler{
                 RealType chi_phot, bool* const is_out = nullptr) const noexcept
             {
                 if (chi_phot < m_params.chi_phot_min){
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                     return dndt_approx_left<RealType>(chi_phot);
                 }
 
                 if(chi_phot > m_params.chi_phot_max){
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                     return dndt_approx_right<RealType>(chi_phot);
                 }
                 return math::m_exp(m_table.interp(math::m_log(chi_phot)));
@@ -375,8 +375,9 @@ namespace breit_wheeler{
                 const auto vals_length = vals.size();
                 auto log_vals = std::vector<RealType>(vals_length);
 
-                if(static_cast<int>(vals_length) != m_table.get_how_many_x())
+                if(static_cast<int>(vals_length) != m_table.get_how_many_x()){
                     return false;
+                }
 
                 std::transform(vals.begin(), vals.end(), log_vals.begin(),
                     [](auto x){return math::m_log(x);});
@@ -408,8 +409,9 @@ namespace breit_wheeler{
             {
                 using namespace utils;
 
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Cannot serialize an uninitialized table");
+                }
 
                 std::vector<char> res;
 
@@ -697,11 +699,11 @@ namespace breit_wheeler{
                 auto e_chi_phot = chi_phot;
                 if(chi_phot<m_params.chi_phot_min){
                     e_chi_phot = m_params.chi_phot_min;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 else if (chi_phot > m_params.chi_phot_max){
                     e_chi_phot = m_params.chi_phot_max;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 const auto log_e_chi_phot = m_log(e_chi_phot);
 

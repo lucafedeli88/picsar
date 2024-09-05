@@ -71,11 +71,13 @@ namespace breit_wheeler{
         const RealType chi_phot, const RealType chi_ele)
     {
         using namespace math;
-        if( chi_ele >= chi_phot )
+        if( chi_ele >= chi_phot ){
             return zero<RealType>;
+        }
 
-        if (chi_phot == zero<RealType> || chi_ele == zero<RealType>)
+        if (chi_phot == zero<RealType> || chi_ele == zero<RealType>){
             return zero<RealType>;
+        }
 
         const auto xx = compute_x(chi_phot, chi_ele);
         const auto sqrt_xx = m_sqrt(xx);
@@ -87,8 +89,9 @@ namespace breit_wheeler{
                 const auto s_3_2 = s*sqrt_s;
 
                 const auto arg = two_thirds<RealType>*s_3_2;
-                if (std::isinf(arg))
+                if (std::isinf(arg)){
                     return zero<RealType>;
+                }
                 return sqrt_s*math::k_v(one_third<RealType>, arg);
             }, xx);
 
@@ -213,7 +216,7 @@ namespace breit_wheeler{
         auto res = VectorType(chis.size());
 
         if(chi_photon <= zero<RealType>){
-            for (auto& el: res ) el = zero<RealType>;
+            for (auto& el: res ){ el = zero<RealType>; }
             return res;
         }
 
@@ -264,7 +267,7 @@ namespace breit_wheeler{
         auto res = VectorType(chis.size());
 
         if(chi_photon <= zero<RealType>){
-            for (auto& el: res ) el = zero<RealType>;
+            for (auto& el: res ) { el = zero<RealType>; }
             return res;
         }
 

@@ -171,11 +171,11 @@ namespace quantum_sync{
     {
         using namespace math;
 
-        if(chi_particle  <= math::zero<RealType>) return math::zero<RealType>;
-        if(chi_photon_end <= math::zero<RealType>) return math::zero<RealType>;
+        if(chi_particle  <= math::zero<RealType>) { return math::zero<RealType>; }
+        if(chi_photon_end <= math::zero<RealType>) { return math::zero<RealType>; }
 
         if(chi_photon_end > chi_particle) chi_photon_end = chi_particle;
-        if(chi_photon_start >= chi_photon_end) return zero<RealType>;
+        if(chi_photon_start >= chi_photon_end) { return zero<RealType>; }
 
         auto frac_end = chi_photon_end/chi_particle;
         if(frac_end > math::one<RealType>) frac_end =  math::one<RealType>;
@@ -241,7 +241,7 @@ namespace quantum_sync{
         auto res = VectorType(chi_photons.size());
 
         if(chi_particle <= math::zero<RealType> || den <= math::zero<RealType>){
-            for (auto& el: res ) el = math::zero<RealType>;
+            for (auto& el: res ) { el = math::zero<RealType>; }
             return res;
         }
 
@@ -249,7 +249,7 @@ namespace quantum_sync{
             res.begin(), [=](auto chi_phot){
                 const auto val =
                     compute_cumulative_prob_numerator(chi_particle, chi_phot)/den;
-                if(val <= math::one<RealType>) return val;
+                if(val <= math::one<RealType>) { return val; }
                 return math::one<RealType>;});
 
         return res;
@@ -280,7 +280,7 @@ namespace quantum_sync{
         auto res = VectorType(chi_photons.size());
 
         if(chi_particle <= zero<RealType> || den <= zero<RealType>){
-            for (auto& el: res ) el = zero<RealType>;
+            for (auto& el: res ) { el = zero<RealType>; }
             return res;
         }
 

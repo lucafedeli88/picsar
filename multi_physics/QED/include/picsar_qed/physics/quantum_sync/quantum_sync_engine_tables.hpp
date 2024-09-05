@@ -302,11 +302,11 @@ namespace quantum_sync{
             {
                 if(chi_part<m_params.chi_part_min){
                     chi_part = m_params.chi_part_min;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 else if (chi_part > m_params.chi_part_max){
                     chi_part = m_params.chi_part_max;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 return math::m_exp(m_table.interp(math::m_log(chi_part)));
             }
@@ -649,11 +649,11 @@ namespace quantum_sync{
                 auto e_chi_part = chi_part;
                 if(chi_part<m_params.chi_part_min){
                     e_chi_part = m_params.chi_part_min;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 else if (chi_part > m_params.chi_part_max){
                     e_chi_part = m_params.chi_part_max;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
 
                 const auto log_e_chi_part = m_log(e_chi_part);
@@ -665,11 +665,13 @@ namespace quantum_sync{
                             log_e_chi_part, i));
                         });
 
-                if(upper_frac_index == 0)
+                if(upper_frac_index == 0){
                     return zero<RealType>;
+                }
 
-                if(upper_frac_index ==  m_params.frac_how_many)
+                if(upper_frac_index ==  m_params.frac_how_many){
                     return chi_part;
+                }
 
                 const auto lower_frac_index = upper_frac_index-1;
 
@@ -719,8 +721,9 @@ namespace quantum_sync{
                 auto log_vals = std::vector<RealType>(vals_length);
 
                 if(static_cast<int>(vals_length) != m_table.get_how_many_x()*
-                    m_table.get_how_many_y())
+                    m_table.get_how_many_y()){
                         return false;
+                    }
 
                 std::transform(vals.begin(), vals.end(), log_vals.begin(),
                     [](auto x){
@@ -1088,11 +1091,11 @@ namespace quantum_sync{
                 auto e_chi_part = chi_part;
                 if(chi_part<m_params.chi_part_min){
                     e_chi_part = m_params.chi_part_min;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
                 else if (chi_part > m_params.chi_part_max){
                     e_chi_part = m_params.chi_part_max;
-                    if (is_out != nullptr) *is_out = true;
+                    if (is_out != nullptr) { *is_out = true; }
                 }
 
                 const auto log_e_chi_part = m_log(e_chi_part);
@@ -1155,8 +1158,9 @@ namespace quantum_sync{
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 if(static_cast<int>(vals.size()) != m_table.get_how_many_x()*
-                    m_table.get_how_many_y())
+                    m_table.get_how_many_y()){
                     return false;
+                }
 
                 auto logvals = VectorType{};
                 logvals.reserve(vals.size());
