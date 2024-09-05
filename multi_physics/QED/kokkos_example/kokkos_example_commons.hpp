@@ -325,13 +325,15 @@ Real get_rand(GenType& gen)
     Real res = Real{1.0};
 
     if constexpr (std::is_same<Real,float>::value){
-        while(res >= 1.0f)
+        while(res >= 1.0f){
             res = gen.frand();
+        }
     }
     else
     {
-        while(res >= Real(1.0))
+        while(res >= Real(1.0)){
             res = gen.drand();
+        }
     }
 
     return res;

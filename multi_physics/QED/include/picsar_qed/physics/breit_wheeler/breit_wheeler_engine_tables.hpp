@@ -255,9 +255,10 @@ namespace breit_wheeler{
                     sizeof(char)+ //single or double precision
                     sizeof(m_params);
 
-                if (raw_data.size() < min_size)
+                if (raw_data.size() < min_size){
                     throw std::runtime_error("Binary data is too small to be a Breit Wheeler \
                      T-function lookup-table.");
+                }
 
                 auto it_raw_data = raw_data.begin();
 
@@ -307,9 +308,10 @@ namespace breit_wheeler{
             */
             view_type get_view() const
             {
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Can't generate a view of an \
                     uninitialized table");
+                }
                 const auto span = containers::picsar_span<const RealType>{
                     static_cast<size_t>(m_params.chi_phot_how_many),
                     m_table.get_values_reference().data()
@@ -602,9 +604,10 @@ namespace breit_wheeler{
                     sizeof(char)+//single or double precision
                     sizeof(m_params);
 
-                if (raw_data.size() < min_size)
+                if (raw_data.size() < min_size){
                     throw std::runtime_error("Binary data is too small to be a \
                     Breit Wheeler pair production lookup-table.");
+                }
 
                 auto it_raw_data = raw_data.begin();
 
@@ -654,9 +657,10 @@ namespace breit_wheeler{
             */
             view_type get_view() const
             {
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Can't generate a view of an \
                     uninitialized table");
+                }
                 const auto span = containers::picsar_span<const RealType>{
                     static_cast<size_t>(m_params.chi_phot_how_many *
                         m_params.frac_how_many),
@@ -766,8 +770,9 @@ namespace breit_wheeler{
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 if(static_cast<int>(vals.size()) != m_table.get_how_many_x()*
-                    m_table.get_how_many_y())
+                    m_table.get_how_many_y()){
                         return false;
+                }
 
                 m_table.set_all_vals(vals);
                 m_init_flag = true;
@@ -796,8 +801,9 @@ namespace breit_wheeler{
             {
                 using namespace utils;
 
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw "Cannot serialize an uninitialized table";
+                }
 
                 std::vector<char> res;
 

@@ -138,9 +138,10 @@ namespace details{
                 sizeof(m_x_min)+sizeof(m_x_max)+
                 sizeof(m_how_many_x) + sizeof(m_dx);
 
-            if (raw_data.size() < min_size)
+            if (raw_data.size() < min_size){
                 throw std::runtime_error("Binary data is too small \
                 to be a 1D table.");
+            }
 
             auto it_raw_data = raw_data.begin();
 
@@ -153,14 +154,16 @@ namespace details{
             m_x_min = serialization::get_out<decltype(m_x_min)>(it_raw_data);
             m_x_max = serialization::get_out<decltype(m_x_max)>(it_raw_data);
             m_x_size = m_x_max - m_x_min;
-            if(m_x_size < 0)
+            if(m_x_size < 0){
                 throw std::runtime_error("raw_data contains invalid data.");
+            }
 
             m_how_many_x =
                 serialization::get_out<decltype(m_how_many_x)>(it_raw_data);
             m_dx = serialization::get_out<decltype(m_dx)>(it_raw_data);
-            if(m_how_many_x <= 0)
+            if(m_how_many_x <= 0){
                 throw std::runtime_error("raw_data contains invalid data.");
+            }
             m_values = VectorType(m_how_many_x);
             auto vals =
                 serialization::get_n_out<RealType>(it_raw_data, m_how_many_x);
@@ -451,9 +454,10 @@ namespace details{
                 sizeof(m_how_many_y)+
                 sizeof(m_dx) + sizeof(m_dy);
 
-            if (raw_data.size() < min_size)
+            if (raw_data.size() < min_size){
                 throw std::runtime_error("Binary data is too small \
                 to be a 2D table.");
+            }
 
             auto it_raw_data = raw_data.begin();
 
@@ -709,13 +713,15 @@ namespace details{
 
             auto idx_x_left = static_cast<int>(
                 m_floor((m_how_many_x-1)*(where_x-m_x_min)/m_x_size));
-            if (idx_x_left == (m_how_many_x-1))
+            if (idx_x_left == (m_how_many_x-1)){
                 idx_x_left = m_how_many_x-2;
+            }
             const auto idx_x_right = idx_x_left + 1;
             auto idx_y_left = static_cast<int>(
                 m_floor((m_how_many_y-1)*(where_y-m_y_min)/m_y_size));
-            if (idx_y_left == (m_how_many_y-1))
+            if (idx_y_left == (m_how_many_y-1)){
                 idx_y_left = m_how_many_y-2;
+            }
             const auto idx_y_right = idx_y_left + 1;
 
             const auto xleft = get_x_coord(idx_x_left);
@@ -963,9 +969,10 @@ namespace details{
                 sizeof(m_how_many_x)+
                 sizeof(m_how_many_y);
 
-            if (raw_data.size() < min_size)
+            if (raw_data.size() < min_size){
                 throw std::runtime_error("Binary data is too small \
                 to be a 2D table.");
+            }
 
             auto it_raw_data = raw_data.begin();
 
@@ -1222,12 +1229,14 @@ namespace details{
             using namespace picsar::multi_physics::math;
 
             auto idx_x_left = m_ix_map_functor(where_x);
-            if (idx_x_left == (m_how_many_x-1))
+            if (idx_x_left == (m_how_many_x-1)){
                 idx_x_left = m_how_many_x-2;
+            }
             const auto idx_x_right = idx_x_left + 1;
             auto idx_y_left = m_iy_map_functor(where_y);
-            if (idx_y_left == (m_how_many_y-1))
+            if (idx_y_left == (m_how_many_y-1)){
                 idx_y_left = m_how_many_y-2;
+            }
             const auto idx_y_right = idx_y_left + 1;
 
             const auto xleft = get_x_coord(idx_x_left);

@@ -54,7 +54,7 @@ struct fake_G_table
 {
     RealType interp(RealType chi, bool* is_out = nullptr) const {
         m_chi = chi;
-        if(is_out != nullptr) *is_out = m_is_out;
+        if(is_out != nullptr) { *is_out = m_is_out; }
         return m_res;
     }
 
@@ -69,7 +69,7 @@ struct fake_P_table
     RealType interp(RealType chi, RealType random, bool* is_out = nullptr) const {
         m_chi = chi;
         m_random = random;
-        if(is_out != nullptr) *is_out = m_is_out;
+        if(is_out != nullptr) { *is_out = m_is_out; }
         return m_res;
     }
 

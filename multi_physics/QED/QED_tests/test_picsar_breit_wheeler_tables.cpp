@@ -148,10 +148,12 @@ void check_dndt_table()
 
         const RealType expect = exp_app[i];
 
-        if(i != 0)
+        if(i != 0){
             BOOST_CHECK_SMALL((res-expect)/expect, tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL((res-expect), tolerance<RealType>());
+        }
     }
 
     const auto table_view = table.get_view();
@@ -308,16 +310,18 @@ void check_pair_production_table()
             BOOST_CHECK_EQUAL(res, res2);
 
             auto rxx = xx;
-            if(rxx < chi_min) rxx = chi_min;
-            if(rxx > chi_max) rxx = chi_max;
+            if(rxx < chi_min) { rxx = chi_min; }
+            if(rxx > chi_max) { rxx = chi_max; }
             auto eff_rr = (rr > 0.5)?(static_cast<RealType>(1.0) - rr):rr;
             auto expected = inverse_functor(std::array<RealType,2>{rxx, eff_rr})*xx;
-            if(rr >= 0.5) expected = xx - expected;
+            if(rr >= 0.5) { expected = xx - expected; }
 
-            if(expected != static_cast<RealType>(0.0))
+            if(expected != static_cast<RealType>(0.0)) {
                 BOOST_CHECK_SMALL((res-expected)/expected, tolerance<RealType>());
-            else
+            }
+            else {
                 BOOST_CHECK_SMALL(res, small<RealType>());
+            }
 
         }
     }

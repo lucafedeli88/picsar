@@ -162,10 +162,12 @@ void check_dndt_table()
 
         const RealType expect = exp_ext[i];
 
-        if(i != 0)
+        if(i != 0){
             BOOST_CHECK_SMALL((res-expect)/expect, tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL((res-expect), tolerance<RealType>());
+        }
     }
 
     const auto table_view = table.get_view();

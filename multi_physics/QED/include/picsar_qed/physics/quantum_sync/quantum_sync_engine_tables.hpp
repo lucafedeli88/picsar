@@ -221,9 +221,10 @@ namespace quantum_sync{
                     sizeof(char)+ //single or double precision
                     sizeof(m_params);
 
-                if (raw_data.size() < min_size)
+                if (raw_data.size() < min_size){
                     throw std::runtime_error("Binary data is too small \
                     to be a Quantum Synchrotron G-function lookup-table.");
+                }
 
                 auto it_raw_data = raw_data.begin();
 
@@ -272,9 +273,10 @@ namespace quantum_sync{
             */
             view_type get_view() const
             {
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Can't generate a view of an \
                     uninitialized table");
+                }
                 const auto span = containers::picsar_span<const RealType>{
                     static_cast<size_t>(m_params.chi_part_how_many),
                     m_table.get_values_reference().data()
@@ -372,9 +374,10 @@ namespace quantum_sync{
             {
                 using namespace utils;
 
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Cannot serialize \
                     an uninitialized table");
+                }
 
                 std::vector<char> res;
 
@@ -554,9 +557,10 @@ namespace quantum_sync{
                     sizeof(char)+//single or double precision
                     sizeof(m_params);
 
-                if (raw_data.size() < min_size)
+                if (raw_data.size() < min_size){
                     throw std::runtime_error("Binary data is too small \
                     to be a Quantum Synchrotron emisson lookup-table.");
+                }
 
                 auto it_raw_data = raw_data.begin();
 
@@ -606,9 +610,10 @@ namespace quantum_sync{
             */
             view_type get_view() const
             {
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Can't generate a view of an \
                     uninitialized table");
+                }
                 const auto span = containers::picsar_span<const RealType>{
                     static_cast<size_t>(m_params.chi_part_how_many *
                         m_params.frac_how_many),
@@ -757,8 +762,9 @@ namespace quantum_sync{
             {
                 using namespace utils;
 
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Cannot serialize an uninitialized table");
+                }
 
                 std::vector<char> res;
 
@@ -997,9 +1003,10 @@ namespace quantum_sync{
                     sizeof(char)+//single or double precision
                     sizeof(m_params);
 
-                if (raw_data.size() < min_size)
+                if (raw_data.size() < min_size){
                     throw std::runtime_error("Binary data is too small \
                     to be a Tail-optimized Quantum Synchrotron emisson lookup-table.");
+                }
 
                 auto it_raw_data = raw_data.begin();
 
@@ -1048,9 +1055,10 @@ namespace quantum_sync{
             */
             view_type get_view() const
             {
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Can't generate a view of an \
                     uninitialized table");
+                }
                 const auto span = containers::picsar_span<const RealType>{
                     static_cast<size_t>(m_params.chi_part_how_many *
                         m_params.frac_how_many),
@@ -1199,8 +1207,9 @@ namespace quantum_sync{
             {
                 using namespace utils;
 
-                if(!m_init_flag)
+                if(!m_init_flag){
                     throw std::runtime_error("Cannot serialize an uninitialized table");
+                }
 
                 std::vector<char> res;
 
