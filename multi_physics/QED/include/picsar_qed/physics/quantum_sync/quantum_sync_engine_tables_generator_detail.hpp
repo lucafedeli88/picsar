@@ -82,8 +82,9 @@ namespace detail{
         }
 
         for (const auto& val : all_vals){
-            if(std::isnan(val))
+            if(std::isnan(val)){
                 throw std::runtime_error("Error: nan detected in generated table!");
+            }
         }
 
         auto t_end =  std::chrono::system_clock::now();
@@ -173,8 +174,9 @@ namespace detail{
         }
 
         for (const auto& val : all_vals){
-            if(std::isnan(val))
+            if(std::isnan(val)){
                 throw std::runtime_error("Error: nan detected in generated table!");
+            }
         }
 
         auto t_end =  std::chrono::system_clock::now();

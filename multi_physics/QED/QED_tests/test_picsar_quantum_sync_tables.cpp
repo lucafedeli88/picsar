@@ -279,22 +279,24 @@ void check_photon_emission_table()
         for (const auto rr : rrs){
             auto res = table.interp(xx, rr);
             auto rxx = xx;
-            if(rxx < chi_min) rxx = chi_min;
-            if(rxx > chi_max) rxx = chi_max;
+            if(rxx < chi_min) { rxx = chi_min; }
+            if(rxx > chi_max) { rxx = chi_max; }
             auto expected = inverse_functor(std::array<RealType,2>{rxx, rr})*xx;
-            if(expected < small<RealType>())
+            if(expected < small<RealType>()){
                 BOOST_CHECK_SMALL((res-expected)/expected, tolerance<RealType>());
-            else
+            }
+            else{
                 BOOST_CHECK_SMALL((res-expected), tolerance<RealType>());
-
+            }
         }
     }
 
     const auto table_view = table.get_view();
 
     for(auto xx : xxs){
-        for (auto r : rrs)
+        for (auto r : rrs){
             BOOST_CHECK_EQUAL(table_view.interp(xx,r ), table.interp(xx, r));
+        }
     }
 }
 
@@ -408,13 +410,15 @@ void check_tailopt_photon_emission_table()
         for (const auto rr : rrs){
             auto res = table.interp(xx, rr);
             auto rxx = xx;
-            if(rxx < chi_min) rxx = chi_min;
-            if(rxx > chi_max) rxx = chi_max;
+            if(rxx < chi_min) { rxx = chi_min; }
+            if(rxx > chi_max) { rxx = chi_max; }
             auto expected = inverse_functor(std::array<RealType,2>{rxx, rr})*xx;
-            if(expected < small<RealType>())
+            if(expected < small<RealType>()){
                 BOOST_CHECK_SMALL((res-expected)/expected, tolerance<RealType>());
-            else
+            }
+            else {
                 BOOST_CHECK_SMALL((res-expected), tolerance<RealType>());
+            }
 
         }
     }
@@ -422,8 +426,9 @@ void check_tailopt_photon_emission_table()
     const auto table_view = table.get_view();
 
     for(auto xx : xxs){
-        for (auto r : rrs)
+        for (auto r : rrs){
             BOOST_CHECK_EQUAL(table_view.interp(xx,r ), table.interp(xx, r));
+        }
     }
 
 }

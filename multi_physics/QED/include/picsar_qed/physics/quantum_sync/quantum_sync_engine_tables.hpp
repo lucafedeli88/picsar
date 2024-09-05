@@ -341,8 +341,9 @@ namespace quantum_sync{
                 const auto vals_length = vals.size();
                 auto log_vals = std::vector<RealType>(vals_length);
 
-                if(static_cast<int>(vals_length) != m_table.get_how_many_x())
+                if(static_cast<int>(vals_length) != m_table.get_how_many_x()){
                     return false;
+                }
 
                 std::transform(vals.begin(), vals.end(), log_vals.begin(),
                     [](auto x){return math::m_log(x);});

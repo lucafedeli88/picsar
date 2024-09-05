@@ -108,8 +108,9 @@ namespace breit_wheeler{
         }
 
         for (auto& val : all_vals){
-            if(std::isnan(val))
+            if(std::isnan(val)){
                 throw std::runtime_error("Error: nan detected in generated table!");
+            }
         }
 
         set_all_vals(all_vals);
@@ -222,8 +223,9 @@ namespace breit_wheeler{
         }
 
         for (auto& val : all_vals){
-            if(std::isnan(val))
+            if(std::isnan(val)){
                 throw std::runtime_error("Error: nan detected in generated table!");
+            }
         }
 
         set_all_vals(all_vals);

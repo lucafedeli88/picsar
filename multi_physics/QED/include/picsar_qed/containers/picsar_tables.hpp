@@ -347,9 +347,10 @@ namespace details{
         PXRMP_FORCE_INLINE
         void set_all_vals(const std::vector<RealType>& new_values)
         {
-            if (new_values.size() != m_values.size())
+            if (new_values.size() != m_values.size()){
                 throw std::runtime_error("Mismatch new_values length \
                     and m_values length");
+            }
             std::copy(new_values.begin(), new_values.end(), m_values.begin());
             //VectorType may need a call to a user-defined method for CPU-GPU synchronization
             details::aux_sync_vec(m_values);
@@ -790,8 +791,9 @@ namespace details{
 
             auto idx_left = static_cast<int>(
                 m_floor((m_how_many_y-1)*(where_y-m_y_min)/m_y_size));
-            if (idx_left == (m_how_many_y-1))
+            if (idx_left == (m_how_many_y-1)){
                 idx_left = m_how_many_y-2;
+            }
             const auto idx_right = idx_left + 1;
 
             const auto left_val = m_values[idx(i, idx_left)];
@@ -841,9 +843,10 @@ namespace details{
         PXRMP_FORCE_INLINE
         void set_all_vals(const std::vector<RealType>& new_values)
         {
-            if (new_values.size() != m_values.size())
+            if (new_values.size() != m_values.size()){
                 throw std::runtime_error("Mismatch new_values length \
                     and m_values length");
+            }
             std::copy(new_values.begin(), new_values.end(), m_values.begin());
             //VectorType may need a call to a user-defined method for CPU-GPU synchronization
             details::aux_sync_vec(m_values);
@@ -994,10 +997,12 @@ namespace details{
                 serialization::get_out<decltype(m_how_many_x)>(it_raw_data);
             m_how_many_y =
                 serialization::get_out<decltype(m_how_many_y)>(it_raw_data);
-            if(m_how_many_x <= 0)
+            if(m_how_many_x <= 0){
                 throw std::runtime_error("raw_data contains invalid data.");
-            if(m_how_many_y <= 0)
+            }
+            if(m_how_many_y <= 0){
                 throw std::runtime_error("raw_data contains invalid data.");
+            }
 
             //static_cast<int> here has the sole purpose of avoiding to trigger
             //a CodeQL check in CI (Multiplication result converted to larger type)
@@ -1305,8 +1310,9 @@ namespace details{
             using namespace picsar::multi_physics::math;
 
             auto idx_left = m_iy_map_functor(where_y);
-            if (idx_left == (m_how_many_y-1))
+            if (idx_left == (m_how_many_y-1)){
                 idx_left = m_how_many_y-2;
+            }
             const auto idx_right = idx_left + 1;
 
             const auto left_val = m_values[idx(i, idx_left)];
@@ -1356,9 +1362,10 @@ namespace details{
         PXRMP_FORCE_INLINE
         void set_all_vals(const std::vector<RealType>& new_values)
         {
-            if (new_values.size() != m_values.size())
+            if (new_values.size() != m_values.size()){
                 throw std::runtime_error("Mismatch new_values length \
                     and m_values length");
+            }
             std::copy(new_values.begin(), new_values.end(), m_values.begin());
             //VectorType may need a call to a user-defined method for CPU-GPU synchronization
             details::aux_sync_vec(m_values);
