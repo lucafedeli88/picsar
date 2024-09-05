@@ -98,7 +98,7 @@ namespace breit_wheeler{
         auto prod = (two<RealType>-chi_phot*xx_3_2)
             *k_v(two_thirds<RealType>,
                 two_thirds<RealType>*xx_3_2);
-        if(std::isnan(prod)) prod = zero<RealType>;
+        if(std::isnan(prod)) { prod = zero<RealType>; }
 
         return (inner_integral-prod);
     }
@@ -117,7 +117,7 @@ namespace breit_wheeler{
     inline RealType compute_T_function(const RealType chi_phot)
     {
         using namespace math;
-        if(chi_phot <= math::zero<RealType>) return math::zero<RealType>;
+        if(chi_phot <= math::zero<RealType>) { return math::zero<RealType>; }
         constexpr auto coeff = static_cast<RealType>(1./math::pi<>);
         return coeff*math::quad_a_b_s<RealType>(
             [=](RealType cc){
@@ -147,11 +147,11 @@ namespace breit_wheeler{
     {
         using namespace math;
 
-        if(chi_photon <= zero<RealType>) return zero<RealType>;
-        if(chi_ele_end  <= zero<RealType>) return zero<RealType>;
+        if(chi_photon <= zero<RealType>) { return zero<RealType>; }
+        if(chi_ele_end  <= zero<RealType>) { return zero<RealType>; }
 
-        if(chi_ele_end > chi_photon) chi_ele_end = chi_photon;
-        if(chi_ele_start >= chi_ele_end) return zero<RealType>;
+        if(chi_ele_end > chi_photon) { chi_ele_end = chi_photon; }
+        if(chi_ele_start >= chi_ele_end) { return zero<RealType>; }
 
         constexpr auto coeff = static_cast<RealType>(1./pi<>);
 

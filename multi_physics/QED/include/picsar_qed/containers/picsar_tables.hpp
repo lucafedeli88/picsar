@@ -311,8 +311,9 @@ namespace details{
 
             const auto idx_left = static_cast<int>(
                 m_floor((m_how_many_x-1)*(where_x-m_x_min)/m_x_size));
-            if (idx_left == (m_how_many_x-1))
+            if (idx_left == (m_how_many_x-1)){
                 return  m_values[m_how_many_x-1];
+            }
             const auto idx_right = idx_left + 1;
 
             const auto xleft = get_x_coord(idx_left);
@@ -371,8 +372,9 @@ namespace details{
             utils::serialization::put_in(m_x_max, raw_data);
             utils::serialization::put_in(m_how_many_x, raw_data);
             utils::serialization::put_in(m_dx, raw_data);
-            for (auto val : m_values)
+            for (auto val : m_values){
                 utils::serialization::put_in(val, raw_data);
+            }
 
             return raw_data;
         }
@@ -473,10 +475,12 @@ namespace details{
             m_y_max = serialization::get_out<decltype(m_y_max)>(it_raw_data);
             m_x_size = m_x_max - m_x_min;
             m_y_size = m_y_max - m_y_min;
-            if(m_x_size < 0)
+            if(m_x_size < 0){
                 throw std::runtime_error("raw_data contains invalid data.");
-            if(m_y_size < 0)
+            }
+            if(m_y_size < 0){
                 throw std::runtime_error("raw_data contains invalid data.");
+            }
 
             m_how_many_x =
                 serialization::get_out<decltype(m_how_many_x)>(it_raw_data);
@@ -484,10 +488,12 @@ namespace details{
                 serialization::get_out<decltype(m_how_many_y)>(it_raw_data);
             m_dx = serialization::get_out<decltype(m_dx)>(it_raw_data);
             m_dy = serialization::get_out<decltype(m_dy)>(it_raw_data);
-            if(m_how_many_x <= 0)
+            if(m_how_many_x <= 0){
                 throw std::runtime_error("raw_data contains invalid data.");
-            if(m_how_many_y <= 0)
+            }
+            if(m_how_many_y <= 0){
                 throw std::runtime_error("raw_data contains invalid data.");
+            }
             m_values = VectorType(m_how_many_x*m_how_many_y);
             auto vals = serialization::get_n_out<RealType>(
                     it_raw_data,
@@ -755,8 +761,9 @@ namespace details{
 
             auto idx_left = static_cast<int>(
                 m_floor((m_how_many_x-1)*(where_x-m_x_min)/m_x_size));
-            if (idx_left == (m_how_many_x-1))
+            if (idx_left == (m_how_many_x-1)){
                 idx_left = m_how_many_x-2;
+            }
             const auto idx_right = idx_left + 1;
 
             const auto xleft = idx_left*m_dx + m_x_min;
@@ -863,8 +870,9 @@ namespace details{
             utils::serialization::put_in(m_how_many_y, raw_data);
             utils::serialization::put_in(m_dx, raw_data);
             utils::serialization::put_in(m_dy, raw_data);
-            for (auto val : m_values)
+            for (auto val : m_values){
                 utils::serialization::put_in(val, raw_data);
+            }
 
             return raw_data;
         }
@@ -1269,8 +1277,9 @@ namespace details{
             using namespace picsar::multi_physics::math;
 
             auto idx_left = m_ix_map_functor(where_x);
-            if (idx_left == (m_how_many_x-1))
+            if (idx_left == (m_how_many_x-1)){
                 idx_left = m_how_many_x-2;
+            }
             const auto idx_right = idx_left + 1;
 
             const auto xleft = get_x_coord(idx_left);
@@ -1370,16 +1379,21 @@ namespace details{
                 static_cast<char>(sizeof(RealType)), raw_data);
             utils::serialization::put_in(m_how_many_x, raw_data);
             utils::serialization::put_in(m_how_many_y, raw_data);
-            for (const auto val : m_values)
+            for (const auto val : m_values){
                 utils::serialization::put_in(val, raw_data);
-            for (const auto dd : m_x_map_functor.serialize())
+            }
+            for (const auto dd : m_x_map_functor.serialize()){
                 utils::serialization::put_in(dd, raw_data);
-            for (const auto dd : m_y_map_functor.serialize())
+            }
+            for (const auto dd : m_y_map_functor.serialize()){
                 utils::serialization::put_in(dd, raw_data);
-            for (const auto dd : m_ix_map_functor.serialize())
+            }
+            for (const auto dd : m_ix_map_functor.serialize()){
                 utils::serialization::put_in(dd, raw_data);
-            for (const auto dd : m_iy_map_functor.serialize())
+            }
+            for (const auto dd : m_iy_map_functor.serialize()){
                 utils::serialization::put_in(dd, raw_data);
+            }
 
             return raw_data;
         }
