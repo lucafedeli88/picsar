@@ -1057,13 +1057,15 @@ PYBIND11_MODULE(pxr_qed, m) {
             py::arg("verbose") = py::bool_(true))
         .def("save_as",
             [&](const bw_dndt_lookup_table &self, const std::string file_name){
-                if(!self.is_init())
+                if(!self.is_init()){
                     throw_error("Table must be initialized!");
+                }
                 const auto raw = self.serialize();
                 auto of = std::fstream(file_name,
                     std::ios::out | std::ios::binary);
-                if( !of )
+                if( !of ){
                     throw_error("Opening file failed!");
+                }
                 of.write(raw.data(), raw.size());
                 of.close();
             },
@@ -1127,13 +1129,15 @@ PYBIND11_MODULE(pxr_qed, m) {
             py::arg("verbose") = py::bool_(true))
         .def("save_as",
             [&](const bw_pair_prod_lookup_table &self, const std::string file_name){
-                if(!self.is_init())
+                if(!self.is_init()){
                     throw_error("Table must be initialized!");
+                }
                 const auto raw = self.serialize();
                 auto of = std::fstream(file_name,
                     std::ios::out | std::ios::binary);
-                if( !of )
+                if( !of ){
                     throw_error("Opening file failed!");
+                }
                 of.write(raw.data(), raw.size());
                 of.close();
             },
@@ -1279,13 +1283,15 @@ PYBIND11_MODULE(pxr_qed, m) {
             py::arg("verbose") = py::bool_(true))
         .def("save_as",
             [&](const qs_dndt_lookup_table &self, const std::string file_name){
-                if(!self.is_init())
+                if(!self.is_init()){
                     throw_error("Table must be initialized!");
+                }
                 const auto raw = self.serialize();
                 auto of = std::fstream(file_name,
                     std::ios::out | std::ios::binary);
-                if( !of )
+                if( !of ){
                     throw_error("Opening file failed!");
+                }
                 of.write(raw.data(), raw.size());
                 of.close();
             },
@@ -1349,13 +1355,15 @@ PYBIND11_MODULE(pxr_qed, m) {
             py::arg("verbose") = py::bool_(true))
         .def("save_as",
             [&](const qs_photon_emission_lookup_table &self, const std::string file_name){
-                if(!self.is_init())
+                if(!self.is_init()){
                     throw_error("Table must be initialized!");
+                }
                 const auto raw = self.serialize();
                 auto of = std::fstream(file_name,
                     std::ios::out | std::ios::binary);
-                if( !of )
+                if( !of ){
                     throw_error("Opening file failed!");
+                }
                 of.write(raw.data(), raw.size());
                 of.close();
             },
@@ -1364,8 +1372,9 @@ PYBIND11_MODULE(pxr_qed, m) {
             [&](qs_photon_emission_lookup_table &self, const std::string file_name){
                 auto input = std::ifstream(file_name,
                     std::ios::ate | std::ios::binary);
-                if( !input )
+                if( !input ){
                     throw_error("Opening file failed!");
+                }
                 const auto pos = input.tellg();
                 auto raw = rawVec(pos);
 
