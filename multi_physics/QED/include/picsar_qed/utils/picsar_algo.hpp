@@ -40,7 +40,7 @@ picsar_upper_bound
 
     size_t count = last-first;
     do{
-        auto it = first;
+        const auto * it = first;
         const auto step = count/2;
         it += step;
          if (!(val<*it)){
@@ -89,7 +89,7 @@ picsar_lower_bound
 
     size_t count = last-first;
     do{
-        auto it = first;
+        const auto * it = first;
         const auto step = count/2;
         it += step;
          if (!(val<=*it)){
