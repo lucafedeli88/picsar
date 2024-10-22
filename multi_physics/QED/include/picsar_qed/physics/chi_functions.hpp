@@ -15,9 +15,8 @@
 //Uses gamma functions
 #include "picsar_qed/physics/gamma_functions.hpp"
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
+namespace picsar::multi_physics::phys
+{
 
     /**
     * This function returns the chi parameter for a photon
@@ -196,8 +195,6 @@ namespace phys{
         return chi_ele_pos<RealType, UnitSystem>(
             p, em_e, em_b, reference_quantity);
     }
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_CHI_FUNCTIONS

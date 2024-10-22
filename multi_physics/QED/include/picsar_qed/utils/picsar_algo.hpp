@@ -8,9 +8,7 @@
     #include <algorithm>
 #endif
 
-namespace picsar{
-namespace multi_physics{
-namespace utils{
+namespace picsar::multi_physics::utils{
 
 /**
 * This function returns an iterator pointing
@@ -243,8 +241,6 @@ RealType bilinear_interp(
     return linear_interp(y0, y1, fx0, fx1, y);
 }
 
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_ALGO

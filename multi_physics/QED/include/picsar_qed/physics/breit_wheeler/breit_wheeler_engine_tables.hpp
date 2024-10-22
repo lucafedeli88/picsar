@@ -36,10 +36,8 @@
 #include <limits>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace breit_wheeler{
+namespace picsar::multi_physics::phys::breit_wheeler
+{
 
     //________________ Default parameters ______________________________________
 
@@ -837,9 +835,6 @@ namespace breit_wheeler{
 
     //__________________________________________________________________________
 
-}
-}
-}
 }
 
 #endif // PICSAR_MULTIPHYSICS_BREIT_WHEELER_ENGINE_TABLES

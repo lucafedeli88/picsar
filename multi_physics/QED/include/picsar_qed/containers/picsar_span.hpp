@@ -6,10 +6,8 @@
 
 #include <cstddef>
 
-namespace picsar{
-namespace multi_physics{
-namespace containers{
-
+namespace picsar::multi_physics::containers
+{
     /**
     * This class implements a non-owning array
     *
@@ -133,8 +131,6 @@ namespace containers{
             size_t m_size = 0;  /* Array size */
             T* m_ptr_data = nullptr; /* Raw pointer to the array data */
         };
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_SPAN

@@ -40,10 +40,8 @@
 #include <limits>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace quantum_sync{
+namespace picsar::multi_physics::phys::quantum_sync
+{
 
     //________________ Default parameters ______________________________________
 
@@ -1238,9 +1236,6 @@ namespace quantum_sync{
 
 
 
-}
-}
-}
 }
 
 #endif // PICSAR_MULTIPHYSICS_QUANTUM_SYNC_ENGINE_TABLES

@@ -38,9 +38,8 @@ namespace boost
 //______________________________________________________
 
 
-namespace picsar{
-namespace multi_physics{
-namespace math{
+namespace picsar::multi_physics::math
+{
     /**
     * This module is a wrapper around the trapezoidal,
     * gauss_kronrod, tanh_sinh & exp_sinh quadrature methods provided by the Boost library.
@@ -177,8 +176,6 @@ namespace math{
         return generic_quad_a_b<RealType, quadrature_algorithm::exp_sinh>(
             f, a, std::numeric_limits<RealType>::infinity());
     }
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_QUADRATURE

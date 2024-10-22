@@ -10,9 +10,8 @@
     #include <array>
 #endif
 
-namespace picsar{
-namespace multi_physics{
-namespace containers{
+namespace picsar::multi_physics::containers
+{
 
 #ifdef PXRMP_ENABLE_GPU_FRIENDLY_ARRAY
 
@@ -127,8 +126,6 @@ namespace containers{
     using picsar_array = std::array<T, N>;
 #endif
 
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_ARRAY

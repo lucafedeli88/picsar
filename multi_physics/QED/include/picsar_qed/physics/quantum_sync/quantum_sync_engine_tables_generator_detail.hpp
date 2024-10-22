@@ -30,11 +30,9 @@
 #include <type_traits>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace quantum_sync{
-namespace detail{
+namespace picsar::multi_physics::phys::quantum_sync::detail
+{
+
     //________________ dN/dt table _____________________________________________
 
     /**
@@ -194,10 +192,6 @@ namespace detail{
 
     //__________________________________________________________________________
 
-}
-}
-}
-}
 }
 
 #endif // PICSAR_MULTIPHYSICS_QUANTUM_SYNC_ENGINE_TABLES_GENERATOR_DETAIL

@@ -29,11 +29,8 @@
 #include <algorithm>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace breit_wheeler{
-
+namespace picsar::multi_physics::phys::breit_wheeler
+{
     /**
     * It computes the X parameter (see validation script).
     * This function is not designed to be run on GPUs.
@@ -308,9 +305,6 @@ namespace breit_wheeler{
         return res;
     }
 
-}
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_BREIT_WHEELER_ENGINE_TABULATED_FUNCTIONS

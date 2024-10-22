@@ -7,9 +7,8 @@
 #include <string>
 #include <iostream>
 
-namespace picsar{
-namespace multi_physics{
-namespace utils{
+namespace picsar::multi_physics::utils
+{
 
     /**
     * A simple progress bar
@@ -49,8 +48,6 @@ namespace utils{
             out.flush();
         }
 
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_PROGRESS_BAR

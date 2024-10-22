@@ -12,11 +12,8 @@
 //Uses log and exp
 #include "picsar_qed/math/cmath_overloads.hpp"
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace quantum_sync{
-namespace detail{
+namespace picsar::multi_physics::phys::quantum_sync::detail
+{
 
     /**
     * This class implements a linear functor to be used in tail-optimized lookup tables.
@@ -504,10 +501,6 @@ namespace detail{
         RealType m_coeff_second;
     };
 
-}
-}
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_QUANTUM_SYNC_ENGINE_TABLES_DETAIL

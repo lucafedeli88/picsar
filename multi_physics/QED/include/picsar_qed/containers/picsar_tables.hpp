@@ -20,9 +20,8 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace containers{
+namespace picsar::multi_physics::containers
+{
 
 namespace details{
     //________________ Auxiliary functions _____________________________________
@@ -1434,8 +1433,6 @@ namespace details{
     //__________________________________________________________________________
 
 
-}
-}
 }
 
 

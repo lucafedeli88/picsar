@@ -30,11 +30,8 @@
 #include <limits>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace quantum_sync{
-
+namespace picsar::multi_physics::phys::quantum_sync
+{
     /**
     * It computes the y parameter (see validation script).
     * This function is not designed to be run on GPUs.
@@ -309,9 +306,6 @@ namespace quantum_sync{
     }
 
 
-}
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_QUANTUM_SYNC_ENGINE_TABULATED_FUNCTIONS

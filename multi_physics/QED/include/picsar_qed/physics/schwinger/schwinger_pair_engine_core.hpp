@@ -26,10 +26,7 @@
 //Uses sqrt, exp and tanh
 #include "picsar_qed/math/cmath_overloads.hpp"
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace schwinger{
+namespace picsar::multi_physics::phys::schwinger{
 
     /**
     * This function computes the Schwinger pair production rate
@@ -198,9 +195,6 @@ namespace schwinger{
             em_e, em_b, t_volume, t_dt, reference_quantity);
     }
 
-}
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_SCHWINGER_PAIR_ENGINE_CORE

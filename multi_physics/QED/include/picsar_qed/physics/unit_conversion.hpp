@@ -9,9 +9,8 @@
 //Uses several mathematical constants
 #include "picsar_qed/math/math_constants.h"
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
+namespace picsar::multi_physics::phys
+{
 
     /**
     * The interface of the PICSAR QED library supports 4 unit systems
@@ -2307,7 +2306,5 @@ namespace phys{
         phys::elementary_charge<double>*conv<quantity::charge, unit_system::SI,
             unit_system::heaviside_lorentz, double>::fact());
 
-}
-}
 }
 #endif //PICSAR_MULTIPHYSICS_PHYS_UNIT_CONVERSION

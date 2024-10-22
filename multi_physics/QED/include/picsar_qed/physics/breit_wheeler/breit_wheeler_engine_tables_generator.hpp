@@ -35,10 +35,8 @@
 #include <type_traits>
 #include <stdexcept>
 
-namespace picsar{
-namespace multi_physics{
-namespace phys{
-namespace breit_wheeler{
+namespace picsar::multi_physics::phys::breit_wheeler
+{
 
     //________________ dN/dt table _____________________________________________
 
@@ -243,9 +241,6 @@ namespace breit_wheeler{
     }
 
     //__________________________________________________________________________
-}
-}
-}
 }
 
 #endif //PICSAR_MULTIPHYSICS_BREIT_WHEELER_ENGINE_TABLES_GENERATOR
