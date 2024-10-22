@@ -41,6 +41,7 @@ namespace picsar::multi_physics::containers
         * @param[in] i index of the desired element
         * @return a reference to the i-th element
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         T& operator [] (int i) noexcept
         {
@@ -53,6 +54,7 @@ namespace picsar::multi_physics::containers
         * @param[in] i index of the desired element
         * @return a const reference to the i-th element
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         const T& operator [] (int i) const noexcept
         {
@@ -64,6 +66,7 @@ namespace picsar::multi_physics::containers
         *
         * @return a const pointer to the underlying raw data array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr const T* data() const noexcept
         {
@@ -75,6 +78,7 @@ namespace picsar::multi_physics::containers
         *
         * @return the size of the array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr size_t size() const noexcept
         {
@@ -86,6 +90,7 @@ namespace picsar::multi_physics::containers
         *
         * @return a const pointer to the first element of the array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr const T* begin() const noexcept
         {
@@ -97,6 +102,7 @@ namespace picsar::multi_physics::containers
         *
         * @return a const pointer to the end of the array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr const T* end() const noexcept
         {
@@ -108,6 +114,7 @@ namespace picsar::multi_physics::containers
         *
         * @return a pointer to the first element of the array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr T* begin() noexcept
         {
@@ -119,6 +126,7 @@ namespace picsar::multi_physics::containers
         *
         * @return a pointer to the end of the array
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         constexpr T* end() noexcept
         {
