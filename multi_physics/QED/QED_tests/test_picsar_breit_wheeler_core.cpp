@@ -189,8 +189,8 @@ BOOST_AUTO_TEST_CASE( picsar_breit_wheeler_core_get_dndt)
     check_dndt<double, unit_system::norm_lambda>(reference_length);
     check_dndt<double, unit_system::heaviside_lorentz>();
     check_dndt<float, unit_system::SI>();
-    check_dndt<float, unit_system::norm_omega>(reference_omega);
-    check_dndt<float, unit_system::norm_lambda>(reference_length);
+    check_dndt<float, unit_system::norm_omega>(static_cast<float>(reference_omega));
+    check_dndt<float, unit_system::norm_lambda>(static_cast<float>(reference_length));
     check_dndt<float, unit_system::heaviside_lorentz>();
 }
 
@@ -286,8 +286,8 @@ BOOST_AUTO_TEST_CASE( picsar_breit_wheeler_core_evolve_opt_depth)
     check_evolve_opt_depth<double, unit_system::norm_lambda>(reference_length);
     check_evolve_opt_depth<double, unit_system::heaviside_lorentz>();
     check_evolve_opt_depth<float, unit_system::SI>();
-    check_evolve_opt_depth<float, unit_system::norm_omega>(reference_omega);
-    check_evolve_opt_depth<float, unit_system::norm_lambda>(reference_length);
+    check_evolve_opt_depth<float, unit_system::norm_omega>(static_cast<float>(reference_omega));
+    check_evolve_opt_depth<float, unit_system::norm_lambda>(static_cast<float>(reference_length));
     check_evolve_opt_depth<float, unit_system::heaviside_lorentz>();
 }
 
