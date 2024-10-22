@@ -88,10 +88,12 @@ void test_expected_pair_number(RealType ref = zero<RealType>)
             E[i][0]*fe, E[i][1]*fe, E[i][2]*fe, B[i][0]*fb, B[i][1]*fb, B[i][2]*fb,
             volume*fv, dt*ft, ref);
 
-        if(res_exp[i] <= tolerance<RealType>())
+        if(res_exp[i] <= tolerance<RealType>()){
             BOOST_CHECK_SMALL(res, tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL((res-static_cast<RealType>(res_exp[i]))/static_cast<RealType>(res_exp[i]), tolerance<RealType>());
+        }
     }
 }
 
