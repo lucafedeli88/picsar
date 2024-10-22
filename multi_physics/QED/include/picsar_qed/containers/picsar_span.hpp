@@ -22,7 +22,7 @@ namespace picsar::multi_physics::containers
         * Empty constructor.
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
-        picsar_span(){}
+        picsar_span() = default;
 
         /**
         * Constructor requiring the size of the array and the pointer to raw data.

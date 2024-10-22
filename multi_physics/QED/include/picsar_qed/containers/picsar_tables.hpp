@@ -121,7 +121,7 @@ namespace details{
         * Empty constructor
         */
         constexpr
-        equispaced_1d_table(){}
+        equispaced_1d_table() = default;
 
         /**
         * Constructor from byte array (not usable on GPUs)
@@ -437,7 +437,7 @@ namespace details{
         * Empty constructor
         */
         constexpr
-        equispaced_2d_table(){}
+        equispaced_2d_table() = default;
 
         /**
         * Constructor from byte array (not usable on GPUs)
@@ -963,7 +963,7 @@ namespace details{
         * Empty constructor
         */
         constexpr
-        generic_2d_table(){}
+        generic_2d_table() = default;
 
         /**
         * Constructor from byte array (not usable on GPUs)

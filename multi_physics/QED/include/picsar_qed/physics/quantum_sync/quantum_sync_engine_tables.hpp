@@ -156,7 +156,7 @@ namespace picsar::multi_physics::phys::quantum_sync
             * Empty constructor
             **/
             constexpr
-            dndt_lookup_table(){}
+            dndt_lookup_table() = default;
 
             /**
             * Constructor (not designed for GPU usage)
@@ -486,7 +486,7 @@ namespace picsar::multi_physics::phys::quantum_sync
             * Empty constructor
             */
             constexpr
-            photon_emission_lookup_table(){}
+            photon_emission_lookup_table() = default;
 
             /**
             * Constructor (not designed for GPU usage)
@@ -904,7 +904,7 @@ namespace picsar::multi_physics::phys::quantum_sync
             * Empty constructor
             */
             constexpr
-            tailopt_photon_emission_lookup_table(){}
+            tailopt_photon_emission_lookup_table() = default;
 
             /**
             * Constructor (not designed for GPU usage)

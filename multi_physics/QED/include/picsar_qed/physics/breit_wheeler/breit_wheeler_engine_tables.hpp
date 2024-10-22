@@ -189,7 +189,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             * Empty constructor
             **/
             constexpr
-            dndt_lookup_table(){}
+            dndt_lookup_table() = default;
 
             /**
             * Constructor (not designed for GPU)
@@ -531,7 +531,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             * Empty constructor
             */
             constexpr
-            pair_prod_lookup_table(){}
+            pair_prod_lookup_table() = default;
 
 
             /**

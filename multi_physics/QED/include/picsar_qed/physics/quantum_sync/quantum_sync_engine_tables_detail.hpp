@@ -31,7 +31,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         * Empty constructor
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
-        LinFunctor(){}
+        LinFunctor() = default;
 
         /**
         * Constructor
@@ -136,7 +136,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         * Empty constructor
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
-        ILinFunctor(){}
+        ILinFunctor() = default;
 
         /**
         * Constructor
@@ -245,7 +245,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         * Empty constructor
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
-        TailOptFunctor(){}
+        TailOptFunctor() = default;
 
         /**
         * Constructor
@@ -379,7 +379,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         * Empty constructor
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
-        ITailOptFunctor(){}
+        ITailOptFunctor() = default;
 
         /**
         * Constructor
