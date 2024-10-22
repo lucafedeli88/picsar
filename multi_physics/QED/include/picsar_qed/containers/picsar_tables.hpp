@@ -178,6 +178,7 @@ namespace details{
         * @param[in] rhs a const reference to a 1D table of the same type
         * @return true if rhs and *this are equal. false otherwise
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         bool operator== (
             const equispaced_1d_table<RealType, VectorType> &rhs) const
@@ -197,6 +198,7 @@ namespace details{
         * @param[in] i the index of the desired coordinate
         * @return the i-th coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_coord(const int i) const noexcept
         {
@@ -209,6 +211,7 @@ namespace details{
         * @param[in] i the index of the desired value
         * @return the i-th value
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_val(const size_t i) const noexcept
         {
@@ -220,6 +223,7 @@ namespace details{
         *
         * @return the number of points along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int get_how_many_x() const noexcept
         {
@@ -231,6 +235,7 @@ namespace details{
         *
         * @return the minimum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_min() const noexcept
         {
@@ -242,6 +247,7 @@ namespace details{
         *
         * @return the maximum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_max() const noexcept
         {
@@ -253,6 +259,7 @@ namespace details{
         *
         * @return the size along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_size() const noexcept
         {
@@ -264,6 +271,7 @@ namespace details{
         *
         * @return the size of the steps along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_dx() const noexcept
         {
@@ -276,6 +284,7 @@ namespace details{
         *
         * @return all the coordinates
         */
+        [[nodiscard]]
         std::vector<RealType> get_all_coordinates()  const noexcept
         {
             auto all_coords = std::vector<RealType>(m_how_many_x);
@@ -290,6 +299,7 @@ namespace details{
         *
         * @return a const reference to the underlying Vector holding value data
         */
+        [[nodiscard]]
         const VectorType& get_values_reference() const noexcept
         {
             return m_values;
@@ -303,6 +313,7 @@ namespace details{
         * @param[in] where_x where to perform the interpolation
         * @return the interpolated value
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp(const RealType where_x) const noexcept
         {
@@ -362,6 +373,7 @@ namespace details{
         *
         * @return a byte vector containing table data
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             auto raw_data = std::vector<char>{};
@@ -509,6 +521,7 @@ namespace details{
         * @param[in] rhs a const reference to a 2D table of the same type
         * @return true if rhs and *this are equal. false otherwise
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         bool operator== (
             const equispaced_2d_table<RealType, VectorType> &rhs) const
@@ -533,6 +546,7 @@ namespace details{
         * @param[in] i the index of the desired coordinate
         * @return the i-th coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_coord(int i) const noexcept
         {
@@ -545,6 +559,7 @@ namespace details{
         * @param[in] j the index of the desired coordinate
         * @return the j-th coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_coord(int j) const noexcept
         {
@@ -558,6 +573,7 @@ namespace details{
         * @param[in] j the index of the desired value along y
         * @return the value at (i,j)
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_val(int i, int j) const noexcept
         {
@@ -569,6 +585,7 @@ namespace details{
         *
         * @return the number of points along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int get_how_many_x() const noexcept
         {
@@ -580,6 +597,7 @@ namespace details{
         *
         * @return the minimum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_min() const noexcept
         {
@@ -591,6 +609,7 @@ namespace details{
         *
         * @return the maximum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_max() const noexcept
         {
@@ -602,6 +621,7 @@ namespace details{
         *
         * @return the size along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_size() const noexcept
         {
@@ -613,6 +633,7 @@ namespace details{
         *
         * @return the size of the steps along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_dx() const noexcept
         {
@@ -624,6 +645,7 @@ namespace details{
         *
         * @return the number of points along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int get_how_many_y() const noexcept
         {
@@ -635,6 +657,7 @@ namespace details{
         *
         * @return the minimum y coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_min() const noexcept
         {
@@ -646,6 +669,7 @@ namespace details{
         *
         * @return the maximum y coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_max() const noexcept
         {
@@ -657,6 +681,7 @@ namespace details{
         *
         * @return the size along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_size() const noexcept
         {
@@ -668,6 +693,7 @@ namespace details{
         *
         * @return the size of the steps along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_dy() const noexcept
         {
@@ -680,6 +706,7 @@ namespace details{
         *
         * @return all the coordinates
         */
+        [[nodiscard]]
         std::vector<std::array<RealType,2>> get_all_coordinates() const noexcept
         {
             auto all_coords = std::vector<std::array<RealType,2>>(
@@ -700,6 +727,7 @@ namespace details{
         *
         * @return a const reference to the underlying Vector holding value data
         */
+        [[nodiscard]]
         const VectorType& get_values_reference() const noexcept
         {
             return m_values;
@@ -712,6 +740,7 @@ namespace details{
         * @param[in] where_y the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp(const RealType where_x, const RealType where_y) const noexcept
         {
@@ -754,6 +783,7 @@ namespace details{
         * @param[in] j the index of the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp_first_coord(RealType where_x, int j) const noexcept
         {
@@ -783,6 +813,7 @@ namespace details{
         * @param[in] where_y the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp_second_coord(int i, RealType where_y) const noexcept
         {
@@ -858,6 +889,7 @@ namespace details{
         *
         * @return a byte vector containing table data
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             auto raw_data = std::vector<char>{};
@@ -902,6 +934,7 @@ namespace details{
         * @param[in] j index along y
         * @return index along internal 1D vector
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int idx(int i, int j) const noexcept
         {
@@ -1030,6 +1063,7 @@ namespace details{
         *
         * @return true if rhs and *this are equal. false otherwise
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         bool operator== (
             const generic_2d_table<
@@ -1054,6 +1088,7 @@ namespace details{
         *
         * @return the i-th coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_coord(int i) const noexcept
         {
@@ -1067,6 +1102,7 @@ namespace details{
         *
         * @return the j-th coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_coord(int j) const noexcept
         {
@@ -1081,6 +1117,7 @@ namespace details{
         *
         * @return the value at (i,j)
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_val(int i, int j) const noexcept
         {
@@ -1092,6 +1129,7 @@ namespace details{
         *
         * @return the number of points along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int get_how_many_x() const noexcept
         {
@@ -1103,6 +1141,7 @@ namespace details{
         *
         * @return the minimum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_min() const noexcept
         {
@@ -1114,6 +1153,7 @@ namespace details{
         *
         * @return the maximum x coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_max() const noexcept
         {
@@ -1125,6 +1165,7 @@ namespace details{
         *
         * @return the size along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_x_size() const noexcept
         {
@@ -1136,6 +1177,7 @@ namespace details{
         *
         * @return the size of the steps along x
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_dx(int i) const noexcept
         {
@@ -1147,6 +1189,7 @@ namespace details{
         *
         * @return the number of points along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int get_how_many_y() const noexcept
         {
@@ -1158,6 +1201,7 @@ namespace details{
         *
         * @return the minimum y coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_min() const noexcept
         {
@@ -1169,6 +1213,7 @@ namespace details{
         *
         * @return the maximum y coordinate
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_max() const noexcept
         {
@@ -1180,6 +1225,7 @@ namespace details{
         *
         * @return the size along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_y_size() const noexcept
         {
@@ -1191,6 +1237,7 @@ namespace details{
         *
         * @return the size of the steps along y
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType get_dy(int j) const noexcept
         {
@@ -1203,6 +1250,7 @@ namespace details{
         *
         * @return all the coordinates
         */
+        [[nodiscard]]
         std::vector<std::array<RealType,2>> get_all_coordinates() const noexcept
         {
             auto all_coords = std::vector<std::array<RealType,2>>(
@@ -1223,6 +1271,7 @@ namespace details{
         *
         * @return a const reference to the underlying Vector holding value data
         */
+        [[nodiscard]]
         const VectorType& get_values_reference() const noexcept
         {
             return m_values;
@@ -1235,6 +1284,7 @@ namespace details{
         * @param[in] where_y the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp(const RealType where_x, const RealType where_y) const noexcept
         {
@@ -1275,6 +1325,7 @@ namespace details{
         * @param[in] j the index of the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp_first_coord(RealType where_x, int j) const noexcept
         {
@@ -1303,6 +1354,7 @@ namespace details{
         * @param[in] where_y the position along y
         * @return the result of the interpolation
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         RealType interp_second_coord(int i, RealType where_y) const noexcept
         {
@@ -1377,6 +1429,7 @@ namespace details{
         *
         * @return a byte vector containing table data
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             auto raw_data = std::vector<char>{};
@@ -1423,6 +1476,7 @@ namespace details{
         * @param[in] j index along y
         * @return index along internal 1D vector
         */
+        [[nodiscard]]
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         int idx(int i, int j) const noexcept
         {
