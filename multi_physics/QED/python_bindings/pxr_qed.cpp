@@ -1046,10 +1046,12 @@ PYBIND11_MODULE(pxr_qed, m) {
         .def("generate",
             [&](bw_dndt_lookup_table &self,
                 bool do_regular, bool verbose){
-                    if(do_regular)
+                    if(do_regular){
                         self.generate<bw_regular>(verbose);
-                    else
+                    }
+                    else{
                         self.generate<bw_force_double>(verbose);
+                    }
             },
             py::arg("do_regular") = py::bool_(true),
             py::arg("verbose") = py::bool_(true))
@@ -1114,10 +1116,12 @@ PYBIND11_MODULE(pxr_qed, m) {
         .def("generate",
             [&](bw_pair_prod_lookup_table &self,
                 bool do_regular, bool verbose){
-                    if(do_regular)
+                    if(do_regular){
                         self.generate<bw_regular>(verbose);
-                    else
+                    }
+                    else{
                         self.generate<bw_force_double>(verbose);
+                    }
             },
             py::arg("do_regular") = py::bool_(true),
             py::arg("verbose") = py::bool_(true))
@@ -1264,10 +1268,12 @@ PYBIND11_MODULE(pxr_qed, m) {
         .def("generate",
             [&](qs_dndt_lookup_table &self,
                 bool do_regular, bool verbose){
-                    if(do_regular)
+                    if(do_regular){
                         self.generate<qs_regular>(verbose);
-                    else
+                    }
+                    else{
                         self.generate<qs_force_double>(verbose);
+                    }
             },
             py::arg("do_regular") = py::bool_(true),
             py::arg("verbose") = py::bool_(true))
@@ -1332,10 +1338,12 @@ PYBIND11_MODULE(pxr_qed, m) {
         .def("generate",
             [&](qs_photon_emission_lookup_table &self,
                 bool do_regular, bool verbose){
-                    if(do_regular)
+                    if(do_regular){
                         self.generate<qs_regular>(verbose);
-                    else
+                    }
+                    else{
                         self.generate<qs_force_double>(verbose);
+                    }
             },
             py::arg("do_regular") = py::bool_(true),
             py::arg("verbose") = py::bool_(true))
