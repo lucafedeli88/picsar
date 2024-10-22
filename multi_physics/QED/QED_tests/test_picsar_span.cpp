@@ -47,11 +47,11 @@ BOOST_AUTO_TEST_CASE( picsar_span_range_based_loops )
 {
     auto arr = std::array<int,3>();
     int i = 0;
-    for(auto& el : arr) el = ++i;
+    for(auto& el : arr){ el = ++i };
     const auto span = picsar_span<const int>{arr.size(), arr.data()};
     int sum = 0;
-    for(const auto& el : span) sum += el;
-    for(auto el : span) sum += el;
+    for(const auto& el : span){ sum += el; }
+    for(auto el : span) { sum += el; }
     BOOST_CHECK_EQUAL(sum, 12);
 }
 
@@ -67,8 +67,9 @@ BOOST_AUTO_TEST_CASE( picsar_span_copy )
 
     BOOST_CHECK_EQUAL(cspan.size(), arr.size());
     BOOST_CHECK_EQUAL(cspan.data(), arr.data());
-    for(size_t i = 0; i < arr.size(); ++i)
+    for(size_t i = 0; i < arr.size(); ++i){
         BOOST_CHECK_EQUAL(cspan[i], arr[i]);
+    }
 }
 
 // *******************************
