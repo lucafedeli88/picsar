@@ -343,7 +343,7 @@ void check_pair_production(RealType ref_q = one<RealType>)
                         fake_table.m_res = chi_ele;
                         fake_table.m_is_out = false;
 
-                        const RealType pmom = static_cast<RealType>(mom);
+                        const auto pmom = static_cast<RealType>(mom);
 
                         const auto photon_momentum =
                             vec3<RealType>{

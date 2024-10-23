@@ -124,8 +124,8 @@ void check_dndt_table()
     const RealType x1 = (chi_max+chi_min)*0.5642 + chi_min;
     const RealType x2 = chi_max;
 
-    const RealType ye_app_o0 = dndt_approx_left<RealType>(xo0);
-    const RealType ye_app_o1 = dndt_approx_right<RealType>(xo1);
+    const auto ye_app_o0 = dndt_approx_left<RealType>(xo0);
+    const auto ye_app_o1 = dndt_approx_right<RealType>(xo1);
     const RealType ye0 = alpha*x0;
     const RealType ye1 = alpha*x1;
     const RealType ye2 = alpha*x2;
