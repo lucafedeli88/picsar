@@ -79,6 +79,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         *
         * @return an std::vector<char> containing the binary representation of the functor
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             using namespace utils;
@@ -187,6 +188,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         *
         * @return an std::vector<char> containing the binary representation of the functor
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             using namespace utils;
@@ -312,6 +314,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         *
         * @return an std::vector<char> containing the binary representation of the functor
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             using namespace utils;
@@ -447,6 +450,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         *
         * @return an std::vector<char> containing the binary representation of the functor
         */
+        [[nodiscard]]
         std::vector<char> serialize() const
         {
             using namespace utils;

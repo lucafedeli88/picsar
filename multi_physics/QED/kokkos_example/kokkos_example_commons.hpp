@@ -109,6 +109,7 @@ class KokkosVectorWrapper : public Kokkos::vector<Real>
     *
     * @return a pointer to the raw vector data
     */
+    [[nodiscard]]
     const Real* data() const
     {
         return KV::d_view.data();
