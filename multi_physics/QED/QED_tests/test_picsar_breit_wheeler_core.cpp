@@ -428,8 +428,8 @@ BOOST_AUTO_TEST_CASE( picsar_breit_wheeler_core_pair_production)
     check_pair_production<double, unit_system::norm_lambda>(reference_length);
     check_pair_production<double, unit_system::heaviside_lorentz>();
     check_pair_production<float, unit_system::SI>();
-    check_pair_production<float, unit_system::norm_omega>(reference_omega);
-    check_pair_production<float, unit_system::norm_lambda>(reference_length);
+    check_pair_production<float, unit_system::norm_omega>(static_cast<float>(reference_omega));
+    check_pair_production<float, unit_system::norm_lambda>(static_cast<float>(reference_length));
     check_pair_production<float, unit_system::heaviside_lorentz>();
 }
 
