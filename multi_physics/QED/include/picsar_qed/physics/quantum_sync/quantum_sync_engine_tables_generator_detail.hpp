@@ -61,7 +61,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         #pragma omp parallel for
 #endif
         for (int i = 0; i < static_cast<int>(all_coords.size()); ++i){
-            PXRMP_CONSTEXPR_IF (ForceInternalDouble && !std::is_same<RealType,double>()){
+            if constexpr (ForceInternalDouble && !std::is_same<RealType,double>()){
                 all_vals[i] = static_cast<RealType>(
                     compute_G_function<double>(all_coords[i]));
             }
@@ -69,7 +69,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
                 all_vals[i] = compute_G_function(all_coords[i]);
             }
 
-            PXRMP_CONSTEXPR_IF (ShowProgress){
+            if constexpr (ShowProgress){
                 #pragma omp critical
                 {
                     count++;
@@ -136,7 +136,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
             auto vals = std::vector<RealType>(all_frac_size);
 
-            PXRMP_CONSTEXPR_IF (ForceInternalDouble && !std::is_same<RealType,double>()){
+            if constexpr (ForceInternalDouble && !std::is_same<RealType,double>()){
                 const auto d_chi_part = static_cast<double>(chi_part);
                 auto d_chi_phots = std::vector<double>(all_frac_size);
                 std::transform(
@@ -160,7 +160,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
             std::copy(vals.begin(), vals.end(), all_vals.begin() + i*all_frac_size);
 
-            PXRMP_CONSTEXPR_IF (ShowProgress){
+            if constexpr (ShowProgress){
 #ifdef PXRMP_HAS_OPENMP
                 #pragma omp critical
 #endif

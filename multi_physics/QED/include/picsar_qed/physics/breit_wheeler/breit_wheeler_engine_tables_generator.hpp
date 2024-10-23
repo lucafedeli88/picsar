@@ -88,7 +88,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
         #pragma omp parallel for
 #endif
         for (int i = 0; i < static_cast<int>(all_coords.size()); ++i){
-            PXRMP_CONSTEXPR_IF (use_internal_double){
+            if constexpr (use_internal_double){
                 all_vals[i] = aux_generate_double(all_coords[i]);
             }
             else {
@@ -199,7 +199,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             );
 
             std::vector<RealType> vals = std::vector<RealType>(frac_size);
-            PXRMP_CONSTEXPR_IF (use_internal_double){
+            if constexpr (use_internal_double){
                 vals = aux_generate_double(
                     chi_phot, chi_parts);
             } else {
