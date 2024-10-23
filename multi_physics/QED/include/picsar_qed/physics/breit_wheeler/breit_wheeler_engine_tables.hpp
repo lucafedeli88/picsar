@@ -118,7 +118,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
     PXRMP_FORCE_INLINE
     RealType dndt_approx_left(RealType chi_phot)
     {
-        constexpr RealType coeff = static_cast<RealType>(8./3.);
+        constexpr auto coeff = static_cast<RealType>(8./3.);
         return erber_dndt_asynt_a<RealType>*math::m_exp(-coeff/chi_phot);
     }
 
