@@ -282,6 +282,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return true if rhs is equal to *this. false otherwise
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
             bool operator== (
                 const dndt_lookup_table<
@@ -304,6 +305,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a table view
             */
+            [[nodiscard]]
             view_type get_view() const
             {
                 if(!m_init_flag){
@@ -330,6 +332,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return the value of the T function
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER
             PXRMP_FORCE_INLINE
             RealType interp(
@@ -353,6 +356,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a vector containing all the table coordinates
             */
+            [[nodiscard]]
             std::vector<RealType> get_all_coordinates() const noexcept
             {
                 auto all_coords = m_table.get_all_coordinates();
@@ -370,6 +374,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return false if the value vector has the wrong length. True otherwise.
             */
+            [[nodiscard]]
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 const auto vals_length = vals.size();
@@ -393,6 +398,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return true if the table has been initialized, false otherwise
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER
             PXRMP_FORCE_INLINE
             bool is_init() const
@@ -405,6 +411,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a byte vector
             */
+            [[nodiscard]]
             std::vector<char> serialize() const
             {
                 using namespace utils;
@@ -631,6 +638,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return true if rhs is equal to *this. false otherwise
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
             bool operator== (
                 const pair_prod_lookup_table<
@@ -653,6 +661,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a table view
             */
+            [[nodiscard]]
             view_type get_view() const
             {
                 if(!m_init_flag){
@@ -689,6 +698,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return chi of one of the generated particles
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER
             PXRMP_FORCE_INLINE
             RealType interp(
@@ -747,6 +757,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a vector containing all the table coordinates
             */
+            [[nodiscard]]
             std::vector<std::array<RealType,2>> get_all_coordinates() const noexcept
             {
                 auto all_coords = m_table.get_all_coordinates();
@@ -765,6 +776,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return false if the value vector has the wrong length. True otherwise.
             */
+            [[nodiscard]]
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 if(static_cast<int>(vals.size()) != m_table.get_how_many_x()*
@@ -783,6 +795,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return true if the table has been initialized, false otherwise
             */
+            [[nodiscard]]
             PXRMP_GPU_QUALIFIER
             PXRMP_FORCE_INLINE
             bool is_init() const
@@ -795,6 +808,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @return a byte vector
             */
+            [[nodiscard]]
             std::vector<char> serialize() const
             {
                 using namespace utils;
