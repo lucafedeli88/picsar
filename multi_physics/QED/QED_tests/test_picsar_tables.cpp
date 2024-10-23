@@ -79,8 +79,9 @@ class Functor
     Functor(const int zsize, const int zfirst,
         const double zmin, const double zmax, const double zswitch):
         m_zsize{zsize}, m_zfirst{zfirst},
-        m_zmin{zmin}, m_zmax{zmax}, m_zswitch{zswitch},
-        m_logzmin{std::log(m_zmin)}, m_logzswitch{std::log(m_zswitch)}
+        m_zmin{zmin}, m_logzmin{std::log(m_zmin)},
+        m_zmax{zmax}, m_zswitch{zswitch},
+        m_logzswitch{std::log(m_zswitch)}
     {}
 
     double operator() (const int i) const
@@ -157,11 +158,10 @@ class IFunctor
     IFunctor(const int zsize, const int zfirst,
         const double zmin, const double zmax, const double zswitch):
         m_zsize{zsize}, m_zfirst{zfirst},
-        m_zmin{zmin}, m_zmax{zmax}, m_zswitch{zswitch}
-    {
-        m_logzmin = std::log(m_zmin);
-        m_logzswitch = std::log(m_zswitch);
-    }
+        m_zmin{zmin}, m_logzmin{std::log(m_zmin)},
+        m_zmax{zmax}, m_zswitch{zswitch},
+        m_logzswitch{std::log(m_zswitch)}
+    {}
 
     int operator() (const double z) const
     {
