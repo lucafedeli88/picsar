@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( picsar_span_range_based_loops )
 {
     auto arr = std::array<int,3>();
     int i = 0;
-    for(auto& el : arr){ el = ++i };
+    for(auto& el : arr){ el = ++i; }
     const auto span = picsar_span<const int>{arr.size(), arr.data()};
     int sum = 0;
     for(const auto& el : span){ sum += el; }
