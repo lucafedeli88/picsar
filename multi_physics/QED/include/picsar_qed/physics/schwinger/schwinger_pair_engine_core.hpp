@@ -78,12 +78,15 @@ namespace picsar::multi_physics::phys::schwinger{
         const auto rate_conv = conv<quantity::rate,
             unit_system::heaviside_lorentz, UnitSystem, RealType>::fact(1.0, ref_quantity);
 
-        if(epsi != zero<RealType> && eta != zero<RealType>)
+        if(epsi != zero<RealType> && eta != zero<RealType>){
             return coeff*rate_conv*epsi*eta*m_exp(-pi<RealType>/epsi)/m_tanh(pi<RealType>*eta/epsi);
-        else if(epsi == zero<RealType>)
+        }
+        else if(epsi == zero<RealType>){
             return zero<RealType>;
-        else
+        }
+        else{
             return coeff*rate_conv*epsi*epsi*m_exp(-pi<RealType>/epsi)/pi<RealType>;
+        }
     }
 
     /**

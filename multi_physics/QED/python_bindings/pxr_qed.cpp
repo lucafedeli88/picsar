@@ -76,13 +76,13 @@ namespace pxr_sc = picsar::multi_physics::phys::schwinger;
     template <typename Func>
     void PXRQEDPY_FOR(int N, const Func& func){
         #pragma omp parallel for
-        for (int i = 0; i < N; ++i) func(i);
+        for (int i = 0; i < N; ++i){ func(i) ;}
     }
     const auto PXRQEDPY_OPENMP_FLAG = true;
 #else
     template <typename Func>
     void PXRQEDPY_FOR(int N, const Func& func){
-        for (int i = 0; i < N; ++i) func(i);
+        for (int i = 0; i < N; ++i){ func(i); }
     }
     const auto PXRQEDPY_OPENMP_FLAG = false;
 #endif
@@ -153,8 +153,9 @@ using rawVec = std::vector<char>;
 auto aux_check_and_get_pointers(const long int len, const pyArr& last)
 {
     const auto last_buf = last.request();
-    if (last_buf.ndim != 1 || last_buf.shape[0] != len)
+    if (last_buf.ndim != 1 || last_buf.shape[0] != len){
         throw_error("All arrays must be one-dimensional with equal size");
+    }
 
     const auto cptr = static_cast<REAL*>(last_buf.ptr);
     return std::make_tuple(cptr);
@@ -175,8 +176,9 @@ template<typename ...Args>
 auto aux_check_and_get_pointers(const long int len, const pyArr& arg, const Args& ...args)
 {
     const auto arg_buf = arg.request();
-    if (arg_buf.ndim != 1 || arg_buf.shape[0] != len)
+    if (arg_buf.ndim != 1 || arg_buf.shape[0] != len){
         throw_error("All arrays must be one-dimensional with equal size");
+    }
 
     const auto cptr = static_cast<REAL*>(arg_buf.ptr);
     return std::tuple_cat(std::make_tuple(cptr),
@@ -198,8 +200,9 @@ template<typename ...Args>
 auto check_and_get_pointers(const pyArr& first, const Args& ...args)
 {
     const auto first_buf = first.request();
-    if (first_buf.ndim != 1)
+    if (first_buf.ndim != 1){
         throw_error("All arrays must be one-dimensional with equal size");
+    }
 
     const auto len = first_buf.shape[0];
 
@@ -219,8 +222,9 @@ auto check_and_get_pointers(const pyArr& first, const Args& ...args)
 auto check_and_get_pointers(const pyArr& arr)
 {
     const auto arr_buf = arr.request();
-    if (arr_buf.ndim != 1)
+    if (arr_buf.ndim != 1){
         throw_error("Array must be one-dimensional");
+    }
 
     const auto len = arr_buf.shape[0];
 
@@ -240,8 +244,9 @@ auto check_and_get_pointers(const pyArr& arr)
 auto check_and_get_pointer_nonconst(pyArr& arr, const long int len)
 {
     const auto arr_buf = arr.request();
-    if (arr_buf.ndim != 1 || arr_buf.shape[0] != len)
+    if (arr_buf.ndim != 1 || arr_buf.shape[0] != len){
         throw_error("Array must be one-dimensional with size " + std::to_string(len));
+    }
 
     const auto cptr = static_cast<REAL*>(arr_buf.ptr);
 
@@ -1074,8 +1079,9 @@ PYBIND11_MODULE(pxr_qed, m) {
             [&](bw_dndt_lookup_table &self, const std::string file_name){
                 auto input = std::ifstream(file_name,
                     std::ios::ate | std::ios::binary);
-                if( !input )
+                if( !input ){
                     throw_error("Opening file failed!");
+                }
                 const auto pos = input.tellg();
                 auto raw = rawVec(pos);
 
@@ -1146,8 +1152,9 @@ PYBIND11_MODULE(pxr_qed, m) {
             [&](bw_pair_prod_lookup_table &self, const std::string file_name){
                 auto input = std::ifstream(file_name,
                     std::ios::ate | std::ios::binary);
-                if( !input )
+                if( !input ){
                     throw_error("Opening file failed!");
+                }
                 const auto pos = input.tellg();
                 auto raw = rawVec(pos);
 
@@ -1300,8 +1307,9 @@ PYBIND11_MODULE(pxr_qed, m) {
             [&](qs_dndt_lookup_table &self, const std::string file_name){
                 auto input = std::ifstream(file_name,
                     std::ios::ate | std::ios::binary);
-                if( !input )
+                if( !input ){
                     throw_error("Opening file failed!");
+                }
                 const auto pos = input.tellg();
                 auto raw = rawVec(pos);
 

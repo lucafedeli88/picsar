@@ -125,10 +125,12 @@ void test_cross()
     const auto expected = std::array<RealType,3>{exp0, exp1, exp2};
 
     for(int i = 0; i < 3; i++){
-        if(expected[i] != 0.0)
+        if(expected[i] != 0.0){
             BOOST_CHECK_SMALL((veca_x_vecb[i]-expected[i])/expected[i], tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL(veca_x_vecb[i]-expected[i], tolerance<RealType>());
+        }
     }
 }
 
@@ -268,10 +270,12 @@ void test_add()
     const auto expected = std::array<RealType,3>{exp0, exp1, exp2};
 
     for(int i = 0; i < 3; i++){
-        if(expected[i] != 0.0)
+        if(expected[i] != 0.0){
             BOOST_CHECK_SMALL((veca_p_vecb[i]-expected[i])/expected[i], tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL(veca_p_vecb[i]-expected[i], tolerance<RealType>());
+        }
     }
 }
 
@@ -304,10 +308,12 @@ void test_subtract()
     const auto expected = std::array<RealType,3>{exp0, exp1, exp2};
 
     for(int i = 0; i < 3; i++){
-        if(expected[i] != 0.0)
+        if(expected[i] != 0.0){
             BOOST_CHECK_SMALL((veca_m_vecb[i]-expected[i])/expected[i], tolerance<RealType>());
-        else
+        }
+        else{
             BOOST_CHECK_SMALL(veca_m_vecb[i]-expected[i], tolerance<RealType>());
+        }
     }
 }
 

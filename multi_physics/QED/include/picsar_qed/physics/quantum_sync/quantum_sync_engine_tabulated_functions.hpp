@@ -274,8 +274,9 @@ namespace picsar::multi_physics::phys::quantum_sync
     inline VectorType compute_cumulative_prob_opt(
         const RealType chi_particle, const VectorType& chi_photons)
     {
-        if(!std::is_sorted(chi_photons.begin(), chi_photons.end()))
+        if(!std::is_sorted(chi_photons.begin(), chi_photons.end())){
             throw std::runtime_error("Chi vector is not sorted!");
+        }
 
         using namespace math;
         const auto den = compute_G_function(chi_particle);
