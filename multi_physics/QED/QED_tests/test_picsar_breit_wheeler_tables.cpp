@@ -109,7 +109,7 @@ void check_dndt_table()
     std::transform(coords.begin(), coords.end(), vals.begin(),
         [=](RealType x){return alpha*x;});
 
-    bool result = table.set_all_vals(vals);
+    const bool result = table.set_all_vals(vals);
     BOOST_CHECK_EQUAL(result,true);
     BOOST_CHECK_EQUAL(table.is_init(),true);
 
@@ -277,7 +277,7 @@ void check_pair_production_table()
 
     std::transform(coords.begin(), coords.end(), vals.begin(),functor);
 
-    bool result = table.set_all_vals(vals);
+    const bool result = table.set_all_vals(vals);
     BOOST_CHECK_EQUAL(result,true);
     BOOST_CHECK_EQUAL(table.is_init(),true);
 
