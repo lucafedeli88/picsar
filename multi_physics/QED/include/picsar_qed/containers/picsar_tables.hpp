@@ -713,7 +713,7 @@ namespace details{
                 m_how_many_x*m_how_many_y, {0,0});
             for (int i = 0; i < m_how_many_x; ++i){
                 for (int j = 0; j < m_how_many_y; ++j){
-                    const auto idx = i*m_how_many_x + j;
+                    const auto idx = i*m_how_many_y + j;
                     all_coords[idx][0] = get_x_coord(i);
                     all_coords[idx][1] = get_y_coord(j);
                 }
