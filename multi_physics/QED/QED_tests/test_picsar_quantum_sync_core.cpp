@@ -420,8 +420,8 @@ BOOST_AUTO_TEST_CASE( picsar_quantum_sync_photon_emission)
     check_photon_emission<double, unit_system::norm_lambda>(reference_length);
     check_photon_emission<double, unit_system::heaviside_lorentz>();
     check_photon_emission<float, unit_system::SI>();
-    check_photon_emission<float, unit_system::norm_omega>(reference_omega);
-    check_photon_emission<float, unit_system::norm_lambda>(reference_length);
+    check_photon_emission<float, unit_system::norm_omega>(static_cast<float>(reference_omega));
+    check_photon_emission<float, unit_system::norm_lambda>(static_cast<float>(reference_length));
     check_photon_emission<float, unit_system::heaviside_lorentz>();
 }
 
