@@ -115,7 +115,7 @@ namespace picsar::multi_physics::math
         }
         else
         {
-            return boost::math::quadrature::trapezoidal(f, a, b);
+            throw std::invalid_argument("Value of QuadAlgo is unknown.");
         }
     }
 
