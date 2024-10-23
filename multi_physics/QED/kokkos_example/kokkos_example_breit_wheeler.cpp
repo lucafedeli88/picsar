@@ -133,7 +133,7 @@ fill_opt_test(
     const int repetitions,
     Kokkos::Random_XorShift64_Pool<>& rand_pool)
 {
-    Kokkos::Timer timer;
+    const Kokkos::Timer timer;
     for(int rr = 0; rr < repetitions; ++rr){
         const auto num_particles = pdata.num_particles;
         Kokkos::parallel_for("FillOpt_"+get_type_name<Real>(),
@@ -170,7 +170,7 @@ evolve_optical_depth(
     const TableType& ref_table,
     const Real dt, const int repetitions)
 {
-    Kokkos::Timer timer;
+    const Kokkos::Timer timer;
     for(int rr = 0; rr < repetitions; ++rr){
         const auto num_particles = pdata.num_particles;
         Kokkos::parallel_for("EvolveOpt", num_particles, KOKKOS_LAMBDA(int i){
@@ -224,7 +224,7 @@ generate_pairs(
     auto pos_momentum = init_multi_comp_view_with_random_content<Real>(
         "pos_momentum", 0.0, 0.0, num_particles, rand_pool);
 
-    Kokkos::Timer timer;
+    const Kokkos::Timer timer;
     for(int rr = 0; rr < repetitions; ++rr){
         Kokkos::parallel_for("PairGen", num_particles, KOKKOS_LAMBDA(int i){
             const auto px = pdata.m_momentum(i,0);
