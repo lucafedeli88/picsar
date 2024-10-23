@@ -83,7 +83,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
         const auto all_coords = get_all_coordinates();
         auto all_vals = std::vector<RealType>(all_coords.size());
 
-        int count = 0;
+        [[maybe_unused]] int count = 0;
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for
 #endif
@@ -184,7 +184,7 @@ namespace picsar::multi_physics::phys::breit_wheeler
         const auto all_coords = get_all_coordinates();
         auto all_vals = std::vector<RealType>(all_coords.size());
 
-        int count = 0;
+        [[maybe_unused]] int count = 0;
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for schedule(dynamic, 1)
 #endif

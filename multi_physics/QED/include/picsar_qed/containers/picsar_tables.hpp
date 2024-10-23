@@ -711,12 +711,11 @@ namespace details{
         {
             auto all_coords = std::vector<std::array<RealType,2>>(
                 m_how_many_x*m_how_many_y, {0,0});
-            int count = 0;
             for (int i = 0; i < m_how_many_x; ++i){
                 for (int j = 0; j < m_how_many_y; ++j){
-                    all_coords[count][0] = get_x_coord(i);
-                    all_coords[count][1] = get_y_coord(j);
-                    count++;
+                    const auto idx = i*m_how_many_x + j;
+                    all_coords[idx][0] = get_x_coord(i);
+                    all_coords[idx][1] = get_y_coord(j);
                 }
             }
             return all_coords;
@@ -1255,12 +1254,11 @@ namespace details{
         {
             auto all_coords = std::vector<std::array<RealType,2>>(
                 static_cast<int>(m_how_many_x*m_how_many_y), {0,0});
-            int count = 0;
             for (int i = 0; i < m_how_many_x; ++i){
                 for (int j = 0; j < m_how_many_y; ++j){
-                    all_coords[count][0] = get_x_coord(i);
-                    all_coords[count][1] = get_y_coord(j);
-                    count++;
+                    const auto idx = i*m_how_many_x + j;
+                    all_coords[idx][0] = get_x_coord(i);
+                    all_coords[idx][1] = get_y_coord(j);
                 }
             }
             return all_coords;

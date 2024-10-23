@@ -55,7 +55,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
         auto all_vals = std::vector<RealType>(all_coords.size());
 
-        int count = 0;
+        [[maybe_unused]] int count = 0;
 
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for
@@ -127,7 +127,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
         auto all_vals = std::vector<RealType>(all_chi_part_size*all_frac_size);
 
-        int count = 0;
+        [[maybe_unused]] int count = 0;
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for schedule(dynamic, 1)
 #endif

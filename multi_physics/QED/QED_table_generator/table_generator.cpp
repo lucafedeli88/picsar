@@ -372,20 +372,24 @@ parse_breit_wheeler_params(std::map<std::string, std::string> args)
     params.frac_size = px_bw::default_frac_how_many;
 
     auto s_cmin = args.find(CMD_CHI_MIN);
-    if(s_cmin != args.end())
+    if(s_cmin != args.end()){
         params.chi_min = static_cast<RealType>(stod_wrapper(s_cmin->second));
+    }
 
     auto s_cmax = args.find(CMD_CHI_MAX);
-    if( s_cmax != args.end())
+    if( s_cmax != args.end()){
         params.chi_max = static_cast<RealType>(stod_wrapper(s_cmax->second));
+    }
 
     auto s_csize = args.find(CMD_CHI_SIZE);
-    if( s_csize != args.end())
+    if( s_csize != args.end()){
         params.chi_size = stoi_wrapper(s_csize->second);
+    }
 
     auto s_fsize = args.find(CMD_FRAC_SIZE);
-    if(s_fsize != args.end())
+    if(s_fsize != args.end()){
         params.frac_size = stoi_wrapper(s_fsize->second);
+    }
 
     return params;
 }
@@ -465,24 +469,29 @@ parse_quantum_sync_params(std::map<std::string, std::string> args)
     params.frac_size = px_qs::default_frac_how_many;
 
     auto s_cmin = args.find(CMD_CHI_MIN);
-    if(s_cmin != args.end())
+    if(s_cmin != args.end()){
         params.chi_min = static_cast<RealType>(stod_wrapper(s_cmin->second));
+    }
 
     auto s_cmax = args.find(CMD_CHI_MAX);
-    if(s_cmax != args.end())
+    if(s_cmax != args.end()){
         params.chi_max = static_cast<RealType>(stod_wrapper(s_cmax->second));
+    }
 
     auto s_fmin = args.find(CMD_FRAC_MIN);
-    if(s_fmin != args.end())
+    if(s_fmin != args.end()){
         params.frac_min = static_cast<RealType>(stod_wrapper(s_fmin->second));
+    }
 
     auto s_csize = args.find(CMD_CHI_SIZE);
-    if(s_csize != args.end())
+    if(s_csize != args.end()){
         params.chi_size = stoi_wrapper(s_csize->second);
+    }
 
     auto s_fsize = args.find(CMD_FRAC_SIZE);
-    if(s_fsize != args.end())
+    if(s_fsize != args.end()){
         params.frac_size = stoi_wrapper(s_fsize->second);
+    }
 
     return params;
 }
@@ -654,8 +663,9 @@ void check_argc(int argc)
 */
 void handle_help_argument(int argc, char** argv)
 {
-    if(argc < 2)
+    if(argc < 2){
         return;
+    }
 
     const auto arg = std::string{argv[1]};
     if(arg.compare(CMD_HELP_S) == 0 || arg.compare(CMD_HELP_L) == 0){
