@@ -112,7 +112,7 @@ void check_dndt_table()
      for (int i = 0 ; i < static_cast<int>(coords.size()); ++i){
          auto res = coords[i];
          auto expected = static_cast<RealType>(
-             exp(log_chi_min + i*(log_chi_max-log_chi_min)/(how_many-1)));
+             std::exp(log_chi_min + i*(log_chi_max-log_chi_min)/(how_many-1)));
          BOOST_CHECK_SMALL((res-expected)/expected, tolerance<RealType>());
      }
 
