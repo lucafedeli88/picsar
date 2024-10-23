@@ -133,7 +133,7 @@ namespace picsar::multi_physics::containers
             return m_ptr_data+m_size;
         }
 
-        typedef T value_type;
+        using value_type = T;
 
         protected:
             size_t m_size = 0;  /* Array size */

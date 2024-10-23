@@ -182,8 +182,8 @@ namespace picsar::multi_physics::phys::breit_wheeler
             *
             * @tparam RealType the floating point type to be used
             */
-            typedef dndt_lookup_table<
-                RealType, containers::picsar_span<const RealType>> view_type;
+            using view_type =
+                dndt_lookup_table<RealType, containers::picsar_span<const RealType>> ;
 
             /**
             * Empty constructor
