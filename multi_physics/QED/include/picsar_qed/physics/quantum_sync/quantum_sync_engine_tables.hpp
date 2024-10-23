@@ -338,7 +338,6 @@ namespace picsar::multi_physics::phys::quantum_sync
             *
             * @return false if the value vector has the wrong length. True otherwise.
             */
-            [[nodiscard]]
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 const auto vals_length = vals.size();
@@ -731,7 +730,6 @@ namespace picsar::multi_physics::phys::quantum_sync
             *
             * @return false if the value vector has the wrong length. True otherwise.
             */
-            [[nodiscard]]
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 const auto vals_length = vals.size();
@@ -1183,7 +1181,6 @@ namespace picsar::multi_physics::phys::quantum_sync
             *
             * @return false if the value vector has the wrong length. True otherwise.
             */
-            [[nodiscard]]
             bool set_all_vals(const std::vector<RealType>& vals)
             {
                 if(static_cast<int>(vals.size()) != m_table.get_how_many_x()*
