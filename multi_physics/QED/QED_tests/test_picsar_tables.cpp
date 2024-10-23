@@ -105,6 +105,7 @@ class Functor
             (this->m_logzswitch == rhs.m_logzswitch);
     }
 
+    [[nodiscard]]
     std::vector<char> serialize() const
     {
         std::vector<char> raw;
@@ -187,6 +188,7 @@ class IFunctor
             (this->m_logzswitch == rhs.m_logzswitch);
     }
 
+    [[nodiscard]]
     std::vector<char> serialize() const
     {
         std::vector<char> raw;
