@@ -434,13 +434,13 @@ namespace details{
             VectorType values):
             m_x_min{x_min}, m_x_max{x_max},
             m_y_min{y_min}, m_y_max{y_max},
+            m_x_size{x_max - x_min},
+            m_y_size{y_max - y_min},
             m_how_many_x{how_many_x}, m_how_many_y{how_many_y},
+            m_dx{m_x_size/(m_how_many_x-1)},
+            m_dy{m_y_size/(m_how_many_y-1)},
             m_values{values}
             {
-                m_x_size = x_max - x_min;
-                m_y_size = y_max - y_min;
-                m_dx = m_x_size/(m_how_many_x-1);
-                m_dy = m_y_size/(m_how_many_y-1);
                 //VectorType may need a call to a user-defined method for CPU-GPU synchronization
                 details::aux_sync_vec(m_values);
             }
