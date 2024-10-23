@@ -230,9 +230,9 @@ void check_photon_emission_table()
          const auto ii = i/how_many_frac;
          const auto jj = i%how_many_frac;
          auto expected_1 = static_cast<RealType>(
-             exp(log_chi_min +ii*(log_chi_max-log_chi_min)/(how_many-1)));
+             std::exp(log_chi_min +ii*(log_chi_max-log_chi_min)/(how_many-1)));
         auto expected_2 = static_cast<RealType>(
-             expected_1*exp(log_frac_min +jj*(0.0-log_frac_min)/(how_many_frac-1)));
+             expected_1*std::exp(log_frac_min +jj*(0.0-log_frac_min)/(how_many_frac-1)));
 
          BOOST_CHECK_SMALL((res_1-expected_1)/expected_1, tolerance<RealType>());
          if(expected_2 != static_cast<RealType>(0.0)){

@@ -254,7 +254,7 @@ void check_pair_production_table()
          const auto ii = i/how_many_frac;
          const auto jj = i%how_many_frac;
          auto expected_1 = static_cast<RealType>(
-             exp(log_chi_min +ii*(log_chi_max-log_chi_min)/(how_many-1)));
+             std::exp(log_chi_min +ii*(log_chi_max-log_chi_min)/(how_many-1)));
         auto expected_2 = expected_1*static_cast<RealType>(
              0.0 +jj*0.5/(how_many_frac-1));
 
