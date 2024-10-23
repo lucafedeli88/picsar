@@ -241,7 +241,7 @@ equispaced_1d_table<double, std::vector<double> > make_1d_table()
     std::vector<double> data(xsize);
     std::generate(data.begin(), data.end(),
         [&, n = 0]() mutable {
-            double x = xmin+((xmax-xmin)*(n++))/(xsize-1);
+            const double x = xmin+((xmax-xmin)*(n++))/(xsize-1);
             return linear_function(x);
         });
 
@@ -253,8 +253,8 @@ equispaced_2d_table<double, std::vector<double> > make_2d_table()
     std::vector<double> data(xsize*ysize);
     for (int i = 0; i < xsize; ++i){
         for (int j = 0; j < ysize; ++j){
-            double x = xmin+i*(xmax-xmin)/(xsize-1);
-            double y = ymin+j*(ymax-ymin)/(ysize-1);
+            const double x = xmin+i*(xmax-xmin)/(xsize-1);
+            const double y = ymin+j*(ymax-ymin)/(ysize-1);
             data[i*ysize+j] = linear_function(x, y);
         }
     }
