@@ -131,8 +131,8 @@ namespace picsar::multi_physics::phys
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         static constexpr RealType fact(
-            const RealType reference_quantity_from,
-            const RealType reference_quantity_to) noexcept;
+            RealType reference_quantity_from,
+            RealType reference_quantity_to) noexcept;
     };
 
     //All possible template specializations follow
