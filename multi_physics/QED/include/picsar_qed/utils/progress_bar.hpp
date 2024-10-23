@@ -23,7 +23,7 @@ namespace picsar::multi_physics::utils
     inline
     void draw_progress(
         const int i, const int how_many,
-        const std::string text = "",
+        const std::string& text = "",
         const int up_freq = 1,
         bool last=false,
         std::ostream& out = std::cout)
