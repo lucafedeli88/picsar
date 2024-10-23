@@ -108,12 +108,12 @@ namespace details{
         */
         equispaced_1d_table(
             RealType x_min, RealType x_max, VectorType values):
-            m_x_min{x_min}, m_x_max{x_max}, m_values{values}
+            m_x_min{x_min}, m_x_max{x_max}, m_x_size{x_max - x_min},
+            m_how_many_x{static_cast<int>(values.size())},
+            m_dx{m_x_size/(m_how_many_x-1)},
+            m_values{values}
             {
-                m_how_many_x = static_cast<int>(values.size());
-                m_x_size = x_max - x_min;
-                m_dx = m_x_size/(m_how_many_x-1);
-                 //VectorType may need a call to a user-defined method for CPU-GPU synchronization
+                //VectorType may need a call to a user-defined method for CPU-GPU synchronization
                 details::aux_sync_vec(m_values);
             }
 
