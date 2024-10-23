@@ -78,7 +78,7 @@ auto generate_dndt_table(const Real chi_min, const Real chi_max, const int chi_s
         << ", " << chi_size <<"]...\n";
     std::cout.flush();
 
-    pxr_bw::dndt_lookup_table_params<Real> bw_params{chi_min, chi_max, chi_size};
+    const pxr_bw::dndt_lookup_table_params<Real> bw_params{chi_min, chi_max, chi_size};
 
 	auto table = pxr_bw::dndt_lookup_table<
         Real, Vector>{bw_params};
@@ -106,7 +106,7 @@ auto generate_pair_table(const Real chi_min, const Real chi_max, const int chi_s
         << ", " << chi_size << " x " << frac_size <<"]...\n";
     std::cout.flush();
 
-    pxr_bw::pair_prod_lookup_table_params<Real> bw_params{
+    const pxr_bw::pair_prod_lookup_table_params<Real> bw_params{
         chi_min, chi_max, chi_size, frac_size};
 
 	auto table = pxr_bw::pair_prod_lookup_table<
