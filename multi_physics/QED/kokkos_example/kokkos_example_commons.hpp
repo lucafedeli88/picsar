@@ -1,5 +1,5 @@
-#ifndef KOKKOS_EXAMPLE_COMMONS__
-#define KOKKOS_EXAMPLE_COMMONS__
+#ifndef KOKKOS_EXAMPLE_COMMONS_
+#define KOKKOS_EXAMPLE_COMMONS_
 
 //This file contains common functions and constants used by the two Kokkos examples
 
@@ -340,4 +340,4 @@ Real get_rand(GenType& gen)
     return res;
 }
 
-#endif // KOKKOS_EXAMPLE_COMMONS__
+#endif // KOKKOS_EXAMPLE_COMMONS_
