@@ -419,7 +419,7 @@ void do_breit_wheeler(BreitWheelerTableParams<RealType> params, const std::strin
         std::cout << " Tables will be generated in double precision." << std::endl;
     }
     else{
-        const auto prec =
+        const auto *const prec =
             (Policy == px_bw::generation_policy::force_internal_double) ?
             "double" : "single";
         std::cout << " Tables will be calculated in " << prec <<
@@ -521,7 +521,7 @@ void do_quantum_sync(QuantumSyncTableParams<RealType> params, const std::string&
         std::cout << " Tables will be generated in double precision." << std::endl;
     }
     else{
-        const auto prec =
+        const auto *const prec =
             (Policy == px_qs::generation_policy::force_internal_double) ?
             "double" : "single";
         std::cout << " Tables will be calculated in " << prec <<

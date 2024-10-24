@@ -157,7 +157,7 @@ auto aux_check_and_get_pointers(const long int len, const pyArr& last)
         throw_error("All arrays must be one-dimensional with equal size");
     }
 
-    const auto cptr = static_cast<REAL*>(last_buf.ptr);
+    auto *const cptr = static_cast<REAL*>(last_buf.ptr);
     return std::make_tuple(cptr);
 }
 
@@ -180,7 +180,7 @@ auto aux_check_and_get_pointers(const long int len, const pyArr& arg, const Args
         throw_error("All arrays must be one-dimensional with equal size");
     }
 
-    const auto cptr = static_cast<REAL*>(arg_buf.ptr);
+    auto *const cptr = static_cast<REAL*>(arg_buf.ptr);
     return std::tuple_cat(std::make_tuple(cptr),
         aux_check_and_get_pointers(len, args...));
 }
@@ -206,7 +206,7 @@ auto check_and_get_pointers(const pyArr& first, const Args& ...args)
 
     const auto len = first_buf.shape[0];
 
-    const auto cptr = static_cast<REAL*>(first_buf.ptr);
+    auto *const cptr = static_cast<REAL*>(first_buf.ptr);
 
     return std::tuple_cat(std::make_tuple(len, cptr),
             aux_check_and_get_pointers(len, args...));
@@ -228,7 +228,7 @@ auto check_and_get_pointers(const pyArr& arr)
 
     const auto len = arr_buf.shape[0];
 
-    const auto cptr = static_cast<REAL*>(arr_buf.ptr);
+    auto *const cptr = static_cast<REAL*>(arr_buf.ptr);
 
     return std::make_tuple(len, cptr);
 }
@@ -248,7 +248,7 @@ auto check_and_get_pointer_nonconst(pyArr& arr, const long int len)
         throw_error("Array must be one-dimensional with size " + std::to_string(len));
     }
 
-    const auto cptr = static_cast<REAL*>(arr_buf.ptr);
+    auto *const cptr = static_cast<REAL*>(arr_buf.ptr);
 
     return cptr;
 }
@@ -276,7 +276,7 @@ compute_gamma_photon_wrapper(
         check_and_get_pointers(px, py, pz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&, p_px=p_px, p_py=p_py, p_pz=p_pz](int i){
         p_res[i] =
@@ -314,7 +314,7 @@ compute_gamma_ele_pos_wrapper(
                 px, py, pz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -370,7 +370,7 @@ chi_photon_wrapper(
                 bx, by, bz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -424,7 +424,7 @@ chi_ele_pos_wrapper(
                 bx, by, bz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -482,7 +482,7 @@ bw_get_optical_depth_wrapper(
             check_and_get_pointers(unf_zero_one_minus_epsi);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -520,7 +520,7 @@ bw_get_dn_dt_wrapper(
                 energy_phot, chi_phot);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -560,7 +560,7 @@ bw_evolve_optical_depth_wrapper(
             check_and_get_pointers(
                 energy_phot, chi_phot);
 
-    auto p_optical_depth =
+    auto* p_optical_depth =
         check_and_get_pointer_nonconst(optical_depth, how_many);
 
     PXRQEDPY_FOR(how_many, [&](int i){
@@ -611,12 +611,12 @@ bw_generate_breit_wheeler_pairs_wrapper(
     auto pos_px = pyArr(how_many);
     auto pos_py = pyArr(how_many);
     auto pos_pz = pyArr(how_many);
-    auto p_ele_px = static_cast<REAL*>(ele_px.request().ptr);
-    auto p_ele_py = static_cast<REAL*>(ele_py.request().ptr);
-    auto p_ele_pz = static_cast<REAL*>(ele_pz.request().ptr);
-    auto p_pos_px = static_cast<REAL*>(pos_px.request().ptr);
-    auto p_pos_py = static_cast<REAL*>(pos_py.request().ptr);
-    auto p_pos_pz = static_cast<REAL*>(pos_pz.request().ptr);
+    auto* p_ele_px = static_cast<REAL*>(ele_px.request().ptr);
+    auto* p_ele_py = static_cast<REAL*>(ele_py.request().ptr);
+    auto* p_ele_pz = static_cast<REAL*>(ele_pz.request().ptr);
+    auto* p_pos_px = static_cast<REAL*>(pos_px.request().ptr);
+    auto* p_pos_py = static_cast<REAL*>(pos_py.request().ptr);
+    auto* p_pos_pz = static_cast<REAL*>(pos_pz.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         auto ele_mom = pxr_math::vec3<REAL>{};
@@ -687,7 +687,7 @@ qs_get_optical_depth_wrapper(
             check_and_get_pointers(unf_zero_one_minus_epsi);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -725,7 +725,7 @@ qs_get_dn_dt_wrapper(
                 energy_part, chi_part);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -765,7 +765,7 @@ qs_evolve_optical_depth_wrapper(
             check_and_get_pointers(
                 energy_part, chi_part);
 
-    auto p_optical_depth =
+    auto* p_optical_depth =
         check_and_get_pointer_nonconst(optical_depth, how_many);
 
     PXRQEDPY_FOR(how_many, [&](int i){
@@ -806,19 +806,19 @@ qs_generate_photon_update_momentum_wrapper(
         p_chi_part, p_unf_zero_one_minus_epsi) =
             check_and_get_pointers(chi_part, unf_zero_one_minus_epsi);
 
-    auto p_part_px =
+    auto* p_part_px =
         check_and_get_pointer_nonconst(part_px, how_many);
-    auto p_part_py =
+    auto* p_part_py =
         check_and_get_pointer_nonconst(part_py, how_many);
-    auto p_part_pz =
+    auto* p_part_pz =
         check_and_get_pointer_nonconst(part_pz, how_many);
 
     auto phot_px = pyArr(how_many);
     auto phot_py = pyArr(how_many);
     auto phot_pz = pyArr(how_many);
-    auto p_phot_px = static_cast<REAL*>(phot_px.request().ptr);
-    auto p_phot_py = static_cast<REAL*>(phot_py.request().ptr);
-    auto p_phot_pz = static_cast<REAL*>(phot_pz.request().ptr);
+    auto* p_phot_px = static_cast<REAL*>(phot_px.request().ptr);
+    auto* p_phot_py = static_cast<REAL*>(phot_py.request().ptr);
+    auto* p_phot_pz = static_cast<REAL*>(phot_pz.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         auto part_mom = pxr_math::vec3<REAL>{p_part_px[i], p_part_py[i], p_part_pz[i]};
@@ -881,7 +881,7 @@ sc_pair_production_rate_wrapper(
                 bx, by, bz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -930,7 +930,7 @@ sc_expected_pair_number_wrapper(
                 bx, by, bz);
 
     auto res = pyArr(how_many);
-    auto p_res = static_cast<REAL*>(res.request().ptr);
+    auto* p_res = static_cast<REAL*>(res.request().ptr);
 
     PXRQEDPY_FOR(how_many, [&](int i){
         p_res[i] =
@@ -1100,7 +1100,7 @@ PYBIND11_MODULE(pxr_qed, m) {
                     check_and_get_pointers(chi_phot);
 
                 auto res = pyArr(how_many);
-                auto p_res = static_cast<REAL*>(res.request().ptr);
+                auto* p_res = static_cast<REAL*>(res.request().ptr);
 
                 PXRQEDPY_FOR(how_many, [&](int i){
                     p_res[i] = self.interp(p_chi_phot[i]);
@@ -1175,7 +1175,7 @@ PYBIND11_MODULE(pxr_qed, m) {
                     check_and_get_pointers(chi_phot, unf_zero_one_minus_epsi);
 
                 auto res = pyArr(how_many);
-                auto p_res = static_cast<REAL*>(res.request().ptr);
+                auto* p_res = static_cast<REAL*>(res.request().ptr);
 
                 PXRQEDPY_FOR(how_many, [&](int i){
                     p_res[i] = self.interp(p_chi_phot[i], p_unf_zero_one_minus_epsi[i]);
@@ -1328,7 +1328,7 @@ PYBIND11_MODULE(pxr_qed, m) {
                     check_and_get_pointers(chi_part);
 
                 auto res = pyArr(how_many);
-                auto p_res = static_cast<REAL*>(res.request().ptr);
+                auto* p_res = static_cast<REAL*>(res.request().ptr);
 
                 PXRQEDPY_FOR(how_many, [&](int i){
                     p_res[i] = self.interp(p_chi_part[i]);
@@ -1403,7 +1403,7 @@ PYBIND11_MODULE(pxr_qed, m) {
                     check_and_get_pointers(chi_part, unf_zero_one_minus_epsi);
 
                 auto res = pyArr(how_many);
-                auto p_res = static_cast<REAL*>(res.request().ptr);
+                auto* p_res = static_cast<REAL*>(res.request().ptr);
 
                 PXRQEDPY_FOR(how_many, [&](int i){
                     p_res[i] = self.interp(p_chi_part[i], p_unf_zero_one_minus_epsi[i]);
