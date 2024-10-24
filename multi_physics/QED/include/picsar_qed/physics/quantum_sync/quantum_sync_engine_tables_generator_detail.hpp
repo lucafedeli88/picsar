@@ -55,7 +55,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
         auto all_vals = std::vector<RealType>(all_coords.size());
 
-        [[maybe_unused]] int count = 0;
+        int count = 0;
 
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for
@@ -69,12 +69,12 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
                 all_vals[i] = compute_G_function(all_coords[i]);
             }
 
-            if constexpr (ShowProgress){
-                #pragma omp critical
-                {
-                    count++;
-                    utils::draw_progress(count,
-                        all_vals.size(), "Quantum sync dN/dt", 1);
+            #pragma omp critical
+            {
+                count++;
+                if constexpr (ShowProgress){
+                    utils::draw_progress(count, all_vals.size(),
+                        "Quantum sync dN/dt", 1);
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
         auto all_vals = std::vector<RealType>(all_chi_part_size*all_frac_size);
 
-        [[maybe_unused]] int count = 0;
+        int count = 0;
 #ifdef PXRMP_HAS_OPENMP
         #pragma omp parallel for schedule(dynamic, 1)
 #endif
@@ -160,13 +160,12 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
 
             std::copy(vals.begin(), vals.end(), all_vals.begin() + i*all_frac_size);
 
-            if constexpr (ShowProgress){
-#ifdef PXRMP_HAS_OPENMP
-                #pragma omp critical
-#endif
-                {
-                    count++;
-                    utils::draw_progress(count, all_chi_part_size, "QS photon emission", 1);
+            #pragma omp critical
+            {
+                count++;
+                if constexpr (ShowProgress){
+                    utils::draw_progress(count, all_chi_part_size,
+                        "QS photon emission", 1);
                 }
             }
         }
