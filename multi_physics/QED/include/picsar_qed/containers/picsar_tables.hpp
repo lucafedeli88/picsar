@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
+#include <utility>
 
 namespace picsar::multi_physics::containers
 {
@@ -111,7 +112,7 @@ namespace details{
             m_x_min{x_min}, m_x_max{x_max}, m_x_size{x_max - x_min},
             m_how_many_x{static_cast<int>(values.size())},
             m_dx{m_x_size/(m_how_many_x-1)},
-            m_values{values}
+            m_values{std::move(values)}
             {
                 //VectorType may need a call to a user-defined method for CPU-GPU synchronization
                 details::aux_sync_vec(m_values);
@@ -439,7 +440,7 @@ namespace details{
             m_how_many_x{how_many_x}, m_how_many_y{how_many_y},
             m_dx{m_x_size/(m_how_many_x-1)},
             m_dy{m_y_size/(m_how_many_y-1)},
-            m_values{values}
+            m_values{std::move(values)}
             {
                 //VectorType may need a call to a user-defined method for CPU-GPU synchronization
                 details::aux_sync_vec(m_values);
@@ -986,7 +987,7 @@ namespace details{
             IXMapFunctor ix_map_functor,
             IYMapFunctor iy_map_functor):
             m_how_many_x{how_many_x}, m_how_many_y{how_many_y},
-            m_values{values},
+            m_values{std::move(values)},
             m_x_map_functor{x_map_functor}, m_y_map_functor{y_map_functor},
             m_ix_map_functor{ix_map_functor}, m_iy_map_functor{iy_map_functor}
             {}
