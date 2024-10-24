@@ -203,7 +203,7 @@ namespace picsar::multi_physics::phys::quantum_sync
             * @param[in] show_progress if true a progress bar is shown
             */
             template <generation_policy Policy = generation_policy::regular>
-            void generate(const bool show_progress  = true);
+            void generate(bool show_progress  = true);
 
             /*
             * Initializes the lookup table from a byte array.
