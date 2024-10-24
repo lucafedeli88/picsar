@@ -46,7 +46,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     template<typename RealType>
     PXRMP_FORCE_INLINE
     constexpr RealType compute_y(
-        const RealType chi_part, const RealType csi) noexcept
+        const RealType chi_part, const RealType csi)
     {
         return math::two_thirds<RealType>*
             csi/(chi_part*(math::one<RealType> - csi));
@@ -106,7 +106,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     */
     template<typename RealType>
     RealType compute_G_integrand(
-        const RealType chi_part, const RealType csi) noexcept
+        const RealType chi_part, const RealType csi)
     {
         using namespace math;
         using namespace std;
