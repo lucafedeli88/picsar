@@ -327,7 +327,7 @@ void generate_quantum_sync_photem_table(
 double stod_wrapper(const std::string& str)
 {
     size_t idx = 0;
-    double val = std::stod(str, &idx);
+    const double val = std::stod(str, &idx);
     if (idx != str.length()){
         print_error("Failed to parse '" + str + "' as a floating point number!");
         exit(EXIT_FAILURE);
@@ -345,7 +345,7 @@ double stod_wrapper(const std::string& str)
 int stoi_wrapper(const std::string& str)
 {
     size_t idx = 0;
-    int val = std::stoi(str, &idx);
+    const int val = std::stoi(str, &idx);
     if (idx != str.length()){
         print_error("Failed to parse '" + str + "' as an integer number!");
         exit(EXIT_FAILURE);
