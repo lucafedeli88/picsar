@@ -307,5 +307,4 @@ int main(int argc, char** argv)
         std::cout << "___ END ___" << std::endl;
     }
     Kokkos::finalize();
-    exit(EXIT_SUCCESS);
 }

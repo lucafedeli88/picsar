@@ -817,6 +817,4 @@ int main(int argc, char** argv)
                     params, file_name_prefix);
         }
     }
-
-    exit(EXIT_SUCCESS);
 }
