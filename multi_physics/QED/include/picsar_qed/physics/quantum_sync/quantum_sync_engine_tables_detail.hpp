@@ -42,10 +42,9 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         LinFunctor(int zsize, RealType zmin, RealType zmax) :
-            m_zmin{zmin}
-        {
-            m_coeff = (zmax - zmin)/(zsize - 1);
-        }
+            m_zmin{zmin},
+            m_coeff{(zmax - zmin)/(zsize - 1)}
+        {}
 
         /**
         * Operator()
@@ -148,10 +147,9 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         */
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         ILinFunctor(int zsize, RealType zmin, RealType zmax) :
-            m_zmin{zmin}
-        {
-            m_coeff = (zsize - 1)/(zmax - zmin);
-        }
+            m_zmin{zmin},
+            m_coeff{(zsize - 1)/(zmax - zmin)}
+        {}
 
         /**
         * Operator()
@@ -261,12 +259,11 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         TailOptFunctor(const int zsize, const int zfirst,
             const RealType zmin, const RealType zmax, const RealType zswitch) :
-                m_zsize{zsize}, m_zfirst{zfirst}, m_zmin{zmin}
-        {
-            m_exp_zswitch = math::m_exp(zswitch);
-            m_coeff_first = (zswitch - zmin) / (zfirst - 1);
-            m_coeff_second = (math::m_exp(zmax) - m_exp_zswitch) / (zsize - zfirst);
-        }
+                m_zsize{zsize}, m_zfirst{zfirst}, m_zmin{zmin},
+                m_exp_zswitch{math::m_exp(zswitch)},
+                m_coeff_first{(zswitch - zmin) / (zfirst - 1)},
+                m_coeff_second{(math::m_exp(zmax) - m_exp_zswitch) / (zsize - zfirst)}
+        {}
 
         /**
         * Operator()
