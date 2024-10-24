@@ -668,7 +668,7 @@ void handle_help_argument(int argc, char** argv)
     }
 
     const auto arg = std::string{argv[1]};
-    if(arg.compare(CMD_HELP_S) == 0 || arg.compare(CMD_HELP_L) == 0){
+    if(arg == CMD_HELP_S || arg == CMD_HELP_L){
         print_help_message();
         exit(EXIT_SUCCESS);
     }
