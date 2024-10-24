@@ -187,10 +187,9 @@ namespace picsar::multi_physics::phys::quantum_sync
             m_table{containers::equispaced_1d_table<RealType, VectorType>{
                     math::m_log(params.chi_part_min),
                     math::m_log(params.chi_part_max),
-                    vals}}
-            {
-                m_init_flag = true;
-            }
+                    vals}},
+            m_init_flag{true}
+            {}
 
             /*
             * Generates the content of the lookup table (not usable on GPUs).
@@ -397,9 +396,9 @@ namespace picsar::multi_physics::phys::quantum_sync
 
         protected:
             dndt_lookup_table_params<RealType> m_params; /* Table parameters*/
-            bool m_init_flag = false;  /* Initialization flag*/
             containers::equispaced_1d_table<
                 RealType, VectorType> m_table; /* Table data */
+            bool m_init_flag = false;  /* Initialization flag*/
     };
 
     //__________________________________________________________________________
@@ -531,10 +530,9 @@ namespace picsar::multi_physics::phys::quantum_sync
                     math::m_log(params.frac_min),
                     math::m_log(math::one<RealType>),
                     params.chi_part_how_many, params.frac_how_many,
-                    vals}}
-            {
-                m_init_flag = true;
-            }
+                    vals}},
+                m_init_flag{true}
+            {}
 
             /*
             * Generates the content of the lookup table (not usable on GPUs).
@@ -791,9 +789,9 @@ namespace picsar::multi_physics::phys::quantum_sync
 
         protected:
             photon_emission_lookup_table_params<RealType> m_params; /* Table parameters*/
-            bool m_init_flag = false; /* Initialization flag*/
             containers::equispaced_2d_table<
                 RealType, VectorType> m_table; /* Table data*/
+            bool m_init_flag = false; /* Initialization flag*/
     };
 
     //__________________________________________________________________________
@@ -964,7 +962,7 @@ namespace picsar::multi_physics::phys::quantum_sync
                 tailopt_photon_emission_lookup_table_params<RealType> params,
                 VectorType vals):
                 m_params{params},
-                 m_table{Generic2DTableType<RealType, VectorType>(
+                m_table{Generic2DTableType<RealType, VectorType>(
                     params.chi_part_how_many, params.frac_how_many, vals,
                     detail::LinFunctor<RealType>(
                         m_params.chi_part_how_many,
@@ -983,10 +981,9 @@ namespace picsar::multi_physics::phys::quantum_sync
                         m_params.frac_how_many, m_params.frac_first,
                         math::m_log(m_params.frac_min),
                         math::m_log(math::one<RealType>),
-                        math::m_log(m_params.frac_switch)))}
-            {
-                m_init_flag = true;
-            }
+                        math::m_log(m_params.frac_switch)))},
+                m_init_flag{true}
+            {}
 
             /**
             * Generates the content of the lookup table (not usable on GPUs).
@@ -1246,9 +1243,8 @@ namespace picsar::multi_physics::phys::quantum_sync
 
         protected:
             tailopt_photon_emission_lookup_table_params<RealType> m_params; /* Table parameters*/
-            bool m_init_flag = false; /* Initialization flag*/
             Generic2DTableType<RealType, VectorType> m_table; /* Table data*/
-
+            bool m_init_flag = false; /* Initialization flag*/
         };
 
         //______________________________________________________________________

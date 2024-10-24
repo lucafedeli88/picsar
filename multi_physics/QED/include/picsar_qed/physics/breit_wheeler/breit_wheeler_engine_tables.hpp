@@ -575,10 +575,9 @@ namespace picsar::multi_physics::phys::breit_wheeler
                         math::zero<RealType>,
                         math::half<RealType>,
                         params.chi_phot_how_many, params.frac_how_many,
-                        vals}}
-            {
-                m_init_flag = true;
-            }
+                        vals}},
+                m_init_flag{true}
+            {}
 
             /*
             * Generates the content of the lookup table (not usable on GPUs).
@@ -827,9 +826,9 @@ namespace picsar::multi_physics::phys::breit_wheeler
 
         protected:
             pair_prod_lookup_table_params<RealType> m_params; /* Table parameters*/
-            bool m_init_flag = false; /* Initialization flag*/
             containers::equispaced_2d_table<
                 RealType, VectorType> m_table; /* Table data*/
+            bool m_init_flag = false; /* Initialization flag*/
 
         private:
             /*
