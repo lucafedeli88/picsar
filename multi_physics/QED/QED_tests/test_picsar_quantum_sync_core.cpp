@@ -363,13 +363,13 @@ void check_photon_emission(RealType ref_q = one<RealType>)
 
                         const auto rand_num = static_cast<RealType>(rand);
 
-                        vec3<RealType> mom_phot;
+                        vec3<RealType> photon_momentum;
                         const bool is_in_table = generate_photon_update_momentum<
                             RealType,
                             fake_P_table<RealType>,
                             UnitSystem>(
                                 chi_ele, ele_momentum, rand_num,
-                                fake_table, mom_phot, ref_q);
+                                fake_table, photon_momentum, ref_q);
 
                         BOOST_CHECK_EQUAL(fake_table.m_random, rand_num);
                         BOOST_CHECK_EQUAL(fake_table.m_chi, chi_ele);
@@ -378,19 +378,19 @@ void check_photon_emission(RealType ref_q = one<RealType>)
                         const auto me_c = electron_mass<>*light_speed<>;
                         const auto gamma_ele = sqrt(1.0 + (mom/me_c)*(mom/me_c));
                         const auto gamma_phot = (gamma_ele-1.)*(chi_phot/chi_ele);
-                        const auto t_mom_phot = me_c*gamma_phot;
+                        const auto t_photon_momentum = me_c*gamma_phot;
 
-                        const auto tv_mom_phot = t_mom_phot * dir *
+                        const auto tv_photon_momentum = t_photon_momentum * dir *
                             conv<quantity::momentum,
                                 unit_system::SI,UnitSystem,
                                 double>::fact(1.0, ref_q);
 
-                        const auto exp_mom_phot = vec3<RealType>{
-                            static_cast<RealType>(tv_mom_phot[0]),
-                            static_cast<RealType>(tv_mom_phot[1]),
-                            static_cast<RealType>(tv_mom_phot[2])};
+                        const auto exp_photon_momentum = vec3<RealType>{
+                            static_cast<RealType>(tv_photon_momentum[0]),
+                            static_cast<RealType>(tv_photon_momentum[1]),
+                            static_cast<RealType>(tv_photon_momentum[2])};
 
-                        aux_check_small_or_zero(mom_phot, exp_mom_phot);
+                        aux_check_small_or_zero(photon_momentum, exp_photon_momentum);
 
                         fake_table.m_is_out = true;
                         const bool is_in_table_2 = generate_photon_update_momentum<
@@ -398,7 +398,7 @@ void check_photon_emission(RealType ref_q = one<RealType>)
                             fake_P_table<RealType>,
                             UnitSystem>(
                                 chi_ele, ele_momentum, rand_num,
-                                fake_table, mom_phot, ref_q);
+                                fake_table, photon_momentum, ref_q);
                         BOOST_CHECK_EQUAL(!fake_table.m_is_out, is_in_table_2);
                     }
                 }
