@@ -67,7 +67,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the integral of kv(5/3, x) from y to infinity
     */
     template<typename RealType>
-    inline RealType inner_integral(const RealType y)
+    RealType inner_integral(const RealType y)
     {
         using namespace math;
         return quad_a_inf<RealType>(
@@ -105,7 +105,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the value of the integrand of the G function
     */
     template<typename RealType>
-    inline RealType compute_G_integrand(
+    RealType compute_G_integrand(
         const RealType chi_part, const RealType csi) noexcept
     {
         using namespace math;
@@ -142,7 +142,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the value of the G function
     */
     template<typename RealType>
-    inline RealType compute_G_function(const RealType chi_part)
+    RealType compute_G_function(const RealType chi_part)
     {
         using namespace math;
         return quad_a_b_s<RealType>(
@@ -166,7 +166,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the value of the numerator of the cumulative probability distribution
     */
     template<typename RealType>
-    inline RealType compute_cumulative_prob_numerator_a_b(
+    RealType compute_cumulative_prob_numerator_a_b(
         const RealType chi_particle,
         RealType chi_photon_start,
         RealType chi_photon_end)
@@ -215,7 +215,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the value of the numerator of the cumulative probability distribution
     */
     template<typename RealType>
-    inline RealType compute_cumulative_prob_numerator(
+    RealType compute_cumulative_prob_numerator(
         const RealType chi_particle, RealType chi_photon)
     {
         using namespace math;
@@ -236,7 +236,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the cumulative probability distribution calculated for all the chi parameters
     */
     template<typename RealType, typename VectorType>
-    inline VectorType compute_cumulative_prob(
+    VectorType compute_cumulative_prob(
         const RealType chi_particle, const VectorType& chi_photons)
     {
         const auto den = compute_G_function(chi_particle);
@@ -271,7 +271,7 @@ namespace picsar::multi_physics::phys::quantum_sync
     * @return the cumulative probability distribution calculated for all the chi parameters
     */
     template<typename RealType, typename VectorType>
-    inline VectorType compute_cumulative_prob_opt(
+    VectorType compute_cumulative_prob_opt(
         const RealType chi_particle, const VectorType& chi_photons)
     {
         if(!std::is_sorted(chi_photons.begin(), chi_photons.end())){

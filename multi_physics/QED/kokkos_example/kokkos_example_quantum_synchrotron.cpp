@@ -37,7 +37,8 @@ auto generate_dndt_table(const Real chi_min, const Real chi_max, const int chi_s
         << ", " << chi_size <<"]...\n";
     std::cout.flush();
 
-    pxr_qs::dndt_lookup_table_params<Real> qs_params{chi_min, chi_max, chi_size};
+    const auto qs_params =
+        pxr_qs::dndt_lookup_table_params<Real>{chi_min, chi_max, chi_size};
 
 	auto table = pxr_qs::dndt_lookup_table<
         Real, Vector>{qs_params};
