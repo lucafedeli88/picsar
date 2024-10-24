@@ -396,12 +396,14 @@ namespace picsar::multi_physics::phys::quantum_sync::detail
         PXRMP_GPU_QUALIFIER PXRMP_FORCE_INLINE
         ITailOptFunctor(const int zsize, const int zfirst,
             const RealType zmin, const RealType zmax, const RealType zswitch) :
-                m_zsize{zsize}, m_zfirst{zfirst}, m_zmin{zmin}, m_zswitch{zswitch}
-        {
-            m_exp_zswitch = math::m_exp(zswitch);
-            m_coeff_first = (zfirst - 1) / (zswitch - zmin);
-            m_coeff_second = (zsize - zfirst) / (math::m_exp(zmax) - m_exp_zswitch);
-        }
+            m_zsize{zsize},
+            m_zfirst{zfirst},
+            m_zmin{zmin},
+            m_zswitch{zswitch},
+            m_exp_zswitch{math::m_exp(zswitch)},
+            m_coeff_first{(zfirst - 1) / (zswitch - zmin)},
+            m_coeff_second{(zsize - zfirst) / (math::m_exp(zmax) - m_exp_zswitch)}
+        {}
 
         /**
         * Operator()

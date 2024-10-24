@@ -221,10 +221,9 @@ namespace picsar::multi_physics::phys::breit_wheeler
             m_table{containers::equispaced_1d_table<RealType, VectorType>{
                     math::m_log(params.chi_phot_min),
                     math::m_log(params.chi_phot_max),
-                    vals}}
-            {
-                m_init_flag = true;
-            }
+                    vals}},
+            m_init_flag{true}
+            {}
 
             /*
             * Generates the content of the lookup table (not usable on GPUs).
@@ -432,9 +431,9 @@ namespace picsar::multi_physics::phys::breit_wheeler
 
         protected:
             dndt_lookup_table_params<RealType> m_params; /* Table parameters*/
-            bool m_init_flag = false; /* Initialization flag*/
             containers::equispaced_1d_table<
                 RealType, VectorType> m_table; /* Table data */
+            bool m_init_flag = false; /* Initialization flag*/
 
         private:
             /*
