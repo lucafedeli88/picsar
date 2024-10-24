@@ -486,8 +486,8 @@ namespace picsar::multi_physics::phys::quantum_sync
             *
             * @tparam RealType the floating point type to be used
             */
-            typedef photon_emission_lookup_table<
-                RealType, containers::picsar_span<const RealType>> view_type;
+            using view_type =
+                photon_emission_lookup_table<RealType, containers::picsar_span<const RealType>>;
 
             /**
             * Empty constructor
@@ -910,8 +910,8 @@ namespace picsar::multi_physics::phys::quantum_sync
             *
             * @tparam RealType the floating point type to be used
             */
-            typedef tailopt_photon_emission_lookup_table<
-                RealType, containers::picsar_span<const RealType>> view_type;
+            using view_type =
+                tailopt_photon_emission_lookup_table<RealType, containers::picsar_span<const RealType>>;
 
             /**
             * Empty constructor
