@@ -57,7 +57,7 @@ const float float_tolerance = 5.0e-3;
 template <typename T>
 T constexpr tolerance()
 {
-    if(std::is_same<T,float>::value){
+    if(std::is_same_v<T,float>){
         return float_tolerance;
     }
     else{
@@ -71,7 +71,7 @@ const float float_small = 1.0e-4;
 template <typename T>
 T constexpr small()
 {
-    if(std::is_same<T,float>::value){
+    if(std::is_same_v<T,float>){
         return float_small;
     }
     else{
@@ -390,7 +390,7 @@ void do_phot_em_test(
 
     cudaEventRecord(start);
 
-    if(std::is_same<RealType, double>::value)
+    if(std::is_same_v<RealType, double>)
         curandGenerateUniformDouble(gen, reinterpret_cast<double*>(d_rand), how_many);
     else
         curandGenerateUniform(gen, reinterpret_cast<float*>(d_rand), how_many);

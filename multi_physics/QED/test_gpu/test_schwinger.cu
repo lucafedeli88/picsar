@@ -38,7 +38,7 @@ const float float_tolerance = 5.0e-2;
 template <typename T>
 T constexpr tolerance()
 {
-    if(std::is_same<T,float>::value){
+    if(std::is_same_v<T,float>){
         return float_tolerance;
     }
     else{
