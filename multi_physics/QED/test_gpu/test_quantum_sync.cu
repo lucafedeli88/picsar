@@ -334,7 +334,7 @@ void do_dndt_test(
                 is_ok = false;
                 #pragma omp critical
                 {
-                    std::cout << exp_opt << " " << res_opt << std::endl;
+                    std::cout << exp_opt << " " << res_opt << "\n";
                 }
             }
         }
@@ -343,7 +343,7 @@ void do_dndt_test(
             is_ok = false;
             #pragma omp critical
             {
-                std::cout << exp_opt << " " << res_opt << std::endl;
+                std::cout << exp_opt << " " << res_opt << "\n";
             }
         }
     }

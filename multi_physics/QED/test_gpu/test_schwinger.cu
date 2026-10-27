@@ -179,7 +179,7 @@ int do_test()
 {
     //Generate data SI
 
-    std::cout << "Generating data on CPU..." << std::endl;
+    std::cout << "Generating data on CPU...\n";
     const double dt = 1.0e-15;
     const double vol = 1.0e-27;
 
@@ -207,11 +207,11 @@ int do_test()
             return unf(rng)*pxr::schwinger_field<double>/pxr::light_speed<double>;
         });
     }
-    std::cout << "done !\n" << std::endl;
+    std::cout << "done !\n\n";
     //____________________________________
 
     //Calculate solution on CPU
-    std::cout << "Calculating solution on CPU..." << std::endl;
+    std::cout << "Calculating solution on CPU... \n";
     #pragma omp parallel for
     for(int i = 0; i < test_size; ++i){
         sol[i] =
@@ -220,7 +220,7 @@ int do_test()
                 B_SI[0][i], B_SI[1][i], B_SI[2][i],
                 vol, dt);
     }
-    std::cout << "done !\n" << std::endl;
+    std::cout << "done !\n\n";
     //____________________________________
 
 

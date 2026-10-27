@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 
+# find_package uses upper-case <PACKAGENAME>_ROOT variables, e.g., BOOST_ROOT
+# as set by many HPC modules (CMake 3.27+)
+if(POLICY CMP0144)
+    cmake_policy(SET CMP0144 NEW)
+endif()
+
 project(
   PXRMP_QED
   DESCRIPTION
@@ -21,7 +27,6 @@ option(PXRMP_QED_TABLEGEN         "Enable table generation (needs Boost)" ON)
 option(PXRMP_QED_TEST             "Build PICSAR QED tests " ${IS_TOPLEVEL})
 option(PXRMP_QED_TOOLS            "Build PICSAR QED tools " ${IS_TOPLEVEL})
 option(PXRMP_QED_PYTHON_BINDINGS  "Build PICSAR QED python bindings " ${IS_TOPLEVEL})
-option(PXRMP_BOOST_TEST_DYN_LINK  "Link against the Boost Unit Test Framework shared library" ON)
 option(PXRMP_DPCPP_FIX            "Use sycl::floor sycl::floorf on device" OFF)
 option(PXRMP_KOKKOS_EXAMPLE       "Build examples using Kokkos" OFF)
 
@@ -32,7 +37,7 @@ option(PXRMP_KOKKOS_EXAMPLE       "Build examples using Kokkos" OFF)
 add_library(PXRMP_QED INTERFACE)
 add_library(${PROJECT_NAME}::PXRMP_QED ALIAS PXRMP_QED)
 
-target_compile_features(PXRMP_QED INTERFACE cxx_std_17)
+target_compile_features(PXRMP_QED INTERFACE cxx_std_20)
 
 if(PXRMP_QED_OMP)
    find_package(OpenMP REQUIRED)
@@ -41,12 +46,18 @@ if(PXRMP_QED_OMP)
 endif()
 
 if(PXRMP_QED_TABLEGEN)
-    find_package(Boost 1.66.0)
+    find_package(Boost 1.71 CONFIG)
     if(Boost_FOUND)
-        target_link_libraries(PXRMP_QED INTERFACE Boost::boost)
+        target_link_libraries(PXRMP_QED INTERFACE Boost::headers)
         target_compile_definitions(PXRMP_QED INTERFACE PXRMP_HAS_BOOST=1)
     else()
-         message( FATAL_ERROR "Table generation (PXRMP_QED_TABLEGEN) requires Boost (>= 1.66)!" )
+         message( FATAL_ERROR
+             "Table generation (PXRMP_QED_TABLEGEN) requires Boost (>= 1.71) "
+             "including its CMake config package (BoostConfig.cmake). "
+             "Examples: conda-forge 'libboost-devel' (not 'libboost-headers'), "
+             "Spack 'boost', Debian/Ubuntu 'libboost-dev', Homebrew 'boost', "
+             "or a Boost installed via 'b2 install'. "
+             "Point CMake to it via Boost_DIR or CMAKE_PREFIX_PATH if needed." )
     endif()
 endif()
 
