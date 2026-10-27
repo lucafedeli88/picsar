@@ -25,7 +25,7 @@ namespace picsar::multi_physics::utils::serialization
     */
     template<typename T>
     inline void put_in(T val, std::vector<char>& vec)
-    requires std::is_trivially_copyable<T>
+    requires (std::is_trivially_copyable_v<T>)
     {
         const auto* ptr_val = reinterpret_cast<char*>(&val);
         vec.insert(vec.end(), ptr_val, ptr_val+sizeof(T));
@@ -44,7 +44,7 @@ namespace picsar::multi_physics::utils::serialization
     */
     template<typename T, typename CharIter=std::vector<char>::const_iterator>
     inline T get_out(CharIter& it)
-    requires std::is_trivially_copyable<T>
+    requires (std::is_trivially_copyable_v<T>)
     {
         auto temp = std::array<char, sizeof(T)>{};
         std::copy(it, it + sizeof(T), temp.begin());
@@ -70,7 +70,7 @@ namespace picsar::multi_physics::utils::serialization
     inline std::vector<T> get_n_out(
         CharIter& it,
         int how_many)
-    requires std::is_trivially_copyable<T>
+    requires (std::is_trivially_copyable_v<T>)
     {
         auto res = std::vector<T>(how_many);
         std::generate(res.begin(), res.end(),
